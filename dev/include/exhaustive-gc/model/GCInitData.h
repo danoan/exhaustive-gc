@@ -11,6 +11,9 @@ namespace ExhaustiveGC
         typedef GCurve::GluedCurveSeed GluedCurveSeed;
         typedef GCurve::GluedCurveRange::LinkLinelType LinkLinelType;
 
+        GCInitData(){}
+        GCInitData(GluedCurveSeed gseed):seed(gseed){}
+
         GluedCurveSeed seed;
         std::vector<LinkLinelType> connectors;
     };

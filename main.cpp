@@ -1,6 +1,10 @@
 #include <iostream>
+#include "api/include/exhaustive-gc/api/api.h"
 
-int main() {
-    std::cout << "Hello, World!" << std::endl;
+using namespace ExhaustiveGC::API;
+
+int main()
+{
+    API::run();
     return 0;
 }

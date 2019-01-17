@@ -4,7 +4,7 @@
 #include <utility>
 #include <vector>
 
-template<typename IteratorT1, typename IteratorT2>
+template<typename TContainer, typename IteratorT1, typename IteratorT2>
 class ContainerCombinator
 {
 public:
@@ -13,20 +13,20 @@ public:
 
 
     typedef std::pair<T1,T2> PairType;
-    typedef std::back_insert_iterator< std::vector<PairType> > OutputIterator;
+    typedef std::back_insert_iterator< TContainer > OutputIterator;
 
 public:
-    void operator()(IteratorT1 b1,
-                    IteratorT1 e1,
-                    IteratorT2 b2,
-                    IteratorT2 e2,
-                    OutputIterator oit)
+    ContainerCombinator(IteratorT1 b1,
+                        IteratorT1 e1,
+                        IteratorT2 b2,
+                        IteratorT2 e2,
+                        OutputIterator oit)
     {
         for(IteratorT1 it1=b1;it1!=e1;++it1)
         {
             for(IteratorT2 it2=b2;it2!=e2;++it2)
             {
-                oit = std::pair<T1,T2>(*it1,*it2);
+                oit = PairType(*it1,*it2);
             }
         }
     }
