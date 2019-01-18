@@ -8,11 +8,15 @@ namespace ExhaustiveGC
 {
     class CurveFromJoints
     {
-    public:
+    private:
+        typedef DGtal::Z2i::KSpace KSpace;
+
         typedef DGtal::Z2i::Curve::ConstIterator SCellIterator;
         typedef DGtal::Circulator<SCellIterator> SCellCirculator;
 
         typedef GCurve::GluedCurveSeed GluedCurveSeed;
+    public:
+        typedef DGtal::Z2i::Curve Curve;
 
     private:
         void addIntervalSCells(std::vector<KSpace::SCell>& vectorOfSCells,

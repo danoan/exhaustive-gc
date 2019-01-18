@@ -28,7 +28,7 @@ double CurveCandidatesGenerator<maxPairs>::lengthFactor(double currLength,
         //TODO::Better use a global estimator
         {
             using namespace GEOC::API::GridCurve::Length;
-            lmdssClosed<EstimationAlgorithms::ALG_PROJECTED>(KImage,begin,end,localLengthEstimations,1.0);
+            mdssClosed<EstimationAlgorithms::ALG_PROJECTED>(KImage,begin,end,localLengthEstimations,1.0);
         }
 
         double nlength=0;
@@ -62,10 +62,10 @@ void CurveCandidatesGenerator<maxPairs>::computeWeightMap(const KSpace& KImage,
     int i=0;
     do
     {
-        weightMap[*it]=ev[i];
+        weightMap[*it]= pow(ev[i],2);
         ++it;
         ++i;
-    }while(it!=begin);
+    }while(i<ev.size());
 }
 
 
@@ -74,18 +74,17 @@ void CurveCandidatesGenerator<maxPairs>::operator()(Curve& minCurve,
                                                     CheckableSeedVector &csVector,
                                                     KSpace &KImage,
                                                     CheckableSeedPair bestCombination[maxPairs],
-                                                    std::string outputFolder,
-                                                    double currLength)
+                                                    std::string outputFolder)
 {
     bool saveEPS = outputFolder!="";
 
-    double minEnergyValue = 100;
+    double minEnergyValue = 6.20158;
     double currentEnergyValue;
 
     MyLazyCombinations myCombinations(csVector);
     initCheckers(myCombinations,csVector);
 
-    Board2D board;
+    DGtal::Board2D board;
     if(saveEPS)
     {
         outputFolder += std::to_string(maxPairs);
@@ -103,15 +102,12 @@ void CurveCandidatesGenerator<maxPairs>::operator()(Curve& minCurve,
         CurveFromJoints(curve, seedCombination, maxPairs);
         DIPaCUS::Transform::eliminateLoops(curve, KImage, curve);
 
-        double lf = lengthFactor(currLength,KImage,curve.begin(),curve.end());
-
-
         computeWeightMap(KImage,
                          curve.begin(),
                          curve.end(),
                          weightMap);
 
-        currentEnergyValue = energyValue(curve, weightMap)*lf;
+        currentEnergyValue = energyValue(curve, weightMap);
         if (currentEnergyValue < minEnergyValue) {
             std::cout << "Updated min energy value: " << minEnergyValue << " -> " << currentEnergyValue
                       << std::endl;

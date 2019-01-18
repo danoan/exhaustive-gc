@@ -1,3 +1,4 @@
+#include <DGtal/io/boards/Board2D.h>
 #include "exhaustive-gc/control/CurveFromJoints.h"
 
 using namespace ExhaustiveGC;
@@ -66,8 +67,23 @@ void CurveFromJoints::addSeedPairSCells(std::vector<KSpace::SCell>& vectorOfSCel
     vectorOfSCells.push_back(cinConnector);
     addIntervalSCells(vectorOfSCells,inToExtSeed.c2It,extToIntSeed.c1It);
 
+//    {
+//        Curve ctemp;
+//        ctemp.initFromSCellsVector(vectorOfSCells);
+//        DGtal::Board2D board;
+//        board << ctemp;
+//        board.saveEPS("curveTemp.eps");
+//    }
 
     GluedCurveSeed nextIntToExtSeed = nextPair.data().first.seed;
     vectorOfSCells.push_back(cextConnector);
     addIntervalSCells(vectorOfSCells,extToIntSeed.c2It,nextIntToExtSeed.c1It);
+
+//    {
+//        Curve ctemp;
+//        ctemp.initFromSCellsVector(vectorOfSCells);
+//        DGtal::Board2D board;
+//        board << ctemp;
+//        board.saveEPS("curveTemp.eps");
+//    }
 }

@@ -60,8 +60,7 @@ namespace ExhaustiveGC
                         CheckableSeedVector &csVector,
                         KSpace &KImage,
                         CheckableSeedPair bestCombination[maxPairs],
-                        std::string outputFolder="",
-                        double currLength=0);
+                        std::string outputFolder="");
 
 
     private:

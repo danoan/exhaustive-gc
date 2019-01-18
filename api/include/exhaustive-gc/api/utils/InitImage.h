@@ -19,7 +19,7 @@ namespace ExhaustiveGC
 
             KSpace eval(Curve& innerCurve,
                         Curve& outerCurve,
-                        const Image2D& image);
+                        const DigitalSet& ds);
         };
     }
 }

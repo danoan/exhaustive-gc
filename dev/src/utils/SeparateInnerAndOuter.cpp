@@ -31,7 +31,8 @@ void SeparateInnerAndOuter::innerAndOuterList(SeedVector& fromInnerSCells,
     {
         GCInitData gcID(*it);
 
-        gcID.connectors.insert(gcID.connectors.begin(),beginLink,beginLink+it->numLinkLinels);
+        gcID.connectors.insert(gcID.connectors.begin(),linkIT,linkIT+it->numLinkLinels);
+        linkIT=linkIT+it->numLinkLinels;
         switch( it->linkType )
         {
             case GluedCurve::LinkType::INTERN_TO_EXTERN:

@@ -13,7 +13,7 @@ namespace ExhaustiveGC
     {
     public:
         typedef std::pair<GCInitData,GCInitData> CheckedType;
-        typedef SCell MarkedType;
+        typedef DGtal::Z2i::SCell MarkedType;
 
         typedef
         class UnsignedSCellComparison{
