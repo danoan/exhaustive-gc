@@ -80,3 +80,7 @@ target_link_libraries(examples-one-exp-flow PRIVATE
         -lboost_filesystem
         -lboost_system
         ${DGTAL_LIBRARIES})
+
+add_dependencies(examples-four-joint exhaustive-gc-api exhaustive-gc-base)
+add_dependencies(examples-two-joint exhaustive-gc-api exhaustive-gc-base)
+add_dependencies(examples-one-exp-flow exhaustive-gc-api exhaustive-gc-base)

@@ -44,27 +44,46 @@ void API::optimalOneExpansionSequence(const DigitalSet& dsInput,
                                       int iterations,
                                       std::string outputFolder)
 {
-    DigitalSet ds = dsInput;
     DGtal::Board2D board;
+
+    Curve innerCurve,outerCurve;
+    KSpace KImage = InitImage::eval(innerCurve,outerCurve,dsInput);
+
 
     for(int i=0;i<iterations;++i)
     {
         Curve minCurve;
-
-        Curve innerCurve,outerCurve;
-        KSpace KImage = InitImage::eval(innerCurve,outerCurve,ds);
-
         findOptimalOneExpansion(minCurve,
                                 sp,
                                 KImage,
                                 innerCurve,
                                 outerCurve);
 
-        ds.clear();
-        DIPaCUS::Misc::CompactSetFromClosedCurve<Curve::ConstIterator>(ds,minCurve.begin(),minCurve.end());
+        board.clear();
+        board << innerCurve;
+        board.saveEPS( (outputFolder + "/innerCurve.eps").c_str() );
 
-        board << ds;
+        board.clear();
+        board << outerCurve;
+        board.saveEPS( (outputFolder + "/outerCurve.eps").c_str() );
+
+        board.clear();
+        board << minCurve;
+        board.saveEPS( (outputFolder + "/minCurve.eps").c_str() );
+
+
+        DIPaCUS::Properties::BoundingBox bb;
+        DIPaCUS::Properties::curveBoundingBox(bb,minCurve.begin(),minCurve.end());
+
+        DigitalSet tempDS( DGtal::Z2i::Domain(bb.lb-DGtal::Z2i::Point(1,1),bb.ub+DGtal::Z2i::Point(1,1) ) );
+        DIPaCUS::Misc::CompactSetFromClosedCurve<Curve::ConstIterator>(tempDS,minCurve.begin(),minCurve.end());
+
+        board.clear();
+
+        board << tempDS;
         board.saveEPS( (outputFolder + "/" + std::to_string(i) + ".eps").c_str() );
+
+        KImage = InitImage::eval(innerCurve,outerCurve,tempDS);
     }
 }
 

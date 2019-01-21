@@ -3,16 +3,17 @@
 
 int main()
 {
+    std::string projectDir = std::string(PROJECT_DIR);
     DIPaCUS::Shapes::DigitalSet square = DIPaCUS::Shapes::square();
 
+    //DIPaCUS::Representation::DigitalSet square( DGtal::Z2i::Domain( DGtal::Z2i::Point(0,0), DGtal::Z2i::Point(42,42) ));
+    //DIPaCUS::Representation::imageAsDigitalSet( square,projectDir + "/output/examples/one-exp-flow/4.pgm");
+
     API::Curve optimalCurve;
-    API::SearchParameters<1> sp(4,13,API::EnergyType::SquaredCurvature);
+    API::SearchParameters<1> sp(4,13,API::EnergyType::IntSquaredCurvature);
 
-    API::Curve innerCurve,outerCurve;
-    API::InitImage::KSpace KImage = API::InitImage::eval(innerCurve,outerCurve,square);
-
-    std::string outputFolder= std::string(PROJECT_DIR) + "/output/examples/one-exp-flow";
+    std::string outputFolder= projectDir + "/output/examples/one-exp-flow-int";
     boost::filesystem::create_directories(outputFolder);
-    
-    API::optimalOneExpansionSequence(square,sp,10,outputFolder);
+
+    API::optimalOneExpansionSequence(square,sp,15,outputFolder);
 }
