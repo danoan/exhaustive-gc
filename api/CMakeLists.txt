@@ -8,7 +8,7 @@ add_library(exhaustive-gc-api SHARED
         src/utils/FilterSeedPairs.cpp
         src/utils/ImageFromCurve.cpp
         src/utils/InitImage.cpp
-        src/api.cpp)
+        include/exhaustive-gc/api/api.hpp)
 
 add_dependencies(exhaustive-gc-api exhaustive-gc-base)
 

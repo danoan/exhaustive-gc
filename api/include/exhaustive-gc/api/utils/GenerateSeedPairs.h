@@ -1,9 +1,9 @@
 #ifndef EXHAUSTIVE_GC_GENERATESEEDPAIRS_H
 #define EXHAUSTIVE_GC_GENERATESEEDPAIRS_H
 
-#include <exhaustive-gc/model/ContainerCombinator.h>
-#include "exhaustive-gc/utils/SeparateInnerAndOuter.h"
-#include "exhaustive-gc/check-elem/CheckableSeedPair.h"
+#include <exhaustive-gc/dev/model/ContainerCombinator.h>
+#include "exhaustive-gc/dev/utils/SeparateInnerAndOuter.h"
+#include "exhaustive-gc/dev/check-elem/CheckableSeedPair.h"
 
 namespace ExhaustiveGC
 {

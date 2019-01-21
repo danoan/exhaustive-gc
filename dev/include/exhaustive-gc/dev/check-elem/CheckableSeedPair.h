@@ -5,7 +5,7 @@
 #include "gcurve/GluedCurveRange.h"
 
 #include <DGtal/helpers/StdDefs.h>
-#include <exhaustive-gc/model/GCInitData.h>
+#include <exhaustive-gc/dev/model/GCInitData.h>
 
 namespace ExhaustiveGC
     {

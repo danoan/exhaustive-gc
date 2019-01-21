@@ -2,7 +2,7 @@
 #define EXHAUSTIVE_GC_GLUEDINTERSECTIONCHECKER_H
 
 #include "lazy-comb/interface/IMarkedMapChecker.h"
-#include "exhaustive-gc/check-elem/CheckableSeedPair.h"
+#include "exhaustive-gc/dev/check-elem/CheckableSeedPair.h"
 
 namespace ExhaustiveGC
 {

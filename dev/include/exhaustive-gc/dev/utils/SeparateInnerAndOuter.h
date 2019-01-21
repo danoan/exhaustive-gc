@@ -2,7 +2,7 @@
 #define EXHAUSTIVE_GC_SEPARATEINNERANDOUTER_H
 
 #include <DGtal/helpers/StdDefs.h>
-#include <exhaustive-gc/model/GCInitData.h>
+#include <exhaustive-gc/dev/model/GCInitData.h>
 #include "gcurve/GluedCurveRange.h"
 
 namespace ExhaustiveGC

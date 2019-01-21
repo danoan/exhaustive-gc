@@ -1,7 +1,7 @@
 #ifndef EXHAUSTIVE_GC_CURVEFROMJOINTS_H
 #define EXHAUSTIVE_GC_CURVEFROMJOINTS_H
 
-#include <exhaustive-gc/check-elem/CheckableSeedPair.h>
+#include <exhaustive-gc/dev/check-elem/CheckableSeedPair.h>
 #include "gcurve/GluedCurveSeed.h"
 
 namespace ExhaustiveGC

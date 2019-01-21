@@ -11,8 +11,9 @@
 #include <lazy-comb/interface/IMarkedMapChecker.h>
 #include "lazy-comb/LazyCombinations.h"
 
-#include <exhaustive-gc/check-elem/CheckableSeedPair.h>
-#include "exhaustive-gc/control/CurveFromJoints.h"
+#include <exhaustive-gc/dev/check-elem/CheckableSeedPair.h>
+#include <exhaustive-gc/dev/model/EnergyType.h>
+#include "CurveFromJoints.h"
 
 
 namespace ExhaustiveGC
@@ -20,29 +21,36 @@ namespace ExhaustiveGC
     template<int maxPairs>
     class CurveCandidatesGenerator
     {
-    protected:
+    public:
         typedef DGtal::Z2i::Curve Curve;
         typedef DGtal::Z2i::KSpace KSpace;
 
-        typedef std::map<KSpace::SCell, double> WeightMap;
-
-        typedef std::vector<CheckableSeedPair> CheckableSeedVector;
-        typedef LazyCombinator::LazyCombinations <CheckableSeedVector, maxPairs> MyLazyCombinations;
-
         typedef LazyCombinator::IMarkedMapChecker<CheckableSeedPair> Checker;
+        typedef std::vector<CheckableSeedPair> CheckableSeedVector;
+
+    private:
+        typedef std::map<KSpace::SCell, double> WeightMap;
+        typedef LazyCombinator::LazyCombinations <CheckableSeedVector, maxPairs> MyLazyCombinations;
 
     private:
         void initCheckers(MyLazyCombinations& myCombinations,
                           const CheckableSeedVector &csVector);
 
-        double lengthFactor(double currLength,
-                            const KSpace& KImage,
-                            Curve::ConstIterator begin,
-                            Curve::ConstIterator end);
+
+        void squaredCurvature(const KSpace& KImage,
+                              Curve::ConstIterator begin,
+                              Curve::ConstIterator end,
+                              WeightMap& weightMap);
+
+        void intSquaredCurvature(const KSpace& KImage,
+                                 Curve::ConstIterator begin,
+                                 Curve::ConstIterator end,
+                                 WeightMap& weightMap);
 
         void computeWeightMap(const KSpace& KImage,
                               Curve::ConstIterator begin,
                               Curve::ConstIterator end,
+                              EnergyType energy,
                               WeightMap& weightMap);
 
     public:
@@ -57,10 +65,9 @@ namespace ExhaustiveGC
         }
 
         void operator()(Curve& minCurve,
-                        CheckableSeedVector &csVector,
-                        KSpace &KImage,
-                        CheckableSeedPair bestCombination[maxPairs],
-                        std::string outputFolder="");
+                        const CheckableSeedVector &csVector,
+                        const EnergyType energy,
+                        const KSpace &KImage);
 
 
     private:

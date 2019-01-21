@@ -1,4 +1,4 @@
-#include "exhaustive-gc/utils/SeparateInnerAndOuter.h"
+#include "exhaustive-gc/dev/utils/SeparateInnerAndOuter.h"
 
 using namespace ExhaustiveGC;
 
