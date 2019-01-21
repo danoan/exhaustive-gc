@@ -6,9 +6,6 @@ int main()
     std::string projectDir = std::string(PROJECT_DIR);
     DIPaCUS::Shapes::DigitalSet square = DIPaCUS::Shapes::square();
 
-    //DIPaCUS::Representation::DigitalSet square( DGtal::Z2i::Domain( DGtal::Z2i::Point(0,0), DGtal::Z2i::Point(42,42) ));
-    //DIPaCUS::Representation::imageAsDigitalSet( square,projectDir + "/output/examples/one-exp-flow/4.pgm");
-
     API::Curve optimalCurve;
     API::SearchParameters<1> sp(4,13,API::EnergyType::IntSquaredCurvature);
 
