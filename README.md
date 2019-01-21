@@ -14,6 +14,8 @@ best n-combination with respect to some energy (squared curvature).
 
 [GCurve](https://github.com/danoan/GCurve)
 
+[Lazy-Comb](https://github.com/danoan/lazy-combinator)
+
 [Boost 1.66](https://www.boost.org/)
 
 
