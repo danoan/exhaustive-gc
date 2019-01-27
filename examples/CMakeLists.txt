@@ -1,12 +1,6 @@
 cmake_minimum_required(VERSION 3.2)
 project(exhaustive_gc_examples)
 
-find_package(DGtal REQUIRED)
-
-link_directories(${CMAKE_BINARY_DIR}/api
-        ${CMAKE_BINARY_DIR}/dev
-        ${DIPACUS_LIBS_DIR}
-        ${BOOST_LIBS_DIR})
 
 add_executable(examples-four-joint
         FourJointOptimalCurve.cpp)
@@ -18,18 +12,22 @@ target_include_directories(examples-four-joint PRIVATE
         ${CMAKE_SOURCE_DIR}/api/include
         ${CMAKE_SOURCE_DIR}/dev/include
         ${DIPACUS_INCLUDE_DIRS}
+        ${GCURVE_INCLUDE_DIRS}
+        ${GEOC_INCLUDE_DIRS}
+        ${OpenCV_INCLUDE_DIRS}
         ${DGTAL_INCLUDE_DIRS})
 
 target_link_libraries(examples-four-joint PRIVATE
-        -lgcurve
         -lexhaustive-gc-api
         -lexhaustive-gc-base
+        -lgcurve
         -ldipacus-derivates
         -ldipacus-components
         -ldipacus-base
         -lboost_filesystem
         -lboost_system
-        ${DGTAL_LIBRARIES})
+        ${DGTAL_LIBRARIES}
+        ${OpenCV_LIBS})
 
 
 
@@ -43,18 +41,22 @@ target_include_directories(examples-two-joint PRIVATE
         ${CMAKE_SOURCE_DIR}/api/include
         ${CMAKE_SOURCE_DIR}/dev/include
         ${DIPACUS_INCLUDE_DIRS}
-        ${DGTAL_INCLUDE_DIRS})
+        ${GCURVE_INCLUDE_DIRS}
+        ${GEOC_INCLUDE_DIRS}
+        ${DGTAL_INCLUDE_DIRS}
+        ${OpenCV_INCLUDE_DIRS})
 
 target_link_libraries(examples-two-joint PRIVATE
-        -lgcurve
         -lexhaustive-gc-api
         -lexhaustive-gc-base
+        -lgcurve
         -ldipacus-derivates
         -ldipacus-components
         -ldipacus-base
         -lboost_filesystem
         -lboost_system
-        ${DGTAL_LIBRARIES})
+        ${DGTAL_LIBRARIES}
+        )
 
 
 
@@ -68,18 +70,22 @@ target_include_directories(examples-one-exp-flow PRIVATE
         ${CMAKE_SOURCE_DIR}/api/include
         ${CMAKE_SOURCE_DIR}/dev/include
         ${DIPACUS_INCLUDE_DIRS}
+        ${GCURVE_INCLUDE_DIRS}
+        ${GEOC_INCLUDE_DIRS}
+        ${OpenCV_INCLUDE_DIRS}
         ${DGTAL_INCLUDE_DIRS})
 
 target_link_libraries(examples-one-exp-flow PRIVATE
-        -lgcurve
         -lexhaustive-gc-api
         -lexhaustive-gc-base
+        -lgcurve
         -ldipacus-derivates
         -ldipacus-components
         -ldipacus-base
         -lboost_filesystem
         -lboost_system
-        ${DGTAL_LIBRARIES})
+        ${DGTAL_LIBRARIES}
+        ${OpenCV_LIBS})
 
 add_dependencies(examples-four-joint exhaustive-gc-api exhaustive-gc-base)
 add_dependencies(examples-two-joint exhaustive-gc-api exhaustive-gc-base)

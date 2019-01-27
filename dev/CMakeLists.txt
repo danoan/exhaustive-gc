@@ -13,7 +13,9 @@ set_target_properties(exhaustive-gc-base PROPERTIES
 target_compile_features(exhaustive-gc-base PRIVATE cxx_auto_type)
 target_include_directories(exhaustive-gc-base PRIVATE
         include
-        ${CMAKE_SOURCE_DIR}/ext/include
+        ${DIPACUS_INCLUDE_DIRS}
+        ${GCURVE_INCLUDE_DIRS}
+        ${LAZY-COMB_INCLUDE_DIRS}
         ${DGTAL_INCLUDE_DIRS}
         )
 

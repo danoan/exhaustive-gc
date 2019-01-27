@@ -16,7 +16,6 @@
 #include <exhaustive-gc/api/model/SearchParameters.h>
 #include "exhaustive-gc/api/utils/GenerateSeedPairs.h"
 
-
 namespace ExhaustiveGC
 {
     namespace API
