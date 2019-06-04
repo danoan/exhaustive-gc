@@ -38,6 +38,7 @@ link_directories(${CMAKE_BINARY_DIR}/modules/estimator
 add_subdirectory(modules/core)
 add_subdirectory(modules/api)
 add_subdirectory(modules/utils)
+add_subdirectory(app)
 
 if (${BUILD_TESTS})
     add_subdirectory(examples)
