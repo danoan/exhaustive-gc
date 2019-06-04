@@ -27,15 +27,17 @@ set(LAZY-COMB_INCLUDE_DIRS /usr/local/include/gcurve CACHE PATH "lazy-comb inclu
 set(BUILD_TESTS OFF CACHE BOOL "Build tests.")
 
 link_directories(${CMAKE_BINARY_DIR}/modules/estimator
-        ${CMAKE_BINARY_DIR}/api
-        ${CMAKE_BINARY_DIR}/dev
+        ${CMAKE_BINARY_DIR}/modules/api
+        ${CMAKE_BINARY_DIR}/modules/core
+        ${CMAKE_BINARY_DIR}/modules/utils
         ${CMAKE_SOURCE_DIR}/ext/lib
         ${DIPACUS_LIBS_DIR}
         ${GCURVE_LIBS_DIR}
         ${BOOST_LIBS_DIR})
 
-add_subdirectory(dev)
-add_subdirectory(api)
+add_subdirectory(modules/core)
+add_subdirectory(modules/api)
+add_subdirectory(modules/utils)
 
 if (${BUILD_TESTS})
     add_subdirectory(examples)
