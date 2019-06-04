@@ -76,24 +76,6 @@ InputData readInput(int argc, char* argv[])
     return id;
 }
 
-#define MAX_JOINTS 50
-using namespace ExhaustiveGC;
-
-template<int numPairs>
-struct Generator
-{
-    API::SearchParameters<numPairs>* x;
-    Generator<numPairs+1> child;
-};
-
-template<>
-struct Generator<MAX_JOINTS>
-{
-    API::SearchParameters<MAX_JOINTS>* x;
-};
-
-Generator<1> g;
-
 
 int main(int argc, char* argv[])
 {
@@ -102,7 +84,7 @@ int main(int argc, char* argv[])
     DIPaCUS::Shapes::DigitalSet square = DIPaCUS::Shapes::square();
 
     API::Curve optimalCurve;
-    API::SearchParameters<1> sp(id.minGCLength,id.maxGCLength,API::EnergyType::IntSquaredCurvature);
+    API::SearchParameters<2> sp(id.minGCLength,id.maxGCLength,API::EnergyType::IntSquaredCurvature);
 
     boost::filesystem::create_directories(id.outputFolder);
 
