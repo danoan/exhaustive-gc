@@ -28,6 +28,7 @@ set(BUILD_TESTS OFF CACHE BOOL "Build tests.")
 
 link_directories(${CMAKE_BINARY_DIR}/modules/estimator
         ${CMAKE_BINARY_DIR}/modules/api
+        ${CMAKE_BINARY_DIR}/modules/energy
         ${CMAKE_BINARY_DIR}/modules/core
         ${CMAKE_BINARY_DIR}/modules/utils
         ${CMAKE_SOURCE_DIR}/ext/lib
@@ -36,6 +37,7 @@ link_directories(${CMAKE_BINARY_DIR}/modules/estimator
         ${BOOST_LIBS_DIR})
 
 add_subdirectory(modules/core)
+add_subdirectory(modules/energy)
 add_subdirectory(modules/api)
 add_subdirectory(modules/utils)
 add_subdirectory(app)

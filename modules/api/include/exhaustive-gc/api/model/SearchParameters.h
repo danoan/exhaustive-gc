@@ -1,24 +1,30 @@
 #ifndef EXHAUSTIVE_GC_SEARCHPARAMETERS_H
 #define EXHAUSTIVE_GC_SEARCHPARAMETERS_H
 
-#include <exhaustive-gc/core/model/EnergyType.h>
+#include "exhaustive-gc/energy/EnergyType.h"
+#include "exhaustive-gc/core/model/Types.h"
 
 namespace ExhaustiveGC
 {
     namespace API
     {
-        template<int maxPairs>
         struct SearchParameters
         {
-            typedef ExhaustiveGC::EnergyType EnergyType;
+            typedef ExhaustiveGC::Energy::EnergyType EnergyType;
+            typedef ExhaustiveGC::Core::Strategy Strategy;
 
-            SearchParameters(int minGCLength,
+            SearchParameters(Strategy strategy,
+                             unsigned int maxPairs,
+                             int minGCLength,
                              int maxGCLength,
-                             EnergyType et):minGCLength(minGCLength),
+                             EnergyType et):strategy(strategy),
+                                            jointPairs(maxPairs),
+                                            minGCLength(minGCLength),
                                             maxGCLength(maxGCLength),
                                             energyType(et){}
 
-            constexpr static int jointPairs = maxPairs;
+            Strategy strategy;
+            unsigned int jointPairs;
             int minGCLength;
             int maxGCLength;
             

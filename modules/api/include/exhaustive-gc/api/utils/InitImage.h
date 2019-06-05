@@ -16,8 +16,11 @@ namespace ExhaustiveGC
 
             typedef DIPaCUS::Representation::DigitalSet DigitalSet;
             typedef DGtal::Z2i::Domain Domain;
+            
+            enum Mode{OriginalBoundary,DilatedBoundary};
 
-            KSpace eval(Curve& innerCurve,
+            KSpace eval(Mode mode,
+                        Curve& innerCurve,
                         Curve& outerCurve,
                         const DigitalSet& ds);
         };

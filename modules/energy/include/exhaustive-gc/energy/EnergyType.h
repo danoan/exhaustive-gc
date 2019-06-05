@@ -3,7 +3,10 @@
 
 namespace ExhaustiveGC
 {
-    enum EnergyType{ SquaredCurvature,IntSquaredCurvature};
+    namespace Energy
+    {
+        enum EnergyType{ SquaredCurvature,IntSquaredCurvature};
+    }
 }
 
 #endif //EXHAUSTIVE_GC_ENERGYTYPE_H

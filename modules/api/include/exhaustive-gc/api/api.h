@@ -6,15 +6,17 @@
 
 #include "DIPaCUS/base/Shapes.h"
 
-#include <exhaustive-gc/core/control/CurveCandidatesGenerator.h>
-#include <exhaustive-gc/core/checker/GluedIntersectionChecker.h>
-#include <exhaustive-gc/core/checker/MinimumDistanceChecker.h>
+#include "exhaustive-gc/core/control/CurveCandidatesGenerator.h"
+#include "exhaustive-gc/core/checker/GluedIntersectionChecker.h"
+#include "exhaustive-gc/core/checker/MinimumDistanceChecker.h"
 
-#include <exhaustive-gc/api/utils/FilterSeedPairs.h>
-#include <exhaustive-gc/api/utils/InitImage.h>
-#include <exhaustive-gc/api/utils/ImageFromCurve.h>
-#include <exhaustive-gc/api/model/SearchParameters.h>
+#include "exhaustive-gc/utils/digital.h"
+
+#include "exhaustive-gc/api/utils/FilterSeedPairs.h"
+#include "exhaustive-gc/api/utils/InitImage.h"
+#include "exhaustive-gc/api/model/SearchParameters.h"
 #include "exhaustive-gc/api/utils/GenerateSeedPairs.h"
+
 
 namespace ExhaustiveGC
 {
@@ -23,10 +25,11 @@ namespace ExhaustiveGC
         typedef DGtal::Z2i::DigitalSet DigitalSet;
         typedef DGtal::Z2i::KSpace KSpace;
         typedef DGtal::Z2i::Curve Curve;
-        typedef ExhaustiveGC::EnergyType EnergyType;
+        typedef ExhaustiveGC::Energy::EnergyType EnergyType;
 
         template<typename TSearchParameters>
-        void findOptimalOneExpansion(Curve& optimalCurve,
+        bool findOptimalOneExpansion(Curve& optimalCurve,
+                                     const double currentEnergyValue,
                                      const TSearchParameters& sp,
                                      const KSpace& KImage,
                                      const Curve& innerCurve,
@@ -36,8 +39,14 @@ namespace ExhaustiveGC
         template<typename TSearchParameters>
         void optimalOneExpansionSequence(const DigitalSet& dsInput,
                                          const TSearchParameters& sp,
+                                         const InitImage::Mode,
                                          int iterations,
                                          std::string outputFolder);
+        template<typename TSearchParameters>
+        void optimalOneExpansionAlternateSequence(const DigitalSet& dsInput,
+                                             const TSearchParameters& sp,
+                                             int iterations,
+                                             std::string outputFolder);
 
 
     }

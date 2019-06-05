@@ -4,11 +4,10 @@ project(lib_api_exhaustive_gc)
 add_library(exhaustive-gc-api SHARED
         src/utils/GenerateSeedPairs.cpp
         src/utils/FilterSeedPairs.cpp
-        src/utils/ImageFromCurve.cpp
         src/utils/InitImage.cpp
         include/exhaustive-gc/api/api.hpp)
 
-add_dependencies(exhaustive-gc-api exhaustive-gc-base)
+add_dependencies(exhaustive-gc-api exhaustive-gc-core)
 
 target_include_directories(exhaustive-gc-api PRIVATE
         include

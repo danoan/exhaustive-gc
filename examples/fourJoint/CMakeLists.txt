@@ -6,10 +6,11 @@ add_executable(examples-four-joint
 
 target_compile_definitions(examples-four-joint PRIVATE -DPROJECT_DIR=\"${PROJECT_SOURCE_DIR}\")
 
-add_dependencies(examples-four-joint exhaustive-gc-api exhaustive-gc-base exhaustive-gc-utils)
+add_dependencies(examples-four-joint exhaustive-gc-api exhaustive-gc-energy exhaustive-gc-core exhaustive-gc-utils)
 
 target_include_directories(examples-four-joint PRIVATE
         ${CMAKE_SOURCE_DIR}/modules/api/include
+        ${CMAKE_SOURCE_DIR}/modules/energy/include
         ${CMAKE_SOURCE_DIR}/modules/core/include
         ${CMAKE_SOURCE_DIR}/modules/utils/include
         ${DIPACUS_INCLUDE_DIRS}
@@ -20,6 +21,7 @@ target_include_directories(examples-four-joint PRIVATE
 
 target_link_libraries(examples-four-joint PRIVATE
         -lexhaustive-gc-utils
+        -lexhaustive-gc-energy
         -lexhaustive-gc-api
         -lexhaustive-gc-base
         -lgcurve

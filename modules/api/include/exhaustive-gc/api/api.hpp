@@ -3,7 +3,8 @@
 using namespace ExhaustiveGC;
 
 template<typename TSearchParameters>
-void API::findOptimalOneExpansion(Curve& optimalCurve,
+bool API::findOptimalOneExpansion(Curve& optimalCurve,
+                                  const double currentEnergyValue,
                                   const TSearchParameters& sp,
                                   const KSpace& KImage,
                                   const Curve& innerCurve,
@@ -24,66 +25,125 @@ void API::findOptimalOneExpansion(Curve& optimalCurve,
     std::for_each(spl.begin(),spl.end(),[&cspv](SeedPair sp) mutable {cspv.push_back( CheckableSeedPair(sp) );});
 
 
-    CurveCandidatesGenerator<sp.jointPairs> CE;
+    CurveCandidatesGenerator CE(sp.jointPairs,sp.strategy);
     CE.registerChecker( new GluedIntersectionChecker() );
     CE.registerChecker( new MinimumDistanceChecker(KImage) );
 
 
     CheckableSeedPair bestCombination[1];
 
-    CE(optimalCurve,
-       cspv,
-       sp.energyType,
-       KImage);
+    return CE(optimalCurve,
+              currentEnergyValue,
+              cspv,
+              sp.energyType,
+              KImage);
 
 }
 
 template<typename TSearchParameters>
 void API::optimalOneExpansionSequence(const DigitalSet& dsInput,
                                       const TSearchParameters& sp,
+                                      const InitImage::Mode mode,
                                       int iterations,
                                       std::string outputFolder)
 {
     DGtal::Board2D board;
 
     Curve innerCurve,outerCurve;
-    KSpace KImage = InitImage::eval(innerCurve,outerCurve,dsInput);
+    KSpace KImage = InitImage::eval(mode,innerCurve,outerCurve,dsInput);
 
+    double lastEnergyValue = Energy::energyValue(innerCurve,KImage,sp.energyType);
 
     for(int i=0;i<iterations;++i)
     {
         Curve minCurve;
-        findOptimalOneExpansion(minCurve,
-                                sp,
-                                KImage,
-                                innerCurve,
-                                outerCurve);
+        bool foundBetter = findOptimalOneExpansion(minCurve,
+                                                   lastEnergyValue,
+                                                   sp,
+                                                   KImage,
+                                                   innerCurve,
+                                                   outerCurve);
 
-        board.clear();
-        board << innerCurve;
-        board.saveSVG( (outputFolder + "/innerCurve.svg").c_str() );
+        if(foundBetter)
+        {
+            DigitalSet tempDS = Utils::Digital::digitalSetFromCurve(minCurve);
 
-        board.clear();
-        board << outerCurve;
-        board.saveSVG( (outputFolder + "/outerCurve.svg").c_str() );
+            board.clear();
+            board << tempDS;
+            board.saveSVG( (outputFolder + "/" + std::to_string(i) + ".svg").c_str() );
 
-        board.clear();
-        board << minCurve;
-        board.saveSVG( (outputFolder + "/minCurve.svg").c_str() );
+            KImage = InitImage::eval(mode,innerCurve,outerCurve,tempDS);
+            lastEnergyValue = Energy::energyValue(minCurve,KImage,sp.energyType);
+        }else
+        {
+            break;
+        }
 
 
-        DIPaCUS::Properties::BoundingBox bb;
-        DIPaCUS::Properties::curveBoundingBox(bb,minCurve.begin(),minCurve.end());
+    }
+}
 
-        DigitalSet tempDS( DGtal::Z2i::Domain(bb.lb-DGtal::Z2i::Point(1,1),bb.ub+DGtal::Z2i::Point(1,1) ) );
-        DIPaCUS::Misc::compactSetFromClosedCurve<Curve::ConstIterator>(tempDS,minCurve.begin(),minCurve.end());
+template<typename TSearchParameters>
+void API::optimalOneExpansionAlternateSequence(const DigitalSet& dsInput,
+                                               const TSearchParameters& sp,
+                                               int iterations,
+                                               std::string outputFolder)
+{
+    DGtal::Board2D board;
 
-        board.clear();
+    Curve innerCurve,outerCurve;
+    InitImage::Mode mode = InitImage::Mode::OriginalBoundary;
+    KSpace KImage = InitImage::eval(mode,innerCurve,outerCurve,dsInput);
 
-        board << tempDS;
-        board.saveSVG( (outputFolder + "/" + std::to_string(i) + ".svg").c_str() );
+    double lastEnergyValue = Energy::energyValue(outerCurve,KImage,sp.energyType);
 
-        KImage = InitImage::eval(innerCurve,outerCurve,tempDS);
+    int i=0;
+    while(i<iterations)
+    {
+        Curve minCurve;
+        bool foundBetter = findOptimalOneExpansion(minCurve,
+                                                   lastEnergyValue,
+                                                   sp,
+                                                   KImage,
+                                                   innerCurve,
+                                                   outerCurve);
+
+        if(foundBetter)
+        {
+            DigitalSet tempDS = Utils::Digital::digitalSetFromCurve(minCurve);
+
+            if(mode==InitImage::Mode::DilatedBoundary)
+            {
+                mode = InitImage::Mode::OriginalBoundary;
+                std::cerr << "Next mode is OriginalBoundary" << std::endl;
+            }
+
+            board.clear();
+            board << tempDS;
+            board.saveSVG( (outputFolder + "/" + std::to_string(i) + ".svg").c_str() );
+
+            lastEnergyValue = Energy::energyValue(minCurve,KImage,sp.energyType);
+            KImage = InitImage::eval(mode,innerCurve,outerCurve,tempDS);
+
+            ++i;
+        }else
+        {
+            if(mode==InitImage::Mode::OriginalBoundary)
+            {
+                mode = InitImage::Mode::DilatedBoundary;
+                std::cerr << "Next mode is DilatedBoundary" << std::endl;
+
+
+                DigitalSet tempDS = Utils::Digital::digitalSetFromCurve(minCurve);
+                KImage = InitImage::eval(mode,innerCurve,outerCurve,tempDS);
+            }else
+            {
+                std::cerr << "End of Flow" << std::endl;
+                break;
+            }
+        }
+
+
     }
 }
 
