@@ -63,6 +63,20 @@ void CurveFromJoints::addSeedPairSCells(std::vector<KSpace::SCell>& vectorOfSCel
     }
 
 
+    //Notice that all linels between the end of current glued curve and the next are
+    //included. One may ask how to guarantee that the joint pairs come in order. In
+    //other words, why should I expect that the third evaluated pair is not between
+    //the first two?
+    //There are two reasons that explains it. First reason is that I have a Intersection
+    //checker that forbids two pairs in the same combination sequence to have any element
+    //in common; the second is in the way the combinations are constructed. For elements
+    //{1,2,3,4} the 2 combination sequence will be:
+    //(1,2) (1,3) (1,4) (2,3) (2,4) (3,4)
+    //We generate all combinations for the first joints pair, then all remaining combinations
+    //for the second pair, and so on. The next element in the sequence does not intersect the
+    //previous and it is higher in the order adopted for the curve linels.
+
+
     vectorOfSCells.push_back(cinConnector);
     addIntervalSCells(vectorOfSCells,inToExtSeed.c2It,extToIntSeed.c1It);
 
