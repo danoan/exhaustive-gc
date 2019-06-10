@@ -40,7 +40,6 @@ add_subdirectory(modules/core)
 add_subdirectory(modules/energy)
 add_subdirectory(modules/api)
 add_subdirectory(modules/utils)
-add_subdirectory(modules/dev)
 add_subdirectory(app)
 
 if (${BUILD_TESTS})

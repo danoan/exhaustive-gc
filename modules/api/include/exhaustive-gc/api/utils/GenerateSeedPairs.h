@@ -1,8 +1,10 @@
 #ifndef EXHAUSTIVE_GC_GENERATESEEDPAIRS_H
 #define EXHAUSTIVE_GC_GENERATESEEDPAIRS_H
 
-#include <exhaustive-gc/core/model/ContainerCombinator.h>
-#include "exhaustive-gc/core/utils/SeparateInnerAndOuter.h"
+#include <gcurve/Seed.h>
+#include <gcurve/Range.h>
+
+#include "exhaustive-gc/core/model/ContainerCombinator.h"
 #include "exhaustive-gc/core/check-elem/CheckableSeedPair.h"
 
 namespace ExhaustiveGC
@@ -11,21 +13,20 @@ namespace ExhaustiveGC
     {
         class GenerateSeedPairs
         {
-        public:
+        private:
             typedef DGtal::Z2i::KSpace KSpace;
             typedef DGtal::Z2i::Curve Curve;
 
-            typedef std::pair<GCInitData,GCInitData> SeedPair;
-            typedef std::list< SeedPair > SeedPairsList;
-
-        private:
-            typedef SeparateInnerAndOuter::SeedVector SeedVector;
+            typedef std::vector<GCurve::Seed> SeedVector;
 
         public:
-            GenerateSeedPairs(SeedPairsList& seedPairsVector,
-                              const KSpace& KImage,
-                              const Curve& innerCurve,
-                              const Curve& outerCurve);
+            typedef DGtal::Z2i::DigitalSet DigitalSet;
+            typedef std::pair<GCurve::Seed,GCurve::Seed> SeedPair;
+            typedef std::list< SeedPair > SeedPairsList;
+
+        public:
+            GenerateSeedPairs(SeedPairsList& seedPairList,
+                              const GCurve::Range& gcRange);
         };
     }
 }

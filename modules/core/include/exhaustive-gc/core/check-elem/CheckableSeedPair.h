@@ -1,18 +1,18 @@
 #ifndef EXHAUSTIVE_GC_CHECKABLESEEDPAIR_H
 #define EXHAUSTIVE_GC_CHECKABLESEEDPAIR_H
 
-#include "lazy-comb/concepts/CCheckableElement.h"
-#include "gcurve/GluedCurveRange.h"
+#include <lazy-comb/concepts/CCheckableElement.h>
+#include <gcurve/Range.h>
+#include <gcurve/Seed.h>
 
 #include <DGtal/helpers/StdDefs.h>
-#include <exhaustive-gc/core/model/GCInitData.h>
 
 namespace ExhaustiveGC
     {
     class CheckableSeedPair
     {
     public:
-        typedef std::pair<GCInitData,GCInitData> CheckedType;
+        typedef std::pair<GCurve::Seed,GCurve::Seed> CheckedType;
         typedef DGtal::Z2i::SCell MarkedType;
 
         typedef

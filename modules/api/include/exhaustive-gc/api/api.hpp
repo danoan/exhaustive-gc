@@ -1,20 +1,21 @@
 #include "exhaustive-gc/api/api.h"
 
-using namespace ExhaustiveGC;
-
 template<typename TSearchParameters>
-bool API::findOptimalOneExpansion(Curve& optimalCurve,
-                                  const double currentEnergyValue,
-                                  const TSearchParameters& sp,
-                                  const KSpace& KImage,
-                                  const Curve& innerCurve,
-                                  const Curve& outerCurve)
+bool findOptimalOneExpansion(Curve& optimalCurve,
+                             const double currentEnergyValue,
+                             const TSearchParameters& sp,
+                             const DigitalSet& ds)
 {
     typedef GenerateSeedPairs::SeedPair SeedPair;
     typedef std::vector< CheckableSeedPair > CheckableSeedPairVector;
 
+    const DGtal::Z2i::Domain& domain = ds.domain();
+    KSpace kspace;
+    kspace.init(domain.lowerBound(),domain.upperBound(),true);
+
+    GCurve::Range gcRange(ds,5);
     GenerateSeedPairs::SeedPairsList spl;
-    GenerateSeedPairs(spl,KImage,innerCurve,outerCurve);
+    GenerateSeedPairs(spl,gcRange);
 
 
     FilterSeedPairs(spl,sp.minGCLength,sp.maxGCLength);
@@ -27,7 +28,7 @@ bool API::findOptimalOneExpansion(Curve& optimalCurve,
 
     CurveCandidatesGenerator CE(sp.jointPairs,sp.strategy);
     CE.registerChecker( new GluedIntersectionChecker() );
-    CE.registerChecker( new MinimumDistanceChecker(KImage) );
+    CE.registerChecker( new MinimumDistanceChecker(kspace) );
 
 
     CheckableSeedPair bestCombination[1];
@@ -36,23 +37,26 @@ bool API::findOptimalOneExpansion(Curve& optimalCurve,
               currentEnergyValue,
               cspv,
               sp.energyType,
-              KImage);
+              kspace);
 
 }
 
 template<typename TSearchParameters>
-void API::optimalOneExpansionSequence(const DigitalSet& dsInput,
-                                      const TSearchParameters& sp,
-                                      const InitImage::Mode mode,
-                                      int iterations,
-                                      std::string outputFolder)
+void optimalOneExpansionSequence(const DigitalSet& dsInput,
+                                 const TSearchParameters& sp,
+                                 int iterations,
+                                 std::string outputFolder)
 {
     DGtal::Board2D board;
 
-    Curve innerCurve,outerCurve;
-    KSpace KImage = InitImage::eval(mode,innerCurve,outerCurve,dsInput);
+    Point lb,ub;
+    dsInput.computeBoundingBox(lb,ub);
 
-    double lastEnergyValue = Energy::energyValue(innerCurve,KImage,sp.energyType);
+    DGtal::Z2i::Domain domain( lb - Point(10,10),ub + Point(10,10));
+    DigitalSet workingSet(domain);
+    workingSet.insert(dsInput.begin(),dsInput.end());
+
+    double lastEnergyValue = Energy::energyValue(workingSet,sp.energyType);
 
     for(int i=0;i<iterations;++i)
     {
@@ -60,20 +64,19 @@ void API::optimalOneExpansionSequence(const DigitalSet& dsInput,
         bool foundBetter = findOptimalOneExpansion(minCurve,
                                                    lastEnergyValue,
                                                    sp,
-                                                   KImage,
-                                                   innerCurve,
-                                                   outerCurve);
+                                                   workingSet);
 
         if(foundBetter)
         {
             DigitalSet tempDS = Utils::Digital::digitalSetFromCurve(minCurve);
+            workingSet.clear();
+            workingSet.insert(tempDS.begin(),tempDS.end());
 
             board.clear();
-            board << tempDS;
+            board << workingSet;
             board.saveSVG( (outputFolder + "/" + std::to_string(i) + ".svg").c_str() );
 
-            KImage = InitImage::eval(mode,innerCurve,outerCurve,tempDS);
-            lastEnergyValue = Energy::energyValue(minCurve,KImage,sp.energyType);
+            lastEnergyValue = Energy::energyValue(workingSet,sp.energyType);
         }else
         {
             break;
@@ -82,68 +85,3 @@ void API::optimalOneExpansionSequence(const DigitalSet& dsInput,
 
     }
 }
-
-template<typename TSearchParameters>
-void API::optimalOneExpansionAlternateSequence(const DigitalSet& dsInput,
-                                               const TSearchParameters& sp,
-                                               int iterations,
-                                               std::string outputFolder)
-{
-    DGtal::Board2D board;
-
-    Curve innerCurve,outerCurve;
-    InitImage::Mode mode = InitImage::Mode::OriginalBoundary;
-    KSpace KImage = InitImage::eval(mode,innerCurve,outerCurve,dsInput);
-
-    double lastEnergyValue = Energy::energyValue(outerCurve,KImage,sp.energyType);
-
-    int i=0;
-    while(i<iterations)
-    {
-        Curve minCurve;
-        bool foundBetter = findOptimalOneExpansion(minCurve,
-                                                   lastEnergyValue,
-                                                   sp,
-                                                   KImage,
-                                                   innerCurve,
-                                                   outerCurve);
-
-        if(foundBetter)
-        {
-            DigitalSet tempDS = Utils::Digital::digitalSetFromCurve(minCurve);
-
-            if(mode==InitImage::Mode::DilatedBoundary)
-            {
-                mode = InitImage::Mode::OriginalBoundary;
-                std::cerr << "Next mode is OriginalBoundary" << std::endl;
-            }
-
-            board.clear();
-            board << tempDS;
-            board.saveSVG( (outputFolder + "/" + std::to_string(i) + ".svg").c_str() );
-
-            lastEnergyValue = Energy::energyValue(minCurve,KImage,sp.energyType);
-            KImage = InitImage::eval(mode,innerCurve,outerCurve,tempDS);
-
-            ++i;
-        }else
-        {
-            if(mode==InitImage::Mode::OriginalBoundary)
-            {
-                mode = InitImage::Mode::DilatedBoundary;
-                std::cerr << "Next mode is DilatedBoundary" << std::endl;
-
-
-                DigitalSet tempDS = Utils::Digital::digitalSetFromCurve(minCurve);
-                KImage = InitImage::eval(mode,innerCurve,outerCurve,tempDS);
-            }else
-            {
-                std::cerr << "End of Flow" << std::endl;
-                break;
-            }
-        }
-
-
-    }
-}
-

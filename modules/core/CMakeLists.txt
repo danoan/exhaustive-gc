@@ -4,8 +4,7 @@ project(exhaustive_gc_core)
 find_package(DGtal REQUIRED)
 
 add_library(exhaustive-gc-core SHARED
-        src/control/CurveFromJoints.cpp
-        src/utils/SeparateInnerAndOuter.cpp)
+        src/control/CurveFromJoints.cpp)
 
 set_target_properties(exhaustive-gc-core PROPERTIES
         COMPILE_FLAGS -fext-numeric-literals)

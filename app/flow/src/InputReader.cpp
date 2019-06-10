@@ -11,6 +11,8 @@ namespace InputReader
                 "[-M Maximum glued curve length]\n"
                 "[-j Number of joints to optimize per iteration]\n"
                 "[-i Number of iterations]\n";
+                "[-S Shape (triangle square elipse pentagon heptagon ball flower)]\n";
+                "[-s Strategy (first best)]\n";
     }
 
     InputData readInput(int argc, char* argv[])

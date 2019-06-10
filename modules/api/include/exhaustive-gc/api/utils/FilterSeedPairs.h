@@ -1,7 +1,8 @@
 #ifndef EXHAUSTIVE_GC_FILTERSEEDPAIRS_H
 #define EXHAUSTIVE_GC_FILTERSEEDPAIRS_H
 
-#include <exhaustive-gc/core/check-elem/CheckableSeedPair.h>
+#include <gcurve/Seed.h>
+#include "exhaustive-gc/core/check-elem/CheckableSeedPair.h"
 
 namespace ExhaustiveGC
 {
@@ -10,7 +11,7 @@ namespace ExhaustiveGC
         class FilterSeedPairs
         {
         public:
-            typedef std::pair<GCInitData,GCInitData> SeedPair;
+            typedef std::pair<GCurve::Seed,GCurve::Seed> SeedPair;
             typedef std::list< SeedPair > SeedPairsList;
 
         public:

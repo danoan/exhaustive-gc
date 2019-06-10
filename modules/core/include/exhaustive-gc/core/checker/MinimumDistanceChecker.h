@@ -40,22 +40,22 @@ namespace ExhaustiveGC
         MinimumDistanceChecker(const KSpace& KImage):KImage(KImage){}
         bool operator()(const CheckableSeedPair& sp) const
         {
-            if( !validConnector( sp.data().first.connectors.at(0) ) ) return false;
-            if( !validConnector( sp.data().second.connectors.at(0) ) ) return false;
+            if( !validConnector( sp.data().first.linkLinels.at(0) ) ) return false;
+            if( !validConnector( sp.data().second.linkLinels.at(0) ) ) return false;
 
             return true;
         }
 
         void mark(const CheckableSeedPair& sp)
         {
-            markConnector( sp.data().first.connectors.at(0),true);
-            markConnector( sp.data().second.connectors.at(0),true);
+            markConnector( sp.data().first.linkLinels.at(0),true);
+            markConnector( sp.data().second.linkLinels.at(0),true);
         }
 
         void unmark(const CheckableSeedPair& sp)
         {
-            markConnector( sp.data().first.connectors.at(0),false);
-            markConnector( sp.data().second.connectors.at(0),false);
+            markConnector( sp.data().first.linkLinels.at(0),false);
+            markConnector( sp.data().second.linkLinels.at(0),false);
         }
 
     private:

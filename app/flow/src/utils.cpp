@@ -1,6 +1,9 @@
 #include "utils.h"
 
-DIPaCUS::Shapes::DigitalSet resolveShape(Shape shape,double gridStep)
+
+using namespace ExhaustiveGC::APP;
+
+DIPaCUS::Shapes::DigitalSet Utils::resolveShape(Shape shape,double gridStep)
 {
     int radius=20;
     if(shape.type==ShapeType::Triangle) return DIPaCUS::Shapes::triangle(gridStep,0,0,radius);

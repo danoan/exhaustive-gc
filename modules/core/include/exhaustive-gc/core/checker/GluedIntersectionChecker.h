@@ -15,8 +15,8 @@ namespace ExhaustiveGC
     public:
         bool operator()(const CheckableSeedPair& sp) const
         {
-            SCellCirculator extCircBegin = sp.data().first.seed.c2It; //First -> intToExt
-            SCellCirculator extCircEnd = sp.data().second.seed.c1It; //Second -> extToInt
+            SCellCirculator extCircBegin = sp.data().first.inCirculatorBegin;; //First -> intToExt
+            SCellCirculator extCircEnd = sp.data().second.outCirculatorBegin; //Second -> extToInt
 
             SCellCirculator it = extCircBegin;
             do
@@ -31,8 +31,8 @@ namespace ExhaustiveGC
 
         void mark(const CheckableSeedPair& sp)
         {
-            SCellCirculator extCircBegin = sp.data().first.seed.c2It; //First -> intToExt
-            SCellCirculator extCircEnd = sp.data().second.seed.c1It; //Second -> extToInt
+            SCellCirculator extCircBegin = sp.data().first.inCirculatorBegin; //First -> intToExt
+            SCellCirculator extCircEnd = sp.data().second.outCirculatorBegin; //Second -> extToInt
 
             SCellCirculator it = extCircBegin;
             do
@@ -46,8 +46,8 @@ namespace ExhaustiveGC
 
         void unmark(const CheckableSeedPair& sp)
         {
-            SCellCirculator extCircBegin = sp.data().first.seed.c2It; //First -> intToExt
-            SCellCirculator extCircEnd = sp.data().second.seed.c1It; //Second -> extToInt
+            SCellCirculator extCircBegin = sp.data().first.inCirculatorBegin; //First -> intToExt
+            SCellCirculator extCircEnd = sp.data().second.outCirculatorBegin; //Second -> extToInt
 
             SCellCirculator it = extCircBegin;
             do

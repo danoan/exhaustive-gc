@@ -2,7 +2,7 @@
 #define EXHAUSTIVE_GC_CURVEFROMJOINTS_H
 
 #include <exhaustive-gc/core/check-elem/CheckableSeedPair.h>
-#include "gcurve/GluedCurveSeed.h"
+#include "gcurve/Seed.h"
 
 namespace ExhaustiveGC
 {
@@ -14,7 +14,7 @@ namespace ExhaustiveGC
         typedef DGtal::Z2i::Curve::ConstIterator SCellIterator;
         typedef DGtal::Circulator<SCellIterator> SCellCirculator;
 
-        typedef GCurve::GluedCurveSeed GluedCurveSeed;
+        typedef GCurve::Seed GluedCurveSeed;
     public:
         typedef DGtal::Z2i::Curve Curve;
 

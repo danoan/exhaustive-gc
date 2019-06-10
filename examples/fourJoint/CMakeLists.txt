@@ -23,7 +23,7 @@ target_link_libraries(examples-four-joint PRIVATE
         -lexhaustive-gc-utils
         -lexhaustive-gc-energy
         -lexhaustive-gc-api
-        -lexhaustive-gc-base
+        -lexhaustive-gc-core
         -lgcurve
         -ldipacus-derivates
         -ldipacus-components

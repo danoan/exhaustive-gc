@@ -24,7 +24,7 @@ target_include_directories(examples-two-joint PRIVATE
 target_link_libraries(examples-two-joint PRIVATE
         -lexhaustive-gc-api
         -lexhaustive-gc-energy
-        -lexhaustive-gc-base
+        -lexhaustive-gc-core
         -lexhaustive-gc-utils
         -lgcurve
         -ldipacus-derivates

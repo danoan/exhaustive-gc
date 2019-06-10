@@ -46,21 +46,8 @@ void CurveFromJoints::addSeedPairSCells(std::vector<KSpace::SCell>& vectorOfSCel
                                         CheckableSeedPair& currentPair,
                                         CheckableSeedPair& nextPair)
 {
-    GluedCurveSeed inToExtSeed = currentPair.data().first.seed;
-    GCInitData::LinkLinelType cinConnector = currentPair.data().first.connectors[0];
-
-    GluedCurveSeed extToIntSeed = currentPair.data().second.seed;
-    GCInitData::LinkLinelType cextConnector = currentPair.data().second.connectors[0];
-
-    if( inToExtSeed.linkType != GCurve::GluedCurve::LinkType::INTERN_TO_EXTERN)
-    {
-        std::cout << "ERROR" << std::endl;
-    }
-
-    if( extToIntSeed.linkType != GCurve::GluedCurve::LinkType::EXTERN_TO_INTERN)
-    {
-        std::cout << "ERROR" << std::endl;
-    }
+    GluedCurveSeed mainToAuxiliarSeed = currentPair.data().first;
+    GluedCurveSeed auxiliarToMainSeed = currentPair.data().second;
 
 
     //Notice that all linels between the end of current glued curve and the next are
@@ -77,11 +64,11 @@ void CurveFromJoints::addSeedPairSCells(std::vector<KSpace::SCell>& vectorOfSCel
     //previous and it is higher in the order adopted for the curve linels.
 
 
-    vectorOfSCells.push_back(cinConnector);
-    addIntervalSCells(vectorOfSCells,inToExtSeed.c2It,extToIntSeed.c1It);
+    vectorOfSCells.insert(vectorOfSCells.end(),mainToAuxiliarSeed.linkLinels.begin(),mainToAuxiliarSeed.linkLinels.end());
+    addIntervalSCells(vectorOfSCells,mainToAuxiliarSeed.inCirculatorBegin, auxiliarToMainSeed.outCirculatorEnd);
 
-    GluedCurveSeed nextIntToExtSeed = nextPair.data().first.seed;
-    vectorOfSCells.push_back(cextConnector);
-    addIntervalSCells(vectorOfSCells,extToIntSeed.c2It,nextIntToExtSeed.c1It);
+    GluedCurveSeed nextIntToExtSeed = nextPair.data().first;
+    vectorOfSCells.insert(vectorOfSCells.end(),auxiliarToMainSeed.linkLinels.begin(),auxiliarToMainSeed.linkLinels.end());
+    addIntervalSCells(vectorOfSCells,auxiliarToMainSeed.inCirculatorBegin, nextIntToExtSeed.outCirculatorEnd);
     
 }

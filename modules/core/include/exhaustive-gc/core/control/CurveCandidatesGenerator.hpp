@@ -37,7 +37,7 @@ bool CurveCandidatesGenerator::operator()(Curve& minCurve,
         std::map<KSpace::SCell, double> weightMap;
 
         CurveFromJoints(curve, seedCombination, maxPairs);
-        DIPaCUS::Transform::eliminateLoops(curve, KImage, curve);
+        //DIPaCUS::Transform::eliminateLoops(curve, KImage, curve);
 
         currentEnergyValue = Energy::energyValue(curve, KImage, energy);
         if (currentEnergyValue < minEnergyValue) {

@@ -14,23 +14,28 @@ FilterSeedPairs::FilterSeedPairs(SeedPairsList &spl,
     SeedPairsList::const_iterator it = spl.begin();
     while(it!=spl.end())
     {
-        DGtal::PointVector<2,int> coordInt = it->first.connectors[0].preCell().coordinates;
-        DGtal::PointVector<2,int> coordExt = it->second.connectors[0].preCell().coordinates;
-        DGtal::PointVector<2,int> diff = coordExt - coordInt;
-        int connectorsDistance = (abs(diff[0])+abs(diff[1]) )/2;
+        if(it->first.linkLinels.size()!=0)
+        {
+            DGtal::PointVector<2,int> coordInt = it->first.linkLinels[0].preCell().coordinates;
+            DGtal::PointVector<2,int> coordExt = it->second.linkLinels[0].preCell().coordinates;
+            DGtal::PointVector<2,int> diff = coordExt - coordInt;
+            int connectorsDistance = (abs(diff[0])+abs(diff[1]) )/2;
 
-        //Internal Connector must be different from External Connector
-        if(coordInt==coordExt)
-        {
-            it = spl.erase(it);
-        }
-        //Internal and External Connector must cover between 10 and at most 20 external linels
-        else if( connectorsDistance < minDistance || connectorsDistance > maxDistance)
-        {
-            it = spl.erase(it);
-        }
-        else
-        {
+            //Internal Connector must be different from External Connector
+            if(coordInt==coordExt)
+            {
+                it = spl.erase(it);
+            }
+            //Internal and External Connector must cover between 10 and at most 20 external linels
+            else if( connectorsDistance < minDistance || connectorsDistance > maxDistance)
+            {
+                it = spl.erase(it);
+            }
+            else
+                {
+                ++it;
+            }
+        }else{
             ++it;
         }
     }

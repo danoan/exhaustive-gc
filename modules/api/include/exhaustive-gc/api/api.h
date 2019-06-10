@@ -31,27 +31,18 @@ namespace ExhaustiveGC
         bool findOptimalOneExpansion(Curve& optimalCurve,
                                      const double currentEnergyValue,
                                      const TSearchParameters& sp,
-                                     const KSpace& KImage,
-                                     const Curve& innerCurve,
-                                     const Curve& outerCurve);
+                                     const DigitalSet& ds);
 
 
         template<typename TSearchParameters>
         void optimalOneExpansionSequence(const DigitalSet& dsInput,
                                          const TSearchParameters& sp,
-                                         const InitImage::Mode,
                                          int iterations,
                                          std::string outputFolder);
-        template<typename TSearchParameters>
-        void optimalOneExpansionAlternateSequence(const DigitalSet& dsInput,
-                                             const TSearchParameters& sp,
-                                             int iterations,
-                                             std::string outputFolder);
 
+        #include "api.hpp"
 
     }
 }
-
-#include "api.hpp"
 
 #endif //EXHAUSTIVE_GC_API_H
