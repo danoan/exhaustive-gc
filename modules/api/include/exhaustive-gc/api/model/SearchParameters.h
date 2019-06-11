@@ -1,7 +1,7 @@
 #ifndef EXHAUSTIVE_GC_SEARCHPARAMETERS_H
 #define EXHAUSTIVE_GC_SEARCHPARAMETERS_H
 
-#include "exhaustive-gc/energy/EnergyType.h"
+#include "exhaustive-gc/energy/EnergyInput.h"
 #include "exhaustive-gc/core/model/Types.h"
 
 namespace ExhaustiveGC
@@ -10,25 +10,25 @@ namespace ExhaustiveGC
     {
         struct SearchParameters
         {
-            typedef ExhaustiveGC::Energy::EnergyType EnergyType;
+            typedef ExhaustiveGC::Energy::EnergyInput EnergyInput;
             typedef ExhaustiveGC::Core::Strategy Strategy;
 
             SearchParameters(Strategy strategy,
                              unsigned int maxPairs,
                              int minGCLength,
                              int maxGCLength,
-                             EnergyType et):strategy(strategy),
-                                            jointPairs(maxPairs),
-                                            minGCLength(minGCLength),
-                                            maxGCLength(maxGCLength),
-                                            energyType(et){}
+                             const EnergyInput& energyInput):strategy(strategy),
+                                                             jointPairs(maxPairs),
+                                                             minGCLength(minGCLength),
+                                                             maxGCLength(maxGCLength),
+                                                             energyInput(energyInput){}
 
             Strategy strategy;
             unsigned int jointPairs;
             int minGCLength;
             int maxGCLength;
             
-            EnergyType energyType;
+            EnergyInput energyInput;
             
         };
     }

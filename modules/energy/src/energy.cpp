@@ -59,7 +59,8 @@ namespace ExhaustiveGC
         void elastica(const KSpace& KImage,
                       Curve::ConstIterator begin,
                       Curve::ConstIterator end,
-                      WeightMap& weightMap)
+                      WeightMap& weightMap,
+                      double lengthPenalization)
         {
             using namespace GEOC::API::GridCurve;
 
@@ -77,7 +78,7 @@ namespace ExhaustiveGC
             int i=0;
             do
             {
-                weightMap[*it]= pow(evCurv[i],2)*evLength[i] + 0.1*evLength[i];
+                weightMap[*it]= pow(evCurv[i],2)*evLength[i] + lengthPenalization*evLength[i];
                 ++it;
                 ++i;
             }while(i<evCurv.size());
@@ -87,10 +88,10 @@ namespace ExhaustiveGC
         void computeWeightMap(const KSpace& KImage,
                               Curve::ConstIterator begin,
                               Curve::ConstIterator end,
-                              EnergyType energy,
+                              const EnergyInput energyInput,
                               WeightMap& weightMap)
         {
-            switch(energy)
+            switch(energyInput.type)
             {
                 case EnergyType::SquaredCurvature:
                 {
@@ -104,7 +105,7 @@ namespace ExhaustiveGC
                 }
                 case EnergyType::Elastica:
                 {
-                    elastica(KImage,begin, end, weightMap);
+                    elastica(KImage,begin, end, weightMap,energyInput.lengthPenalization);
                     break;
                 }
             }
@@ -124,15 +125,15 @@ namespace ExhaustiveGC
             return v;
         }
 
-        double energyValue(const Curve& curve, const KSpace& KImage, const EnergyType energy)
+        double energyValue(const Curve& curve, const KSpace& KImage, const EnergyInput energyInput)
         {
             WeightMap weightMap;
-            computeWeightMap(KImage,curve.begin(),curve.end(),energy,weightMap);
+            computeWeightMap(KImage,curve.begin(),curve.end(),energyInput,weightMap);
 
             return energyValue(curve,weightMap);
         }
 
-        double energyValue(const DigitalSet& ds, const EnergyType energy)
+        double energyValue(const DigitalSet& ds, const EnergyInput energyInput)
         {
             const DGtal::Z2i::Domain& domain = ds.domain();
             KSpace kspace;
@@ -141,7 +142,7 @@ namespace ExhaustiveGC
             Curve curve;
             DIPaCUS::Misc::computeBoundaryCurve(curve,ds);
 
-            return energyValue(curve,kspace,energy);
+            return energyValue(curve,kspace,energyInput);
         }
     }
 }

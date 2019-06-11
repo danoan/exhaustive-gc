@@ -5,8 +5,7 @@
 #include <DGtal/helpers/StdDefs.h>
 #include <geoc/api/api.h>
 
-#include "exhaustive-gc/energy/EnergyType.h"
-
+#include "exhaustive-gc/energy/EnergyInput.h"
 
 namespace ExhaustiveGC
 {
@@ -31,17 +30,18 @@ namespace ExhaustiveGC
         void elastica(const KSpace& KImage,
                       Curve::ConstIterator begin,
                       Curve::ConstIterator end,
-                      WeightMap& weightMap);
+                      WeightMap& weightMap,
+                      double lengthPenalization);
 
         void computeWeightMap(const KSpace& KImage,
                               Curve::ConstIterator begin,
                               Curve::ConstIterator end,
-                              EnergyType energy,
+                              const EnergyInput energyInput,
                               WeightMap& weightMap);
 
         double energyValue(const Curve& curve, const WeightMap& weightMap);
-        double energyValue(const Curve& curve, const KSpace& KImage, const EnergyType energy);
-        double energyValue(const DigitalSet& ds, const EnergyType energy);
+        double energyValue(const Curve& curve, const KSpace& KImage, const EnergyInput energyInput);
+        double energyValue(const DigitalSet& ds, const EnergyInput energyInput);
     }
 }
 

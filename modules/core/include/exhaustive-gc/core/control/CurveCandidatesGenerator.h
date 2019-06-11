@@ -15,7 +15,7 @@
 
 #include "exhaustive-gc/core/check-elem/CheckableSeedPair.h"
 #include "exhaustive-gc/core/model/Types.h"
-#include "exhaustive-gc/energy/EnergyType.h"
+#include "exhaustive-gc/energy/EnergyInput.h"
 #include "exhaustive-gc/energy/energy.h"
 
 #include "CurveFromJoints.h"
@@ -57,7 +57,7 @@ namespace ExhaustiveGC
         bool operator()(Curve& minCurve,
                         const double energyValue,
                         const CheckableSeedVector &csVector,
-                        const Energy::EnergyType energy,
+                        const Energy::EnergyInput energyInput,
                         const KSpace &KImage);
 
 

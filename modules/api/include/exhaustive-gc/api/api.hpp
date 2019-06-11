@@ -36,7 +36,7 @@ bool findOptimalOneExpansion(Curve& optimalCurve,
     return CE(optimalCurve,
               currentEnergyValue,
               cspv,
-              sp.energyType,
+              sp.energyInput,
               kspace);
 
 }
@@ -56,7 +56,7 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
     DigitalSet workingSet(domain);
     workingSet.insert(dsInput.begin(),dsInput.end());
 
-    double lastEnergyValue = Energy::energyValue(workingSet,sp.energyType);
+    double lastEnergyValue = Energy::energyValue(workingSet,sp.energyInput);
 
     for(int i=0;i<iterations;++i)
     {
@@ -76,7 +76,7 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
             board << workingSet;
             board.saveSVG( (outputFolder + "/" + std::to_string(i) + ".svg").c_str() );
 
-            lastEnergyValue = Energy::energyValue(workingSet,sp.energyType);
+            lastEnergyValue = Energy::energyValue(workingSet,sp.energyInput);
         }else
         {
             break;

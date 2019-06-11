@@ -27,6 +27,7 @@ target_link_libraries(examples-two-joint PRIVATE
         -lexhaustive-gc-core
         -lexhaustive-gc-utils
         -lgcurve
+        -lgcurve-utils
         -ldipacus-derivates
         -ldipacus-components
         -ldipacus-base

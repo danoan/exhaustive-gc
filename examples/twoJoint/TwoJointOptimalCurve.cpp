@@ -9,15 +9,14 @@ int main()
 {
     DIPaCUS::Shapes::DigitalSet square = DIPaCUS::Shapes::square();
 
-    API::Curve optimalCurve;
-    API::SearchParameters sp(Core::Strategy::First,2,4,13,API::EnergyType::SquaredCurvature);
+    Energy::EnergyInput energyInput(API::EnergyType::SquaredCurvature,0.005);
 
-    API::Curve innerCurve,outerCurve;
-    API::InitImage::KSpace KImage = API::InitImage::eval(API::InitImage::Mode::DilatedBoundary,innerCurve,outerCurve,square);
+    API::Curve optimalCurve;
+    API::SearchParameters sp(Core::Strategy::First,2,4,13,energyInput);
 
     Utils::Timer::start();
-    double energyValue = Energy::energyValue(innerCurve,KImage,Energy::IntSquaredCurvature);
-    API::findOptimalOneExpansion(optimalCurve, energyValue, sp, KImage, innerCurve, outerCurve);
+    double energyValue = Energy::energyValue(square,energyInput);
+    API::findOptimalOneExpansion(optimalCurve, energyValue, sp,square);
     Utils::Timer::end(std::cout);
 
     std::string outputFolder= std::string(PROJECT_DIR) + "/output";

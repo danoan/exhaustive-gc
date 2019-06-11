@@ -1,5 +1,6 @@
 #include "exhaustive-gc/api/api.h"
 #include "exhaustive-gc/utils/timer.h"
+#include "exhaustive-gc/energy/EnergyInput.h"
 
 #include "InputReader.h"
 #include "InputData.h"
@@ -13,8 +14,10 @@ int main(int argc, char* argv[])
 
     DIPaCUS::Shapes::DigitalSet square = APP::Utils::resolveShape(id.shape,1.0);
 
+    Energy::EnergyInput energyInput( id.energyType,id.lengthPenalization );
+
     API::Curve optimalCurve;
-    API::SearchParameters sp(id.strategy,id.joints,id.minGCLength,id.maxGCLength,API::EnergyType::Elastica);
+    API::SearchParameters sp(id.strategy,id.joints,id.minGCLength,id.maxGCLength,energyInput);
 
     boost::filesystem::create_directories(id.outputFolder);
 

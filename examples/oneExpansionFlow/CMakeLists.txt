@@ -28,6 +28,7 @@ target_link_libraries(examples-one-exp-flow PRIVATE
         -lexhaustive-gc-api
         -lexhaustive-gc-core
         -lgcurve
+        -lgcurve-utils
         -ldipacus-derivates
         -ldipacus-components
         -ldipacus-base

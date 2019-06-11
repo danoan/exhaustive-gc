@@ -1,3 +1,5 @@
+#include <stdexcept>
+#include <exhaustive-gc/energy/EnergyType.h>
 #include "InputReader.h"
 
 namespace InputReader
@@ -11,6 +13,8 @@ namespace InputReader
                 "[-M Maximum glued curve length]\n"
                 "[-j Number of joints to optimize per iteration]\n"
                 "[-i Number of iterations]\n";
+                "[-e Energy (sqc isqc elastica)]\n";
+                "[-a Length penalization ]\n";
                 "[-S Shape (triangle square elipse pentagon heptagon ball flower)]\n";
                 "[-s Strategy (first best)]\n";
     }
@@ -25,7 +29,7 @@ namespace InputReader
 
         InputData id;
         int opt;
-        while( (opt=getopt(argc,argv,"m:M:j:i:S:s:"))!=-1 )
+        while( (opt=getopt(argc,argv,"m:M:j:i:S:s:e:a:"))!=-1 )
         {
             switch(opt)
             {
@@ -66,6 +70,24 @@ namespace InputReader
                     if(strcmp(optarg,"first")==0) id.strategy = InputData::Strategy::First;
                     else if(strcmp(optarg,"best")==0) id.strategy = InputData::Strategy::Best;
                     break;
+                }
+                case 'e':
+                {
+                    if(strcmp(optarg,"sqc")==0) id.energyType = InputData::EnergyType::SquaredCurvature;
+                    else if(strcmp(optarg,"isqc")==0) id.energyType = InputData::EnergyType::IntSquaredCurvature;
+                    else if(strcmp(optarg,"elastica")==0) id.energyType = InputData::EnergyType::Elastica;
+                    else throw std::runtime_error("Unknown energy");
+                    break;
+                }
+                case 'a':
+                {
+                    id.lengthPenalization = std::atof(optarg);
+                    break;
+                }
+                default:
+                {
+                    usage(argv);
+                    exit(1);
                 }
             }
         }

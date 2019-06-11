@@ -9,6 +9,7 @@ struct InputData
 {
     typedef unsigned long int uint;
     typedef ExhaustiveGC::Core::Strategy  Strategy;
+    typedef ExhaustiveGC::Energy::EnergyType  EnergyType;
 
     InputData()
     {
@@ -20,6 +21,9 @@ struct InputData
         shape = Shape( ShapeType::Square );
         strategy = Strategy::First;
 
+        energyType = EnergyType::SquaredCurvature;
+        lengthPenalization = 0.005;
+
         outputFolder="";
     }
 
@@ -30,6 +34,10 @@ struct InputData
 
     Shape shape;
     Strategy  strategy;
+
+
+    EnergyType energyType;
+    double lengthPenalization;
 
     std::string outputFolder;
 };

@@ -19,7 +19,7 @@ void CurveCandidatesGenerator::initCheckers(MyLazyCombinations& myCombinations,
 bool CurveCandidatesGenerator::operator()(Curve& minCurve,
                                           const double energyValue,
                                           const CheckableSeedVector &csVector,
-                                          const Energy::EnergyType energy,
+                                          const Energy::EnergyInput energyInput,
                                           const KSpace &KImage)
 {
     double minEnergyValue = energyValue;
@@ -39,7 +39,7 @@ bool CurveCandidatesGenerator::operator()(Curve& minCurve,
         CurveFromJoints(curve, seedCombination, maxPairs);
         //DIPaCUS::Transform::eliminateLoops(curve, KImage, curve);
 
-        currentEnergyValue = Energy::energyValue(curve, KImage, energy);
+        currentEnergyValue = Energy::energyValue(curve, KImage, energyInput);
         if (currentEnergyValue < minEnergyValue) {
             std::cout << "Updated min energy value: " << minEnergyValue << " -> " << currentEnergyValue
                       << std::endl;
