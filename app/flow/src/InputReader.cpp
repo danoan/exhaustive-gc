@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <exhaustive-gc/energy/EnergyType.h>
+#include <exhaustive-gc/energy/EnergyInput.h>
 #include "InputReader.h"
 
 namespace InputReader
@@ -17,6 +18,9 @@ namespace InputReader
                 "[-a Length penalization ]\n";
                 "[-S Shape (triangle square elipse pentagon heptagon ball flower)]\n";
                 "[-s Strategy (first best)]\n";
+                "[-h Grid step]\n";
+                "[-t Estimator (mdca,ii)]\n";
+                "[-r II estimation ball radius]\n";
     }
 
     InputData readInput(int argc, char* argv[])
@@ -29,7 +33,7 @@ namespace InputReader
 
         InputData id;
         int opt;
-        while( (opt=getopt(argc,argv,"m:M:j:i:S:s:e:a:"))!=-1 )
+        while( (opt=getopt(argc,argv,"m:M:j:i:S:s:e:a:h:t:r:"))!=-1 )
         {
             switch(opt)
             {
@@ -62,6 +66,7 @@ namespace InputReader
                     else if(strcmp(optarg,"ball")==0) id.shape = Shape( ShapeType::Ball);
                     else if(strcmp(optarg,"ellipse")==0) id.shape = Shape( ShapeType::Ellipse);
                     else if(strcmp(optarg,"flower")==0) id.shape = Shape( ShapeType::Flower);
+                    else if(strcmp(optarg,"wave")==0) id.shape = Shape( ShapeType::Wave);
                     else id.shape = Shape(ShapeType::UserDefined,optarg);
                     break;
                 }
@@ -69,6 +74,7 @@ namespace InputReader
                 {
                     if(strcmp(optarg,"first")==0) id.strategy = InputData::Strategy::First;
                     else if(strcmp(optarg,"best")==0) id.strategy = InputData::Strategy::Best;
+                    else throw std::runtime_error("Unknown strategy");
                     break;
                 }
                 case 'e':
@@ -82,6 +88,23 @@ namespace InputReader
                 case 'a':
                 {
                     id.lengthPenalization = std::atof(optarg);
+                    break;
+                }
+                case 'h':
+                {
+                    id.gridStep = std::atof(optarg);
+                    break;
+                }
+                case 't':
+                {
+                    if(strcmp(optarg,"mdca")==0) id.estimator = InputData::AlgorithmEstimator::MDCA;
+                    else if(strcmp(optarg,"ii")==0) id.estimator = InputData::AlgorithmEstimator::II;
+                    else throw std::runtime_error("Unknown estimator");
+                    break;
+                }
+                case 'r':
+                {
+                    id.radius = std::atof(optarg);
                     break;
                 }
                 default:

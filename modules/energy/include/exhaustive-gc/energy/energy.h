@@ -15,23 +15,34 @@ namespace ExhaustiveGC
         typedef DGtal::Z2i::KSpace KSpace;
         typedef DGtal::Z2i::DigitalSet DigitalSet;
 
+        typedef GEOC::API::GridCurve::Curvature::EstimationsVector CurvatureEstimationsVector;
+        typedef GEOC::API::GridCurve::Length::EstimationsVector LengthEstimationsVector;
+
         typedef std::map<KSpace::SCell, double> WeightMap;
 
-        void squaredCurvature(const KSpace& KImage,
+        void curvatureEstimation(CurvatureEstimationsVector& ev,
+                                 const EnergyInput& energyInput,
+                                 const KSpace& KImage,
+                                 Curve::ConstIterator begin,
+                                 Curve::ConstIterator end);
+
+        void squaredCurvature(const EnergyInput& energyInput,
+                              const KSpace& KImage,
                               Curve::ConstIterator begin,
                               Curve::ConstIterator end,
                               WeightMap& weightMap);
 
-        void intSquaredCurvature(const KSpace& KImage,
+        void intSquaredCurvature(const EnergyInput& energyInput,
+                                 const KSpace& KImage,
                                  Curve::ConstIterator begin,
                                  Curve::ConstIterator end,
                                  WeightMap& weightMap);
 
-        void elastica(const KSpace& KImage,
+        void elastica(const EnergyInput& energyInput,
+                      const KSpace& KImage,
                       Curve::ConstIterator begin,
                       Curve::ConstIterator end,
-                      WeightMap& weightMap,
-                      double lengthPenalization);
+                      WeightMap& weightMap);
 
         void computeWeightMap(const KSpace& KImage,
                               Curve::ConstIterator begin,

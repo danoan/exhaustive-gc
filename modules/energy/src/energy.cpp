@@ -4,7 +4,42 @@ namespace ExhaustiveGC
 {
     namespace Energy
     {
-        void squaredCurvature(const KSpace& KImage,
+        void curvatureEstimation(CurvatureEstimationsVector& ev,
+                                 const EnergyInput& energyInput,
+                                 const KSpace& KImage,
+                                 Curve::ConstIterator begin,
+                                 Curve::ConstIterator end)
+        {
+            using namespace GEOC::API::GridCurve::Curvature;
+            switch(energyInput.estimator)
+            {
+                case EnergyInput::AlgorithmEstimator::MDCA:
+                {
+                    symmetricClosed<EstimationAlgorithms::ALG_MDCA> (KImage,
+                                                                     begin,
+                                                                     end,
+                                                                     ev);
+                    break;
+                }
+                case EnergyInput::AlgorithmEstimator::II:
+                {
+                    double scaledRadius = energyInput.radius/energyInput.gridStep;
+                    GEOC::Estimator::Standard::IICurvature<Curve::ConstIterator>(begin,
+                                                                                 end,
+                                                                                 ev,
+                                                                                 energyInput.gridStep,
+                                                                                 true,
+                                                                                 scaledRadius);
+
+                    break;
+                }
+
+            }
+
+        }
+
+        void squaredCurvature(const EnergyInput& energyInput,
+                              const KSpace& KImage,
                               Curve::ConstIterator begin,
                               Curve::ConstIterator end,
                               WeightMap& weightMap)
@@ -12,11 +47,7 @@ namespace ExhaustiveGC
             using namespace GEOC::API::GridCurve::Curvature;
 
             EstimationsVector ev;
-            symmetricClosed<EstimationAlgorithms::ALG_MDCA> (KImage,
-                                                             begin,
-                                                             end,
-                                                             ev);
-
+            curvatureEstimation(ev,energyInput,KImage,begin,end);
 
             auto it = begin;
             int i=0;
@@ -28,7 +59,8 @@ namespace ExhaustiveGC
             }while(i<ev.size());
         }
 
-        void intSquaredCurvature(const KSpace& KImage,
+        void intSquaredCurvature(const EnergyInput& energyInput,
+                                 const KSpace& KImage,
                                  Curve::ConstIterator begin,
                                  Curve::ConstIterator end,
                                  WeightMap& weightMap)
@@ -36,10 +68,7 @@ namespace ExhaustiveGC
             using namespace GEOC::API::GridCurve;
 
             Curvature::EstimationsVector evCurv;
-            Curvature::symmetricClosed<Curvature::EstimationAlgorithms::ALG_MDCA> (KImage,
-                                                                                   begin,
-                                                                                   end,
-                                                                                   evCurv);
+            curvatureEstimation(evCurv,energyInput,KImage,begin,end);
 
             Length::EstimationsVector evLength;
             Length::mdssClosed<Length::EstimationAlgorithms::ALG_PROJECTED >(KImage,begin,end,evLength);
@@ -56,19 +85,16 @@ namespace ExhaustiveGC
         }
 
 
-        void elastica(const KSpace& KImage,
+        void elastica(const EnergyInput& energyInput,
+                      const KSpace& KImage,
                       Curve::ConstIterator begin,
                       Curve::ConstIterator end,
-                      WeightMap& weightMap,
-                      double lengthPenalization)
+                      WeightMap& weightMap)
         {
             using namespace GEOC::API::GridCurve;
 
             Curvature::EstimationsVector evCurv;
-            Curvature::symmetricClosed<Curvature::EstimationAlgorithms::ALG_MDCA> (KImage,
-                                                                                   begin,
-                                                                                   end,
-                                                                                   evCurv);
+            curvatureEstimation(evCurv,energyInput,KImage,begin,end);
 
             Length::EstimationsVector evLength;
             Length::mdssClosed<Length::EstimationAlgorithms::ALG_PROJECTED >(KImage,begin,end,evLength);
@@ -78,7 +104,7 @@ namespace ExhaustiveGC
             int i=0;
             do
             {
-                weightMap[*it]= pow(evCurv[i],2)*evLength[i] + lengthPenalization*evLength[i];
+                weightMap[*it]= pow(evCurv[i],2)*evLength[i] + energyInput.lengthPenalization*evLength[i];
                 ++it;
                 ++i;
             }while(i<evCurv.size());
@@ -95,17 +121,17 @@ namespace ExhaustiveGC
             {
                 case EnergyType::SquaredCurvature:
                 {
-                    squaredCurvature(KImage,begin,end,weightMap);
+                    squaredCurvature(energyInput,KImage,begin,end,weightMap);
                     break;
                 }
                 case EnergyType::IntSquaredCurvature:
                 {
-                    intSquaredCurvature(KImage,begin, end, weightMap);
+                    intSquaredCurvature(energyInput,KImage,begin, end, weightMap);
                     break;
                 }
                 case EnergyType::Elastica:
                 {
-                    elastica(KImage,begin, end, weightMap,energyInput.lengthPenalization);
+                    elastica(energyInput,KImage,begin, end, weightMap);
                     break;
                 }
             }

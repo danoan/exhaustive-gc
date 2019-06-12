@@ -9,10 +9,22 @@ namespace ExhaustiveGC
     {
         struct EnergyInput
         {
-            EnergyInput(EnergyType type,double lengthPenalization):type(type),
-                                                                   lengthPenalization(lengthPenalization){}
+            enum AlgorithmEstimator{MDCA,II};
+
+            EnergyInput(EnergyType type,
+                        AlgorithmEstimator estimator,
+                        double gridStep,
+                        double radius,
+                        double lengthPenalization):type(type),
+                                                   estimator(estimator),
+                                                   gridStep(gridStep),
+                                                   radius(radius),
+                                                   lengthPenalization(lengthPenalization){}
 
             EnergyType type;
+            AlgorithmEstimator estimator;
+            double gridStep;
+            double radius;
             double lengthPenalization;
         };
     }
