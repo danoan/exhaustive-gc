@@ -9,7 +9,11 @@ int main()
 {
     DIPaCUS::Shapes::DigitalSet square = DIPaCUS::Shapes::square();
 
-    Energy::EnergyInput energyInput(API::EnergyType::SquaredCurvature,0.005);
+    Energy::EnergyInput energyInput(API::EnergyType::SquaredCurvature,
+                                    Energy::EnergyInput::AlgorithmEstimator::MDCA,
+                                    1.0,
+                                    3.0,
+                                    0.005);
 
     API::Curve optimalCurve;
     API::SearchParameters sp(Core::Strategy::First,2,4,13,energyInput);

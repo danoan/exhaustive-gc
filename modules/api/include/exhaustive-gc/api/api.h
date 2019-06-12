@@ -2,7 +2,7 @@
 #define EXHAUSTIVE_GC_API_H
 
 #include <DGtal/kernel/PointVector.h>
-#include <DGtal/io/boards/Board2D.h>
+#include <DGtal/io/writers/GenericWriter.h>
 
 #include "DIPaCUS/base/Shapes.h"
 
@@ -38,7 +38,13 @@ namespace ExhaustiveGC
         void optimalOneExpansionSequence(const DigitalSet& dsInput,
                                          const TSearchParameters& sp,
                                          int iterations,
-                                         std::string outputFolder);
+                                         std::string outputFolder,
+                                         std::ostream& os);
+
+        void writeEnergy(std::ostream& os, int iteration, double energyValue)
+        {
+            os << iteration << "\t" << energyValue << "\n";
+        }
 
         #include "api.hpp"
 

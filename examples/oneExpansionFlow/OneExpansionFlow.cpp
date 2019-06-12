@@ -10,7 +10,11 @@ int main()
     std::string projectDir = std::string(PROJECT_DIR);
     DIPaCUS::Shapes::DigitalSet square = DIPaCUS::Shapes::square();
 
-    Energy::EnergyInput energyInput(Energy::EnergyType::SquaredCurvature,0.005);
+    Energy::EnergyInput energyInput(Energy::EnergyType::SquaredCurvature,
+                                    Energy::EnergyInput::AlgorithmEstimator::MDCA,
+                                    1.0,
+                                    3.0,
+                                    0.005);
 
     API::Curve optimalCurve;
     API::SearchParameters sp(Core::Strategy::First,1,4,13,energyInput);
@@ -19,6 +23,6 @@ int main()
     boost::filesystem::create_directories(outputFolder);
 
     Utils::Timer::start();
-    API::optimalOneExpansionSequence(square,sp,50,outputFolder);
+    API::optimalOneExpansionSequence(square,sp,50,outputFolder,std::cout);
     Utils::Timer::end(std::cout);
 }

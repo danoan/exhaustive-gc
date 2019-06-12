@@ -23,7 +23,7 @@ namespace ExhaustiveGC
                         Curve& innerCurve,
                         Curve& outerCurve,
                         const DigitalSet& ds);
-        };
+        }
     }
 }
 

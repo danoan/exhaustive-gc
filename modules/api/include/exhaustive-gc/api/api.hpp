@@ -45,14 +45,16 @@ template<typename TSearchParameters>
 void optimalOneExpansionSequence(const DigitalSet& dsInput,
                                  const TSearchParameters& sp,
                                  int iterations,
-                                 std::string outputFolder)
+                                 std::string outputFolder,
+                                 std::ostream& os)
 {
-    DGtal::Board2D board;
+    typedef DIPaCUS::Representation::Image2D Image2D;
+    os << "It\tEnergyValue\n";
 
     Point lb,ub;
     dsInput.computeBoundingBox(lb,ub);
 
-    DGtal::Z2i::Domain domain( lb - Point(10,10),ub + Point(10,10));
+    DGtal::Z2i::Domain domain( lb - Point(40,40),ub + Point(40,40));
     DigitalSet workingSet(domain);
     workingSet.insert(dsInput.begin(),dsInput.end());
 
@@ -60,6 +62,8 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
 
     for(int i=0;i<iterations;++i)
     {
+        writeEnergy(os,i,lastEnergyValue);
+
         Curve minCurve;
         bool foundBetter = findOptimalOneExpansion(minCurve,
                                                    lastEnergyValue,
@@ -72,9 +76,9 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
             workingSet.clear();
             workingSet.insert(tempDS.begin(),tempDS.end());
 
-            board.clear();
-            board << workingSet;
-            board.saveSVG( (outputFolder + "/" + std::to_string(i) + ".svg").c_str() );
+            Image2D img(workingSet.domain());
+            DIPaCUS::Representation::digitalSetToImage(img,workingSet);
+            DGtal::GenericWriter<Image2D>::exportFile(outputFolder + "/" + std::to_string(i) + ".pgm",img);
 
             lastEnergyValue = Energy::energyValue(workingSet,sp.energyInput);
         }else

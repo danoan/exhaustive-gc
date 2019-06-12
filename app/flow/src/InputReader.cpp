@@ -5,8 +5,6 @@
 
 namespace InputReader
 {
-
-
     void usage(char* argv[])
     {
         std::cerr << "Usage: " << argv[0] << " OutputFolder \n"
@@ -118,4 +116,70 @@ namespace InputReader
         id.outputFolder = argv[optind++];
         return id;
     }
+
+}
+
+std::ostream& operator<<(std::ostream& os,const InputData::AlgorithmEstimator& estimator)
+{
+    switch(estimator)
+    {
+        case InputData::AlgorithmEstimator::MDCA:
+        {
+            os << "MDCA";
+            break;
+        }
+        case InputData::AlgorithmEstimator::II:
+        {
+            os << "II";
+            break;
+        }
+        default:
+        {
+            os << "Not Recognized";
+            break;
+        }
+    }
+
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os,const InputData::Strategy& strategy)
+{
+    switch(strategy)
+    {
+        case InputData::Strategy::First:
+        {
+            os << "First";
+            break;
+        }
+        case InputData::Strategy::Best:
+        {
+            os << "Best";
+            break;
+        }
+        default:
+        {
+            os << "Not Recognized";
+            break;
+        }
+    }
+
+    return os;
+
+}
+
+std::ostream& operator<<(std::ostream& os,const InputData& id)
+{
+    os << "Shape: " << id.shape.name << "\n";
+    os << "Grid Step: " << id.gridStep<< "\n";
+    os << "Radius: " << id.radius<< "\n";
+    os << "Iterations: " << id.iterations << "\n";
+    os << "Estimator: " << id.estimator << "\n";
+    os << "Strategy: " << id.strategy << "\n";
+    os << "Min GC Length: " << id.minGCLength << "\n";
+    os << "Max GC Length: " << id.maxGCLength << "\n";
+    os << "Jonctions: " << id.joints<< "\n";
+    os << "Length Penalization: " << id.lengthPenalization<< "\n";
+
+    return os;
 }

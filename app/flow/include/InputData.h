@@ -50,6 +50,12 @@ struct InputData
 
 
     std::string outputFolder;
+
+
+    friend std::ostream& operator<<(std::ostream& os,const InputData::AlgorithmEstimator& estimator);
+    friend std::ostream& operator<<(std::ostream& os,const InputData::Strategy& strategy);
+    friend std::ostream& operator<<(std::ostream& os,const InputData& id);
+
 };
 
 #endif //EXHAUSTIVE_GC_INPUTDATA_H

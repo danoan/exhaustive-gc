@@ -8,6 +8,15 @@
 
 using namespace ExhaustiveGC;
 
+void writeInputData(const InputData& id, const std::string& outputFile)
+{
+    std::string inputDataFile = outputFile;
+    std::ofstream ofs(inputDataFile);
+    ofs << id;
+    ofs.flush();
+    ofs.close();
+}
+
 int main(int argc, char* argv[])
 {
     InputData id = InputReader::readInput(argc,argv);
@@ -21,8 +30,20 @@ int main(int argc, char* argv[])
 
     boost::filesystem::create_directories(id.outputFolder);
 
+
+    writeInputData(id,id.outputFolder + "/inputData.txt");
+
+    std::ofstream ofs(id.outputFolder + "/energy.txt");
+
+
+
     Utils::Timer::start();
-    API::optimalOneExpansionSequence(square,sp,id.iterations,id.outputFolder);
-    Utils::Timer::end(std::cout);
+    API::optimalOneExpansionSequence(square,sp,id.iterations,id.outputFolder,ofs);
+    ofs << "\n\n";
+    Utils::Timer::end(ofs);
+
+    ofs.flush();
+    ofs.close();
+
     return 0;
 }
