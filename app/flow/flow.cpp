@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 
     Utils::Timer::start();
     API::optimalOneExpansionSequence(square,sp,id.iterations,id.outputFolder,ofs);
-    ofs << "\n\n";
+    ofs << "\n\n#";
     Utils::Timer::end(ofs);
 
     ofs.flush();

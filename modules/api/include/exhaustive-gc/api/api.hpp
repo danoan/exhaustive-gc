@@ -49,7 +49,7 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
                                  std::ostream& os)
 {
     typedef DIPaCUS::Representation::Image2D Image2D;
-    os << "It\tEnergyValue\n";
+    os << "#It\tEnergyValue\n";
 
     Point lb,ub;
     dsInput.computeBoundingBox(lb,ub);
@@ -78,7 +78,7 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
 
             Image2D img(workingSet.domain());
             DIPaCUS::Representation::digitalSetToImage(img,workingSet);
-            DGtal::GenericWriter<Image2D>::exportFile(outputFolder + "/" + std::to_string(i) + ".pgm",img);
+            DGtal::GenericWriter<Image2D>::exportFile(outputFolder + "/" + nDigitsString(i,4) + ".pgm",img);
 
             lastEnergyValue = Energy::energyValue(workingSet,sp.energyInput);
         }else

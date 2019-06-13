@@ -46,6 +46,20 @@ namespace ExhaustiveGC
             os << iteration << "\t" << energyValue << "\n";
         }
 
+        std::string nDigitsString(int num, int digits)
+        {
+            std::string s = "";
+            int numSize = num==0?1:log10( abs(num) ) + 1;
+            int lZero = digits - numSize;
+            while(lZero>0)
+            {
+                s+=std::to_string(0);
+                --lZero;
+            }
+            s+=std::to_string(num);
+            return s;
+        }
+
         #include "api.hpp"
 
     }

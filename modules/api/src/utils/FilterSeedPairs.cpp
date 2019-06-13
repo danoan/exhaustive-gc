@@ -9,6 +9,8 @@ FilterSeedPairs::FilterSeedPairs(SeedPairsList &spl,
     typedef std::vector< CheckableSeedPair > CheckableSeedList;
     CheckableSeedList filteredPairList;
 
+
+
     if(maxDistance==-1) maxDistance = spl.size();
 
     SeedPairsList::const_iterator it = spl.begin();

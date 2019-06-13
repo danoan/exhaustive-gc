@@ -101,7 +101,6 @@ def flow(c):
                 "%s%f" % ("-h", gs),
                 outputFolder
                 ])
-    print("*****",s)
 
 
 def total_combinations():
