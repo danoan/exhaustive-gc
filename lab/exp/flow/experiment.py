@@ -26,14 +26,14 @@ def combinations(configList):
 
 
 GRID_STEP=[1.0,0.5,0.25]
-SHAPES=["wave","square","flower","ball","triangle","pentagon","ellipse"]#"heptagon"]
+SHAPES=["wave","square","flower"]#"ball","triangle","pentagon","ellipse"]#"heptagon"]
 RADIUS=[1,2,3,5]
 ESTIMATOR=["mdca","ii"]
-ENERGY=["sqc","isqc","elastica"]
-LENGTH_PENALIZATION=[0,0.1,0.01,0.005]
-ITERATIONS=[100]
+ENERGY=["elastica"]#,"sqc","isqc"]
+LENGTH_PENALIZATION=[0.001]#,0.1,0.01,0.001]
+ITERATIONS=[300]
 MIN_CURVE_LENGTH=[2]
-MAX_CURVE_LENGTH=[5,10,20,30]
+MAX_CURVE_LENGTH=[20]
 NUM_JONCTIONS=[1]
 STRATEGY=["best"]
 
@@ -52,11 +52,11 @@ def valid_combination(c):
     if energy!="elastica":
         flag=flag and length_pen==0
 
+    if energy=="elastica":
+        flag=flag and length_pen!=0
+
     if estimator=="mdca":
         flag= flag and radius==1
-
-    if estimator=="ii":
-        flag=flag and length_pen==0 and mLength==2 and MLength==5 and jonctions==1 and strategy=="best"
 
     return flag
 

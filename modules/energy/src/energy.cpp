@@ -23,13 +23,13 @@ namespace ExhaustiveGC
                 }
                 case EnergyInput::AlgorithmEstimator::II:
                 {
-                    double scaledRadius = energyInput.radius/energyInput.gridStep;
+                    //double scaledRadius = energyInput.radius/energyInput.gridStep;
                     GEOC::Estimator::Standard::IICurvature<Curve::ConstIterator>(begin,
                                                                                  end,
                                                                                  ev,
                                                                                  energyInput.gridStep,
                                                                                  true,
-                                                                                 scaledRadius);
+                                                                                 energyInput.radius);
 
                     break;
                 }
