@@ -34,6 +34,7 @@ bool findOptimalOneExpansion(Curve& optimalCurve,
     CheckableSeedPair bestCombination[1];
 
     return CE(optimalCurve,
+              ds,
               currentEnergyValue,
               cspv,
               sp.energyInput,

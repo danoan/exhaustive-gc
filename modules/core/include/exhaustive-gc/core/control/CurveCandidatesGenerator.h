@@ -28,6 +28,7 @@ namespace ExhaustiveGC
     public:
         typedef DGtal::Z2i::Curve Curve;
         typedef DGtal::Z2i::KSpace KSpace;
+        typedef DGtal::Z2i::DigitalSet DigitalSet;
 
         typedef LazyCombinator::IMarkedMapChecker<CheckableSeedPair> Checker;
         typedef std::vector<CheckableSeedPair> CheckableSeedVector;
@@ -42,6 +43,11 @@ namespace ExhaustiveGC
         void initCheckers(MyLazyCombinations& myCombinations,
                           const CheckableSeedVector &csVector);
 
+        double computeEnergyValue(const DigitalSet& ds,
+                           const Curve& curve,
+                           const KSpace& KImage,
+                           const Energy::EnergyInput& energyInput);
+
 
     public:
         CurveCandidatesGenerator(unsigned int maxPairs, Strategy strategy):maxPairs(maxPairs),strategy(strategy){}
@@ -55,9 +61,10 @@ namespace ExhaustiveGC
         }
 
         bool operator()(Curve& minCurve,
+                        const DigitalSet& ds,
                         const double energyValue,
                         const CheckableSeedVector &csVector,
-                        const Energy::EnergyInput energyInput,
+                        const Energy::EnergyInput& energyInput,
                         const KSpace &KImage);
 
 

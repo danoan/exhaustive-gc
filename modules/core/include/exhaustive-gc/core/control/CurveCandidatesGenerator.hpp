@@ -13,15 +13,58 @@ void CurveCandidatesGenerator::initCheckers(MyLazyCombinations& myCombinations,
     }
 }
 
+double CurveCandidatesGenerator::computeEnergyValue(const DigitalSet& ds,
+                                             const Curve& curve,
+                                             const KSpace& KImage,
+                                             const Energy::EnergyInput& energyInput)
+{
+    std::vector< std::set<Point> > components;
 
+    DigitalSet startingPS = ds;
+
+    auto outerPixelsRange = curve.getOuterPointsRange();
+    for(auto it=outerPixelsRange.begin();it!=outerPixelsRange.end();++it)
+    {
+        startingPS.erase( *it );
+    }
+
+    double value=0;
+    std::vector< DIPaCUS::Misc::ConnectedComponent > vcc;
+    DIPaCUS::Misc::getConnectedComponents(vcc,startingPS);
+
+    DigitalSet compDS(ds.domain());
+    if(vcc.size()>=2) value=1e20;
+    else value = Energy::energyValue(curve, KImage, energyInput);
+
+        /*
+         * Not working if junction pair is of type mainOuter, outerMain.
+         * Since in this case I have an expansion, the resulting set is a super set of
+         * startingPS.
+        for(auto it=vcc.begin();it!=vcc.end();++it)
+        {
+            if(it->size()<5) continue;
+            Curve compCurve;
+            compDS.insert(it->begin(),it->end());
+            DIPaCUS::Misc::computeBoundaryCurve(compCurve,compDS);
+
+            value+=Energy::energyValue(compCurve, KImage, energyInput);
+            compDS.clear();
+        }*/
+
+    return value;
+
+}
 
 
 bool CurveCandidatesGenerator::operator()(Curve& minCurve,
+                                          const DigitalSet& ds,
                                           const double energyValue,
                                           const CheckableSeedVector &csVector,
-                                          const Energy::EnergyInput energyInput,
+                                          const Energy::EnergyInput& energyInput,
                                           const KSpace &KImage)
 {
+    bool considerMultipleConnectedComponents = true;
+
     double minEnergyValue = energyValue;
     double currentEnergyValue;
     bool candidateFound=false;
@@ -39,7 +82,11 @@ bool CurveCandidatesGenerator::operator()(Curve& minCurve,
         CurveFromJoints(curve, seedCombination, maxPairs);
         //DIPaCUS::Transform::eliminateLoops(curve, KImage, curve);
 
-        currentEnergyValue = Energy::energyValue(curve, KImage, energyInput);
+        if(considerMultipleConnectedComponents)
+            currentEnergyValue = computeEnergyValue(ds,curve,KImage,energyInput);
+        else
+            currentEnergyValue = Energy::energyValue(curve,KImage,energyInput);
+
         if (currentEnergyValue < minEnergyValue) {
             std::cout << "Updated min energy value: " << minEnergyValue << " -> " << currentEnergyValue
                       << std::endl;

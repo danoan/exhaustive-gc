@@ -26,12 +26,12 @@ def combinations(configList):
 
 
 GRID_STEP=[1.0,0.5,0.25]
-SHAPES=["wave","square","flower"]#"ball","triangle","pentagon","ellipse"]#"heptagon"]
+SHAPES=["square","flower"]#"wave","square","flower"]#"ball","triangle","pentagon","ellipse"]#"heptagon"]
 RADIUS=[1,2,3,5]
-ESTIMATOR=["mdca","ii"]
+ESTIMATOR=["mdca"]#,"ii"]
 ENERGY=["elastica"]#,"sqc","isqc"]
 LENGTH_PENALIZATION=[0.001]#,0.1,0.01,0.001]
-ITERATIONS=[300]
+ITERATIONS=[400]
 MIN_CURVE_LENGTH=[2]
 MAX_CURVE_LENGTH=[20]
 NUM_JONCTIONS=[1]
@@ -73,6 +73,21 @@ def flow(c):
     outputFolder = resolve_output_folder(*c)
     gs,shape,radius,iterations,estimator,energy,length_pen,mLength,MLength,jonctions,strategy = c
 
+    s=" ".join( ["%s%s" % ("-S",shape),
+                 "%s%d" % ("-r",radius),
+                 "%s%d" % ("-i",iterations),
+                 "%s%s" % ("-e",energy),
+                 "%s%f" % ("-a",length_pen),
+                 "%s%f" % ("-m",mLength),
+                 "%s%f" % ("-M",MLength),
+                 "%s%f" % ("-j",jonctions),
+                 "%s%s" % ("-s",strategy),
+                 "%s%s" % ("-t",estimator),
+                 "%s%f" % ("-h", gs)
+                ])
+
+    print("\n*****Running: ", s,"\n")
+
     binary = "%s/%s" % (BIN_FOLDER,"flow/exhaustive-gc-app-flow")
     subprocess.call( [binary,
                       "%s%s" % ("-S",shape),
@@ -84,23 +99,10 @@ def flow(c):
                       "%s%f" % ("-M",MLength),
                       "%s%f" % ("-j",jonctions),
                       "%s%s" % ("-s",strategy),
+                      "%s%s" % ("-t",estimator),
                       "%s%f" % ("-h", gs),
                       outputFolder
                       ] )
-
-    s=" ".join([binary,
-                "%s%s" % ("-S",shape),
-                "%s%d" % ("-r",radius),
-                "%s%d" % ("-i",iterations),
-                "%s%s" % ("-e",energy),
-                "%s%f" % ("-a",length_pen),
-                "%s%f" % ("-m",mLength),
-                "%s%f" % ("-M",MLength),
-                "%s%f" % ("-j",jonctions),
-                "%s%s" % ("-s",strategy),
-                "%s%f" % ("-h", gs),
-                outputFolder
-                ])
 
 
 def total_combinations():
@@ -123,10 +125,13 @@ def read_input():
 
 def main():
     read_input()
+    i=0
     print("Total combinations: ",total_combinations())
     for c in combinations(CONFIG_LIST):
+        print("#",i)
         if valid_combination(c):
             flow(c)
+        i+=1
 
 
 
