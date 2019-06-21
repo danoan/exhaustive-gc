@@ -1,9 +1,12 @@
 cmake_minimum_required(VERSION 3.8)
 project(exhaustive_gc_core)
 
-find_package(DGtal REQUIRED)
+set(LIBRARY_ACTION "STATIC")
+if(${CREATE_SHARED_LIBRARIES})
+    set(LIBRARY_ACTION "SHARED")
+endif()
 
-add_library(exhaustive-gc-core SHARED
+add_library(exhaustive-gc-core ${LIBRARY_ACTION}
         src/control/CurveFromJoints.cpp)
 
 set_target_properties(exhaustive-gc-core PROPERTIES
@@ -20,7 +23,8 @@ target_include_directories(exhaustive-gc-core PRIVATE
         )
 
 install(TARGETS exhaustive-gc-core
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
 install(DIRECTORY include
         DESTINATION ${CMAKE_INSTALL_PREFIX})

@@ -1,7 +1,12 @@
 cmake_minimum_required(VERSION 3.2)
 project(exhaustive-gc-utils)
 
-add_library(exhaustive-gc-utils SHARED
+set(LIBRARY_ACTION "STATIC")
+if(${CREATE_SHARED_LIBRARIES})
+    set(LIBRARY_ACTION "SHARED")
+endif()
+
+add_library(exhaustive-gc-utils ${LIBRARY_ACTION}
         src/timer.cpp
         src/digital.cpp)
 
@@ -18,3 +23,11 @@ target_link_libraries(exhaustive-gc-utils
         -lboost_system
         -lboost_filesystem
         ${DGTAL_LIBRARIES})
+
+
+install(DIRECTORY include
+        DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+install(TARGETS exhaustive-gc-utils
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)

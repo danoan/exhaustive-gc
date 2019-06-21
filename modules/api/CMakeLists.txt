@@ -1,7 +1,12 @@
 cmake_minimum_required(VERSION 3.2)
 project(lib_api_exhaustive_gc)
 
-add_library(exhaustive-gc-api SHARED
+set(LIBRARY_ACTION "STATIC")
+if(${CREATE_SHARED_LIBRARIES})
+    set(LIBRARY_ACTION "SHARED")
+endif()
+
+add_library(exhaustive-gc-api ${LIBRARY_ACTION}
         src/utils/GenerateSeedPairs.cpp
         src/utils/FilterSeedPairs.cpp
         src/utils/InitImage.cpp
@@ -17,3 +22,10 @@ target_include_directories(exhaustive-gc-api PRIVATE
         ${LAZY-COMB_INCLUDE_DIRS}
         ${DGTAL_INCLUDE_DIRS}
         ${OpenCV_INCLUDE_DIRS})
+
+install(DIRECTORY include
+        DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+install(TARGETS exhaustive-gc-api
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)

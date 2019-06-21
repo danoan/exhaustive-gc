@@ -25,6 +25,8 @@ set(GCURVE_LIBS_DIR /usr/local/lib CACHE PATH "gcurve librarie location path.")
 set(LAZY-COMB_INCLUDE_DIRS /usr/local/include/gcurve CACHE PATH "lazy-comb include location path.")
 
 set(BUILD_TESTS OFF CACHE BOOL "Build tests.")
+set(BUILD_APPLICATIONS OFF CACHE BOOL "Build applications.")
+set(CREATE_SHARED_LIBRARIES OFF CACHE BOOL "Build libraries as shared objects.")
 
 link_directories(${CMAKE_BINARY_DIR}/modules/estimator
         ${CMAKE_BINARY_DIR}/modules/api
@@ -40,9 +42,12 @@ add_subdirectory(modules/core)
 add_subdirectory(modules/energy)
 add_subdirectory(modules/api)
 add_subdirectory(modules/utils)
-add_subdirectory(app)
 
 if (${BUILD_TESTS})
     add_subdirectory(examples)
+endif()
+
+if (${BUILD_APPLICATIONS})
+    add_subdirectory(app)
 endif()
 
