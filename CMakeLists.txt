@@ -22,6 +22,8 @@ set(DIPACUS_LIBS_DIR /usr/local/lib CACHE PATH "DIPaCUS libraries location path.
 set(GCURVE_INCLUDE_DIRS /usr/local/include/gcurve CACHE PATH "gcurve include location path.")
 set(GCURVE_LIBS_DIR /usr/local/lib CACHE PATH "gcurve librarie location path.")
 
+set(GEOC_INCLUDE_DIRS /usr/local/include/geoc CACHE PATH "geoc include location path.")
+
 set(LAZY-COMB_INCLUDE_DIRS /usr/local/include/gcurve CACHE PATH "lazy-comb include location path.")
 
 set(BUILD_TESTS OFF CACHE BOOL "Build tests.")
