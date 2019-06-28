@@ -2,6 +2,7 @@
 #define EXHAUSTIVE_GC_UTILS_H
 
 #include <DIPaCUS/base/Shapes.h>
+#include <DIPaCUS/base/Representation.h>
 #include "Shape.h"
 
 namespace ExhaustiveGC

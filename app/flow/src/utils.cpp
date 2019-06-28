@@ -16,6 +16,10 @@ DIPaCUS::Shapes::DigitalSet Utils::resolveShape(Shape shape,double gridStep)
     else if(shape.type==ShapeType::Wave) return DIPaCUS::Shapes::wave(gridStep,1200,radius*3,radius*6,0.01);
     else
     {
-        throw std::runtime_error("Not implemented!");
+        typedef DIPaCUS::Representation::Image2D Image2D;
+        Image2D image = DGtal::GenericReader<Image2D>::import(shape.imagePath);
+        DGtal::Z2i::DigitalSet dsOut(image.domain());
+        DIPaCUS::Representation::imageAsDigitalSet(dsOut,image,1);
+        return dsOut;
     }
 }
