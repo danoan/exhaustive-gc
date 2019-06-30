@@ -33,23 +33,20 @@ double CurveCandidatesGenerator::computeEnergyValue(const DigitalSet& ds,
     DIPaCUS::Misc::getConnectedComponents(vcc,startingPS);
 
     DigitalSet compDS(ds.domain());
-    if(vcc.size()>=2) value=1e20;
-    else value = Energy::energyValue(curve, KImage, energyInput);
-
-        /*
-         * Not working if junction pair is of type mainOuter, outerMain.
-         * Since in this case I have an expansion, the resulting set is a super set of
-         * startingPS.
+    value = Energy::energyValue(curve, KImage, energyInput);
+    if(vcc.size()!=1)
+    {
+        int s=0;
         for(auto it=vcc.begin();it!=vcc.end();++it)
         {
-            if(it->size()<5) continue;
-            Curve compCurve;
-            compDS.insert(it->begin(),it->end());
-            DIPaCUS::Misc::computeBoundaryCurve(compCurve,compDS);
-
-            value+=Energy::energyValue(compCurve, KImage, energyInput);
-            compDS.clear();
-        }*/
+            if(it->size()>10) ++s;
+            if(s==2)
+            {
+                value=1e20;
+                break;
+            }
+        }
+    }
 
     return value;
 
