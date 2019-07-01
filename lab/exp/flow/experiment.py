@@ -25,15 +25,15 @@ def combinations(configList):
         yield tuple( configList[i][0][c[i]] for i in range(numParams) )
 
 
-GRID_STEP=[1.0,0.5,0.25]
+GRID_STEP=[1.0,0.5]
 SHAPES=["square","flower"]#"wave","square","flower"]#"ball","triangle","pentagon","ellipse"]#"heptagon"]
-RADIUS=[1,2,3,5]
+RADIUS=[3,5]
 ESTIMATOR=["mdca","ii"]#,"ii"]
 ENERGY=["elastica"]#,"sqc","isqc"]
-LENGTH_PENALIZATION=[0.001]#,0.1,0.01,0.001]
+LENGTH_PENALIZATION=[0.001,0.05,0.01]
 ITERATIONS=[400]
 MIN_CURVE_LENGTH=[2]
-MAX_CURVE_LENGTH=[20]
+MAX_CURVE_LENGTH=[30]
 NUM_JONCTIONS=[1]
 STRATEGY=["best"]
 

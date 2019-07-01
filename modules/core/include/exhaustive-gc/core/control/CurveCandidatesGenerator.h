@@ -11,6 +11,8 @@
 
 #include <lazy-comb/interface/IMarkedMapChecker.h>
 #include <lazy-comb/LazyCombinations.h>
+#include <lazy-comb/MultiThreadLC.h>
+#include <lazy-comb/ThreadInput.h>
 #include <exhaustive-gc/core/model/Types.h>
 
 #include "exhaustive-gc/core/check-elem/CheckableSeedPair.h"
@@ -20,6 +22,34 @@
 
 #include "CurveFromJoints.h"
 
+//namespace ExhaustiveGC
+//{
+//    typedef std::vector<CheckableSeedPair> CheckableSeedVector;
+//    typedef LazyCombinator::ThreadInput<CheckableSeedVector> MyThreadInput;
+//
+//    void* exhaustCombinator( void* params)
+//    {
+//        MyThreadInput* ti = (MyThreadInput*) params;
+//
+//        CheckableSeedPair element[1];
+//        int c=0;
+//        while( ti->combPointer->next(element) && c<ti->elems )
+//        {
+//            ti->callback(element);
+//            ++c;
+//        }
+//    }
+//
+//    void combinatorCallback(CheckableSeedPair* element)
+//    {
+//        for(int i=0;i<1;++i)
+//        {
+//            std::cout << element[i].data() << ", ";
+//        }
+//        ++totalElements;
+//        std::cout << "\n";
+//    }
+//}
 
 namespace ExhaustiveGC
 {
