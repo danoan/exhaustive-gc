@@ -29,6 +29,9 @@ struct InputData
         radius = 3.0;
         estimator = AlgorithmEstimator::MDCA;
 
+        nThreads = 4;
+        threadSize = 5000;
+
         outputFolder="";
     }
 
@@ -47,6 +50,9 @@ struct InputData
     double gridStep;
     double radius;
     AlgorithmEstimator estimator;
+
+    int nThreads;
+    int threadSize;
 
 
     std::string outputFolder;

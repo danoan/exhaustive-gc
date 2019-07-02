@@ -17,16 +17,23 @@ namespace ExhaustiveGC
                              unsigned int maxPairs,
                              int minGCLength,
                              int maxGCLength,
-                             const EnergyInput& energyInput):strategy(strategy),
-                                                             jointPairs(maxPairs),
-                                                             minGCLength(minGCLength),
-                                                             maxGCLength(maxGCLength),
-                                                             energyInput(energyInput){}
+                             const EnergyInput& energyInput,
+                             int nThreads,
+                             int threadSize):strategy(strategy),
+                                             jointPairs(maxPairs),
+                                             minGCLength(minGCLength),
+                                             maxGCLength(maxGCLength),
+                                             energyInput(energyInput),
+                                             nThreads(nThreads),
+                                             threadSize(threadSize){}
 
             Strategy strategy;
             unsigned int jointPairs;
             int minGCLength;
             int maxGCLength;
+
+            int nThreads;
+            int threadSize;
             
             EnergyInput energyInput;
             

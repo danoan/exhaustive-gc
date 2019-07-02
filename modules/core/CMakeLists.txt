@@ -7,7 +7,8 @@ if(${CREATE_SHARED_LIBRARIES})
 endif()
 
 add_library(exhaustive-gc-core ${LIBRARY_ACTION}
-        src/control/CurveFromJoints.cpp)
+        src/control/CurveFromJoints.cpp
+        src/control/FindCandidate.cpp)
 
 set_target_properties(exhaustive-gc-core PROPERTIES
         COMPILE_FLAGS -fext-numeric-literals)

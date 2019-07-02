@@ -19,6 +19,8 @@ namespace InputReader
                 "[-h Grid step]\n";
                 "[-t Estimator (mdca,ii)]\n";
                 "[-r II estimation ball radius]\n";
+                "[-n Threads number]\n";
+                "[-k Thread elements]\n";
     }
 
     InputData readInput(int argc, char* argv[])
@@ -31,7 +33,7 @@ namespace InputReader
 
         InputData id;
         int opt;
-        while( (opt=getopt(argc,argv,"m:M:j:i:S:s:e:a:h:t:r:"))!=-1 )
+        while( (opt=getopt(argc,argv,"m:M:j:i:S:s:e:a:h:t:r:n:k:"))!=-1 )
         {
             switch(opt)
             {
@@ -103,6 +105,16 @@ namespace InputReader
                 case 'r':
                 {
                     id.radius = std::atof(optarg);
+                    break;
+                }
+                case 'n':
+                {
+                    id.nThreads = std::atoi(optarg);
+                    break;
+                }
+                case 'k':
+                {
+                    id.threadSize = std::atoi(optarg);
                     break;
                 }
                 default:

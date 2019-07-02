@@ -26,19 +26,27 @@ bool findOptimalOneExpansion(Curve& optimalCurve,
     std::for_each(spl.begin(),spl.end(),[&cspv](SeedPair sp) mutable {cspv.push_back( CheckableSeedPair(sp) );});
 
 
-    CurveCandidatesGenerator CE(sp.jointPairs,sp.strategy);
-    CE.registerChecker( new GluedIntersectionChecker() );
-    CE.registerChecker( new MinimumDistanceChecker(kspace) );
+    typedef ExhaustiveGC::Core::CCGData CCGData;
+
+    CCGData ccgData(sp.jointPairs,
+                    sp.strategy,
+                    true,
+                    ds,
+                    cspv,
+                    sp.energyInput,
+                    kspace);
+
+//    ccgData.registerChecker( new GluedIntersectionChecker() );
+//    ccgData.registerChecker( new MinimumDistanceChecker(kspace) );
+
+    return ExhaustiveGC::Core::FindCandidate::findCandidate(optimalCurve,
+                                                            currentEnergyValue,
+                                                            ccgData,
+                                                            sp.nThreads,
+                                                            sp.threadSize);
 
 
-    CheckableSeedPair bestCombination[1];
 
-    return CE(optimalCurve,
-              ds,
-              currentEnergyValue,
-              cspv,
-              sp.energyInput,
-              kspace);
 
 }
 

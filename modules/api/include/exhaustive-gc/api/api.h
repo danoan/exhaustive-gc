@@ -6,7 +6,9 @@
 
 #include "DIPaCUS/base/Shapes.h"
 
-#include "exhaustive-gc/core/control/CurveCandidatesGenerator.h"
+#include "exhaustive-gc/core/model/CCGData.h"
+
+#include "exhaustive-gc/core/control/FindCandidate.h"
 #include "exhaustive-gc/core/checker/GluedIntersectionChecker.h"
 #include "exhaustive-gc/core/checker/MinimumDistanceChecker.h"
 

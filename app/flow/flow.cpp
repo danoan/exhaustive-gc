@@ -1,3 +1,5 @@
+#include "boost/filesystem.hpp"
+
 #include "exhaustive-gc/api/api.h"
 #include "exhaustive-gc/utils/timer.h"
 #include "exhaustive-gc/energy/EnergyInput.h"
@@ -26,7 +28,7 @@ int main(int argc, char* argv[])
     Energy::EnergyInput energyInput( id.energyType, id.estimator, id.gridStep, id.radius, id.lengthPenalization );
 
     API::Curve optimalCurve;
-    API::SearchParameters sp(id.strategy,id.joints,id.minGCLength,id.maxGCLength,energyInput);
+    API::SearchParameters sp(id.strategy,id.joints,id.minGCLength,id.maxGCLength,energyInput,id.nThreads,id.threadSize);
 
     boost::filesystem::create_directories(id.outputFolder);
 
