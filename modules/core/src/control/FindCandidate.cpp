@@ -91,6 +91,7 @@ namespace ExhaustiveGC
 
             void* exhaustCombinator( void* params)
             {
+                std::cout << "Exhaust start" << std::endl;
                 MyThreadInput* ti = (MyThreadInput*) params;
                 if(!ti->data.initialized)
                 {
@@ -99,6 +100,17 @@ namespace ExhaustiveGC
                 }
 
                 ti->data.foundCandidate=false;
+
+
+                for(auto itc=ti->combPointer->_checkersList.begin();
+                    itc!=ti->combPointer->_checkersList.end();++itc)
+                {
+                    for (auto it = ti->params.csVector.begin();
+                         it != ti->params.csVector.end(); ++it)
+                    {
+                        (*itc)->unmark(*it);
+                    }
+                }
 
                 std::vector<ContainerValueType> element(ti->params.maxPairs);
                 int c=0;
@@ -109,6 +121,7 @@ namespace ExhaustiveGC
                     ++c;
                 }
 
+                std::cout << "Exhaust end" << std::endl;
             }
 
             void combinatorCallback(ContainerValueType* seedCombination, MyThreadInput* ti)

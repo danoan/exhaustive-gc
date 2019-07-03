@@ -13,6 +13,13 @@ namespace ExhaustiveGC
         typedef DGtal::Circulator<SCellIterator> SCellCirculator;
 
     public:
+        IMarkedMapChecker<CheckableSeedPair>* reproduce()
+        {
+            return new GluedIntersectionChecker();
+        }
+
+        ~GluedIntersectionChecker(){}
+
         bool operator()(const CheckableSeedPair& sp) const
         {
             SCellCirculator extCircBegin = sp.data().first.inCirculatorBegin;; //First -> intToExt
@@ -58,14 +65,6 @@ namespace ExhaustiveGC
 
             this->_markMap[*it] = false;
         }
-
-    private:
-        std::unordered_map<
-                CheckableSeedPair::MarkedType,
-                bool,
-                std::hash<CheckableSeedPair::MarkedType>,
-                CheckableSeedPair::ComparisonClass>
-                _markMap;
 
     };
 }

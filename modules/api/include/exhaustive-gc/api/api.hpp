@@ -30,14 +30,14 @@ bool findOptimalOneExpansion(Curve& optimalCurve,
 
     CCGData ccgData(sp.jointPairs,
                     sp.strategy,
-                    true,
+                    false,
                     ds,
                     cspv,
                     sp.energyInput,
                     kspace);
 
 //    ccgData.registerChecker( new GluedIntersectionChecker() );
-//    ccgData.registerChecker( new MinimumDistanceChecker(kspace) );
+    ccgData.registerChecker( new MinimumDistanceChecker(kspace) );
 
     return ExhaustiveGC::Core::FindCandidate::findCandidate(optimalCurve,
                                                             currentEnergyValue,
@@ -71,6 +71,7 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
 
     for(int i=0;i<iterations;++i)
     {
+        std::cout << "Start iteration" << std::endl;
         writeEnergy(os,i,lastEnergyValue);
 
         Curve minCurve;
@@ -81,10 +82,12 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
 
         if(foundBetter)
         {
+            std::cout << "Creating curve" << std::endl;
             DigitalSet tempDS = Utils::Digital::digitalSetFromCurve(minCurve);
             workingSet.clear();
             workingSet.insert(tempDS.begin(),tempDS.end());
 
+            std::cout << "Saving image" << std::endl;
             Image2D img(workingSet.domain());
             DIPaCUS::Representation::digitalSetToImage(img,workingSet);
             DGtal::GenericWriter<Image2D>::exportFile(outputFolder + "/" + nDigitsString(i,4) + ".pgm",img);

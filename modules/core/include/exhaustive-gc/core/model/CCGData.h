@@ -43,7 +43,7 @@ namespace ExhaustiveGC
                                           KImage(KImage),
                                           preserveConnectedeness(preserveConnectedeness){}
 
-            ~CCGData(){ for(auto itc=checkers.begin();itc!=checkers.end();++itc) delete *itc; }
+            ~CCGData(){}//Checkers are destroyed in LazyCombinator
 
             void registerChecker(Checker* c)
             {

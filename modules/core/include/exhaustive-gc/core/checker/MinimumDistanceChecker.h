@@ -38,6 +38,13 @@ namespace ExhaustiveGC
 
     public:
         MinimumDistanceChecker(const KSpace& KImage):KImage(KImage){}
+        IMarkedMapChecker<CheckableSeedPair>* reproduce()
+        {
+            return new MinimumDistanceChecker(KImage);
+        }
+
+        ~MinimumDistanceChecker(){}
+
         bool operator()(const CheckableSeedPair& sp) const
         {
             if( !validConnector( sp.data().first.linkLinels.at(0) ) ) return false;
@@ -57,14 +64,6 @@ namespace ExhaustiveGC
             markConnector( sp.data().first.linkLinels.at(0),false);
             markConnector( sp.data().second.linkLinels.at(0),false);
         }
-
-    private:
-        std::unordered_map<
-                CheckableSeedPair::MarkedType,
-                bool,
-                std::hash<CheckableSeedPair::MarkedType>,
-                CheckableSeedPair::ComparisonClass>
-                _markMap;
 
         const KSpace& KImage;
 

@@ -10,6 +10,11 @@ message("Project Root Dir: ${CMAKE_SOURCE_DIR}")
 message("Build files at: ${CMAKE_BINARY_DIR}")
 message("Installation at: ${CMAKE_INSTALL_PREFIX}")
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall" )
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra" )
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wpedantic" )
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi" )
+
 find_package(DGtal REQUIRED)
 find_package(OpenCV REQUIRED)
 

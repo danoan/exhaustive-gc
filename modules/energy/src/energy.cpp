@@ -71,7 +71,7 @@ namespace ExhaustiveGC
             curvatureEstimation(evCurv,energyInput,KImage,begin,end);
 
             Length::EstimationsVector evLength;
-            Length::mdssClosed<Length::EstimationAlgorithms::ALG_SINCOS >(KImage,begin,end,evLength);
+            Length::mdssClosed<Length::EstimationAlgorithms::ALG_PROJECTED>(KImage,begin,end,evLength);
 
 
             auto it = begin;
@@ -97,7 +97,7 @@ namespace ExhaustiveGC
             curvatureEstimation(evCurv,energyInput,KImage,begin,end);
 
             Length::EstimationsVector evLength;
-            Length::mdssClosed<Length::EstimationAlgorithms::ALG_SINCOS >(KImage,begin,end,evLength);
+            Length::mdssClosed<Length::EstimationAlgorithms::ALG_PROJECTED >(KImage,begin,end,evLength);
 
 
             auto it = begin;
