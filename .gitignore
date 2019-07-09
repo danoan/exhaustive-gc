@@ -3,5 +3,6 @@ output
 cmake-build-debug
 cmake-build-release
 update.sh
-ext
-ext-build
+ext-projects/build
+ext-projects/source
+local

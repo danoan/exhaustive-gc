@@ -9,6 +9,10 @@ endif()
 add_library(exhaustive-gc-energy ${LIBRARY_ACTION}
         src/energy.cpp)
 
+if(${USE_LOCAL_REPOSITORIES})
+    add_dependencies(exhaustive-gc-energy geoc)
+endif()
+
 target_include_directories(exhaustive-gc-energy PRIVATE
         include
         ${GEOC_INCLUDE_DIRS}

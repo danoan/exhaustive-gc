@@ -12,7 +12,12 @@ add_library(exhaustive-gc-api ${LIBRARY_ACTION}
         src/utils/InitImage.cpp
         include/exhaustive-gc/api/api.hpp)
 
-add_dependencies(exhaustive-gc-api exhaustive-gc-core)
+if(${USE_LOCAL_REPOSITORIES})
+    add_dependencies(exhaustive-gc-api dipacus gcurve lazy-combinator exhaustive-gc-core)
+else()
+    add_dependencies(exhaustive-gc-api exhaustive-gc-core)
+endif()
+
 
 target_include_directories(exhaustive-gc-api PRIVATE
         include

@@ -1,3 +1,7 @@
+#include <boost/filesystem.hpp>
+#include <DGtal/io/boards/Board2D.h>
+
+
 #include <DIPaCUS/base/Shapes.h>
 #include "exhaustive-gc/api/api.h"
 #include "exhaustive-gc/utils/timer.h"
@@ -13,10 +17,10 @@ int main()
                                     Energy::EnergyInput::AlgorithmEstimator::MDCA,
                                     1.0,
                                     3.0,
-                                    0.005);
+                                    0.01);
 
     API::Curve optimalCurve;
-    API::SearchParameters sp(Core::Strategy::First,4,10,11,energyInput);
+    API::SearchParameters sp(Core::Strategy::Best,4,10,11,energyInput,4,1000);
 
     Utils::Timer::start();
     double energyValue = Energy::energyValue(square,energyInput);

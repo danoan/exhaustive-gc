@@ -10,9 +10,14 @@ add_library(exhaustive-gc-utils ${LIBRARY_ACTION}
         src/timer.cpp
         src/digital.cpp)
 
+if(${USE_LOCAL_REPOSITORIES})
+    add_dependencies(exhaustive-gc-utils dipacus gcurve)
+endif()
+
 target_include_directories(exhaustive-gc-utils PRIVATE
         include
         ${DIPACUS_INCLUDE_DIRS}
+        ${GCURVE_INCLUDE_DIRS}
         ${DGTAL_INCLUDE_DIRS}
         ${BOOST_INCLUDE_DIRS})
 

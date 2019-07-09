@@ -10,6 +10,12 @@ add_library(exhaustive-gc-core ${LIBRARY_ACTION}
         src/control/CurveFromJoints.cpp
         src/control/FindCandidate.cpp)
 
+if(${USE_LOCAL_REPOSITORIES})
+    add_dependencies(exhaustive-gc-core dipacus gcurve lazy-combinator exhaustive-gc-energy)
+else()
+    add_dependencies(exhaustive-gc-core exhaustive-gc-energy)
+endif()
+
 set_target_properties(exhaustive-gc-core PROPERTIES
         COMPILE_FLAGS -fext-numeric-literals)
 
