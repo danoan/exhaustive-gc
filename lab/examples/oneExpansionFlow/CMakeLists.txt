@@ -36,3 +36,9 @@ target_link_libraries(examples-one-exp-flow PRIVATE
         -lboost_system
         ${DGTAL_LIBRARIES}
         ${OpenCV_LIBS})
+
+install(TARGETS examples-one-exp-flow
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+
+install(DIRECTORY include
+        DESTINATION ${CMAKE_INSTALL_PREFIX})

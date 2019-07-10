@@ -33,3 +33,9 @@ target_link_libraries(examples-four-joint PRIVATE
         -lboost_system
         ${DGTAL_LIBRARIES}
         ${OpenCV_LIBS})
+
+install(TARGETS examples-four-joint
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+
+install(DIRECTORY include
+        DESTINATION ${CMAKE_INSTALL_PREFIX})

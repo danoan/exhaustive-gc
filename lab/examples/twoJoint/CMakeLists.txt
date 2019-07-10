@@ -35,3 +35,9 @@ target_link_libraries(examples-two-joint PRIVATE
         -lboost_system
         ${DGTAL_LIBRARIES}
         )
+
+install(TARGETS examples-two-joint
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+
+install(DIRECTORY include
+        DESTINATION ${CMAKE_INSTALL_PREFIX})

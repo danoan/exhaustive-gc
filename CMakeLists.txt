@@ -55,7 +55,11 @@ add_subdirectory(modules/api)
 add_subdirectory(modules/utils)
 
 if (${BUILD_TESTS})
-    add_subdirectory(examples)
+
+endif()
+
+if (${BUILD_EXAMPLES})
+    add_subdirectory(lab/examples)
 endif()
 
 if (${BUILD_APPLICATIONS})

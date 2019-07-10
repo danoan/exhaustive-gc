@@ -33,3 +33,9 @@ target_link_libraries(exhaustive-gc-app-flow
         -lboost_filesystem
         ${DGTAL_LIBRARIES}
         )
+
+install(TARGETS exhaustive-gc-app-flow
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+
+install(DIRECTORY include
+        DESTINATION ${CMAKE_INSTALL_PREFIX})
