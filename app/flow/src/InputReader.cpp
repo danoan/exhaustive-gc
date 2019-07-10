@@ -11,15 +11,15 @@ namespace InputReader
                 "[-m Minimum glued curve length]\n"
                 "[-M Maximum glued curve length]\n"
                 "[-j Number of joints to optimize per iteration]\n"
-                "[-i Number of iterations]\n";
-                "[-e Energy (sqc isqc elastica)]\n";
-                "[-a Length penalization ]\n";
-                "[-S Shape (triangle square elipse pentagon heptagon ball flower)]\n";
-                "[-s Strategy (first best)]\n";
-                "[-h Grid step]\n";
-                "[-t Estimator (mdca,ii)]\n";
-                "[-r II estimation ball radius]\n";
-                "[-n Threads number]\n";
+                "[-i Number of iterations]\n"
+                "[-e Energy (sqc isqc elastica)]\n"
+                "[-a Length penalization ]\n"
+                "[-S Shape (triangle square elipse pentagon heptagon ball flower)]\n"
+                "[-s Strategy (first best)]\n"
+                "[-h Grid step]\n"
+                "[-t Estimator (mdca,ii)]\n"
+                "[-r II estimation ball radius]\n"
+                "[-n Threads number]\n"
                 "[-k Thread elements]\n";
     }
 
