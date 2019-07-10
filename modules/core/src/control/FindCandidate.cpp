@@ -91,7 +91,6 @@ namespace ExhaustiveGC
 
             void* exhaustCombinator( void* params)
             {
-                std::cout << "Exhaust start" << std::endl;
                 MyThreadInput* ti = (MyThreadInput*) params;
                 if(!ti->data.initialized)
                 {
@@ -121,7 +120,6 @@ namespace ExhaustiveGC
                     ++c;
                 }
 
-                std::cout << "Exhaust end" << std::endl;
             }
 
             void combinatorCallback(ContainerValueType* seedCombination, MyThreadInput* ti)
