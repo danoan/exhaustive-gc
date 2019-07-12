@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.8)
 
 set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/install")
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 message("Project Root Dir: ${CMAKE_SOURCE_DIR}")
 message("Build files at: ${CMAKE_BINARY_DIR}")
