@@ -8,27 +8,22 @@ best n-combination with respect to some energy (squared curvature).
 
 # Dependencies
 
-[DGtal 0.9](https://dgtal.org/)
-
-[DIPaCUS](https://github.com/danoan/DIPaCUS)
-
-[GCurve](https://github.com/danoan/GCurve)
-
-[Lazy-Comb](https://github.com/danoan/lazy-combinator)
-
-[Boost 1.66](https://www.boost.org/)
+1. [libboost1.66.0-dev](https://www.boost.org/users/history/version_1_66_0.html)
+2. [opencv-3.3.0](https://opencv.org/releases.html)
+3. [eigen-3.36](http://eigen.tuxfamily.org/index.php?title=Main_Page)
+4. [DGtal0.9](https://dgtal.org/download/)
 
 
-# Build
+# Build and installation
 
 ```
 mkdir build
 cd build
 cmake ..
-make 
+make install
 ```
 
 # Use
 
-Check the pieces of code in the examples folder.
+Check the pieces of code in lab/examples.
  

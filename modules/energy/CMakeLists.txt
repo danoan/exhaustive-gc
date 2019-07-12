@@ -9,7 +9,7 @@ endif()
 add_library(exhaustive-gc-energy ${LIBRARY_ACTION}
         src/energy.cpp)
 
-if(${USE_LOCAL_REPOSITORIES})
+if(${USE_REMOTE_REPOSITORIES})
     add_dependencies(exhaustive-gc-energy geoc)
 endif()
 

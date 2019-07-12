@@ -10,7 +10,7 @@ add_library(exhaustive-gc-utils ${LIBRARY_ACTION}
         src/timer.cpp
         src/digital.cpp)
 
-if(${USE_LOCAL_REPOSITORIES})
+if(${USE_REMOTE_REPOSITORIES})
     add_dependencies(exhaustive-gc-utils dipacus gcurve)
 endif()
 

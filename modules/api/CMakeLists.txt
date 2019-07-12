@@ -12,7 +12,7 @@ add_library(exhaustive-gc-api ${LIBRARY_ACTION}
         src/utils/InitImage.cpp
         include/exhaustive-gc/api/api.hpp)
 
-if(${USE_LOCAL_REPOSITORIES})
+if(${USE_REMOTE_REPOSITORIES})
     add_dependencies(exhaustive-gc-api dipacus gcurve lazy-combinator exhaustive-gc-core)
 else()
     add_dependencies(exhaustive-gc-api exhaustive-gc-core)
