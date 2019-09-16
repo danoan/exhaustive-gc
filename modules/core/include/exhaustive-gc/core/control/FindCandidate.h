@@ -3,9 +3,12 @@
 
 #include <DGtal/helpers/StdDefs.h>
 
-#include <lazy-comb/LazyCombinations.h>
-#include <lazy-comb/MultiThreadLC.h>
-#include <lazy-comb/ThreadInput.h>
+#include "magLac/core/base/Range.hpp"
+#include "magLac/core/single/Combinator.hpp"
+
+#include "magLac/core/multithread/Trigger.h"
+#include "magLac/core/multithread/ThreadInput.h"
+#include "magLac/core/multithread/ThreadControl.h"
 
 #include "exhaustive-gc/core/model/CCGData.h"
 #include "exhaustive-gc/core/control/CurveFromJoints.h"
@@ -27,26 +30,31 @@ namespace ExhaustiveGC
 
             struct Data
             {
-                Data():initialized(false){}
+                Data(){restart();}
+
+                void restart()
+                {
+                    energyValue=1e20;
+                    foundCandidate=false;
+                }
 
                 double energyValue;
                 bool foundCandidate;
                 Curve curve;
-                bool initialized;
             };
 
-            typedef LazyCombinator::ThreadInput<CheckableSeedVector,Data,CCGData> MyThreadInput;
-            typedef LazyCombinator::MultiThreadLC<MyThreadInput> MyMultiThreadLC;
+            template<class TCombinator>
+            using ThreadInput = magLac::Core::MultiThread::ThreadInput<TCombinator,Data,CCGData>;
 
-            typedef MyThreadInput::Params Params;
+            template<class TThreadInput>
+            using ThreadTrigger = magLac::Core::MultiThread::Trigger< TThreadInput >;
 
+            typedef magLac::Core::MultiThread::ThreadControl ThreadControl;
 
             typedef std::map<KSpace::SCell, double> WeightMap;
-            typedef LazyCombinator::LazyCombinations <CheckableSeedVector> MyLazyCombinations;
 
 
-            void initCheckers(MyLazyCombinations& myCombinations,
-                              const CCGData& ccgData);
+            void initCheckers(const CCGData& ccgData);
 
             bool findCandidate(DGtal::Z2i::Curve& minCurve,
                                const double energyValue,
@@ -59,8 +67,6 @@ namespace ExhaustiveGC
                                       const KSpace& KImage,
                                       const Energy::EnergyInput& energyInput);
 
-            void* exhaustCombinator( void* params);
-            void combinatorCallback(ContainerValueType* seedCombination, MyThreadInput* ti);
 
 
         }

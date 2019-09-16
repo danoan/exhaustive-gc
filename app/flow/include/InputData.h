@@ -30,7 +30,7 @@ struct InputData
         estimator = AlgorithmEstimator::MDCA;
 
         nThreads = 4;
-        threadSize = 5000;
+        threadSize = 0;
 
         outputFolder="";
     }

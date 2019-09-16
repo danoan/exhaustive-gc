@@ -6,14 +6,12 @@ namespace ExhaustiveGC
     {
         namespace FindCandidate
         {
-            void initCheckers(MyLazyCombinations& myCombinations,
-                              const CCGData& ccgData)
+            void initCheckers(const CCGData& ccgData)
             {
                 for(auto itc=ccgData.checkers.begin();itc!=ccgData.checkers.end();++itc) {
                     for (auto it = ccgData.csVector.begin(); it != ccgData.csVector.end(); ++it) {
                         (*itc)->unmark(*it);
                     }
-                    myCombinations.addConsistencyChecker(*itc);
                 }
             }
 
@@ -27,20 +25,85 @@ namespace ExhaustiveGC
                 bool candidateFound=false;
 
 
-                MyLazyCombinations myCombinations(ccgData.csVector,ccgData.maxPairs);
-                initCheckers(myCombinations,ccgData);
+                auto range = magLac::Core::addRange(ccgData.csVector.begin(),ccgData.csVector.end(),ccgData.maxPairs);
+                auto mrc = magLac::Core::Single::createCombinator(range);
+                typedef decltype(mrc) MyCombinator;
+                typedef MyCombinator::MyResolver MyResolver;
+                typedef ThreadInput<MyCombinator> MyThreadInput;
+                typedef ThreadTrigger<MyThreadInput> MyThreadTrigger;
 
-                MyMultiThreadLC multithreadLC(nThreads,threadSize);
-                multithreadLC.start(myCombinations,&exhaustCombinator,combinatorCallback,ccgData);
+                initCheckers(ccgData);
 
-                for(auto it=multithreadLC.threadInputVector.begin();it!=multithreadLC.threadInputVector.end();++it)
+                MyThreadTrigger::CallbackFunction cbf = [](MyResolver& resolver,MyThreadInput& ti, ThreadControl& tc) mutable
                 {
-                    if( it->data.energyValue < minEnergyValue )
+                    const MyThreadInput::Params& params = ti.params;
+                    std::vector<ContainerValueType> seedCombination(params.maxPairs);
+                    resolver >> seedCombination;
+
+                    bool validCombination=true;
+                    for(auto it=ti.params.checkers.begin();it!=ti.params.checkers.end();++it)
                     {
-                        std::cout << "Updated min energy value: " << minEnergyValue << " -> " << it->data.energyValue
+                        for(auto itSeedPair=seedCombination.begin();itSeedPair!=seedCombination.end();++itSeedPair)
+                        {
+                            if( (*it)->operator()(*itSeedPair) )
+                            {
+                                (*it)->mark(*itSeedPair);
+                            }
+                            else
+                            {
+                                validCombination=false;
+                                break;
+                            }
+                        }
+                        if(!validCombination) break;
+                    }
+
+                    for(auto it=ti.params.checkers.begin();it!=ti.params.checkers.end();++it)
+                    {
+                        for(auto itSeedPair=seedCombination.begin();itSeedPair!=seedCombination.end();++itSeedPair)
+                        {
+                            (*it)->unmark(*itSeedPair);
+                        }
+                    }
+
+
+
+                    if(validCombination)
+                    {
+                        Curve curve;
+                        CurveFromJoints(curve, seedCombination.data(), params.maxPairs);
+
+
+                        double currentEnergyValue;
+                        if(params.preserveConnectedeness)
+                            currentEnergyValue = computeEnergyValue(params.ds,curve,params.KImage,params.energyInput);
+                        else
+                            currentEnergyValue = Energy::energyValue(curve,params.KImage,params.energyInput);
+
+                        if (currentEnergyValue < ti.vars.energyValue)
+                        {
+                            ti.vars.energyValue = currentEnergyValue;
+                            ti.vars.curve = curve;
+                            ti.vars.foundCandidate = true;
+
+
+                            if(ti.params.strategy==Core::Strategy::First) tc.stop();
+                        }
+                    }
+                };
+
+
+                MyThreadTrigger mtTrigger(nThreads,threadSize,cbf);
+                mtTrigger.start(mrc,ccgData);
+
+                for(auto it=mtTrigger.threadInputVector.begin();it!=mtTrigger.threadInputVector.end();++it)
+                {
+                    if( it->vars.energyValue < minEnergyValue )
+                    {
+                        std::cout << "Updated min energy value: " << minEnergyValue << " -> " << it->vars.energyValue
                                   << std::endl;
-                        minEnergyValue = it->data.energyValue;
-                        minCurve = it->data.curve;
+                        minEnergyValue = it->vars.energyValue;
+                        minCurve = it->vars.curve;
                         candidateFound = true;
                     }
                 }
@@ -89,62 +152,6 @@ namespace ExhaustiveGC
 
             }
 
-            void* exhaustCombinator( void* params)
-            {
-                MyThreadInput* ti = (MyThreadInput*) params;
-                if(!ti->data.initialized)
-                {
-                    ti->data.energyValue=1e20;
-                    ti->data.initialized=true;
-                }
-
-                ti->data.foundCandidate=false;
-
-
-                for(auto itc=ti->combPointer->_checkersList.begin();
-                    itc!=ti->combPointer->_checkersList.end();++itc)
-                {
-                    for (auto it = ti->params.csVector.begin();
-                         it != ti->params.csVector.end(); ++it)
-                    {
-                        (*itc)->unmark(*it);
-                    }
-                }
-
-                std::vector<ContainerValueType> element(ti->params.maxPairs);
-                int c=0;
-                while( ti->combPointer->next(element.data()) && c<ti->elems )
-                {
-                    ti->callback(element.data(),ti);
-                    if(ti->params.strategy==Core::Strategy::First) break;
-                    ++c;
-                }
-
-            }
-
-            void combinatorCallback(ContainerValueType* seedCombination, MyThreadInput* ti)
-            {
-                const Params& params = ti->params;
-
-                Curve curve;
-                std::map<KSpace::SCell, double> weightMap;
-
-                CurveFromJoints(curve, seedCombination, params.maxPairs);
-
-
-                double currentEnergyValue;
-                if(params.preserveConnectedeness)
-                    currentEnergyValue = computeEnergyValue(params.ds,curve,params.KImage,params.energyInput);
-                else
-                    currentEnergyValue = Energy::energyValue(curve,params.KImage,params.energyInput);
-
-                if (currentEnergyValue < ti->data.energyValue)
-                {
-                    ti->data.energyValue = currentEnergyValue;
-                    ti->data.curve = curve;
-                    ti->data.foundCandidate = true;
-                }
-            }
         }
 
     }

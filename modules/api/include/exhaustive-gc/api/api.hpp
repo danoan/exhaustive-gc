@@ -21,6 +21,10 @@ bool findOptimalOneExpansion(Curve& optimalCurve,
     FilterSeedPairs(spl,sp.minGCLength,sp.maxGCLength);
     std::cout << spl.size() << " qualified seeds\n";
 
+    int threadSize = sp.threadSize;
+    if(sp.threadSize==0) threadSize = (int) (spl.size()/sp.nThreads);
+
+
 
     CheckableSeedPairVector cspv;
     std::for_each(spl.begin(),spl.end(),[&cspv](SeedPair sp) mutable {cspv.push_back( CheckableSeedPair(sp) );});
@@ -40,13 +44,13 @@ bool findOptimalOneExpansion(Curve& optimalCurve,
     {
         ccgData.registerChecker( new GluedIntersectionChecker() );
     }
-    ccgData.registerChecker( new MinimumDistanceChecker(kspace) );
+
 
     return ExhaustiveGC::Core::FindCandidate::findCandidate(optimalCurve,
                                                             currentEnergyValue,
                                                             ccgData,
                                                             sp.nThreads,
-                                                            sp.threadSize);
+                                                            threadSize);
 
 
 

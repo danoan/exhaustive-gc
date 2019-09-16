@@ -11,7 +11,7 @@ add_library(exhaustive-gc-core ${LIBRARY_ACTION}
         src/control/FindCandidate.cpp)
 
 if(${USE_REMOTE_REPOSITORIES})
-    add_dependencies(exhaustive-gc-core dipacus gcurve lazy-combinator exhaustive-gc-energy)
+    add_dependencies(exhaustive-gc-core dipacus gcurve magLac exhaustive-gc-energy)
 else()
     add_dependencies(exhaustive-gc-core exhaustive-gc-energy)
 endif()
