@@ -1,7 +1,7 @@
 #ifndef EXHAUSTIVE_GC_CHECKABLESEEDPAIR_H
 #define EXHAUSTIVE_GC_CHECKABLESEEDPAIR_H
 
-#include <lazy-comb/concepts/CCheckableElement.h>
+#include <exhaustive-gc/core/check-elem/CCheckableElement.h>
 #include <gcurve/Range.h>
 #include <gcurve/Seed.h>
 

@@ -1,12 +1,12 @@
 #ifndef EXHAUSTIVE_GC_MINIMUMDISTANCECHECKER_H
 #define EXHAUSTIVE_GC_MINIMUMDISTANCECHECKER_H
 
-#include "lazy-comb/interface/IMarkedMapChecker.h"
+#include "exhaustive-gc/core/checker/IMarkedMapChecker.h"
 #include "exhaustive-gc/core/check-elem/CheckableSeedPair.h"
 
 namespace ExhaustiveGC
 {
-    class MinimumDistanceChecker: public LazyCombinator::IMarkedMapChecker<CheckableSeedPair>
+    class MinimumDistanceChecker: public IMarkedMapChecker<CheckableSeedPair>
     {
     public:
         typedef DGtal::Z2i::Curve::ConstIterator SCellIterator;

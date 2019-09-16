@@ -1,12 +1,12 @@
 #ifndef EXHAUSTIVE_GC_GLUEDINTERSECTIONCHECKER_H
 #define EXHAUSTIVE_GC_GLUEDINTERSECTIONCHECKER_H
 
-#include "lazy-comb/interface/IMarkedMapChecker.h"
+#include "exhaustive-gc/core/checker/IMarkedMapChecker.h"
 #include "exhaustive-gc/core/check-elem/CheckableSeedPair.h"
 
 namespace ExhaustiveGC
 {
-    class GluedIntersectionChecker: public LazyCombinator::IMarkedMapChecker<CheckableSeedPair>
+    class GluedIntersectionChecker: public IMarkedMapChecker<CheckableSeedPair>
     {
     public:
         typedef DGtal::Z2i::Curve::ConstIterator SCellIterator;

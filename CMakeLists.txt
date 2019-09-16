@@ -23,7 +23,7 @@ set(GCURVE_LIBS_DIR ${CMAKE_SOURCE_DIR}/ext-projects/build/include CACHE PATH "g
 
 set(GEOC_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/ext-projects/build/include CACHE PATH "geoc include location path.")
 
-set(LAZY-COMB_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/ext-projects/build/include CACHE PATH "lazy-comb include location path.")
+set(MAGLAC_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/ext-projects/build/include CACHE PATH "magLac include location path.")
 
 set(BUILD_TESTS OFF CACHE BOOL "Build tests.")
 set(BUILD_APPLICATIONS ON CACHE BOOL "Build applications.")

@@ -24,7 +24,7 @@ target_include_directories(exhaustive-gc-api PRIVATE
         ${CMAKE_SOURCE_DIR}/modules/core/include
         ${DIPACUS_INCLUDE_DIRS}
         ${GCURVE_INCLUDE_DIRS}
-        ${LAZY-COMB_INCLUDE_DIRS}
+        ${MAGLAC_INCLUDE_DIRS}
         ${DGTAL_INCLUDE_DIRS}
         ${OpenCV_INCLUDE_DIRS})
 

@@ -1,8 +1,7 @@
 #ifndef EXHAUSTIVE_GC_CCGDATA_H
 #define EXHAUSTIVE_GC_CCGDATA_H
 
-#include <lazy-comb/interface/IMarkedMapChecker.h>
-#include <lazy-comb/LazyCombinations.h>
+#include <exhaustive-gc/core/checker/IMarkedMapChecker.h>
 
 #include "exhaustive-gc/core/check-elem/CheckableSeedPair.h"
 #include "exhaustive-gc/core/model/Types.h"
@@ -21,10 +20,8 @@ namespace ExhaustiveGC
             typedef DGtal::Z2i::KSpace KSpace;
             typedef DGtal::Z2i::DigitalSet DigitalSet;
 
-            typedef LazyCombinator::IMarkedMapChecker<CheckableSeedPair> Checker;
+            typedef IMarkedMapChecker<CheckableSeedPair> Checker;
             typedef std::vector<CheckableSeedPair> CheckableSeedVector;
-
-            typedef LazyCombinator::LazyCombinations <CheckableSeedVector> MyLazyCombinations;
 
             typedef Core::Strategy Strategy;
 

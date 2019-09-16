@@ -1,12 +1,12 @@
 #ifndef EXHAUSTIVE_GC_INTERVALCHECKER_H
 #define EXHAUSTIVE_GC_INTERVALCHECKER_H
 
-#include "lazy-comb/interface/IMarkedMapChecker.h"
+#include "exhaustive-gc/core/check-elem/IMarkedMapChecker.h"
 #include "exhaustive-gc/core/check-elem/CheckableSeedPair.h"
 
 namespace ExhaustiveGC
 {
-    class IntervalChecker: public LazyCombinator::IMarkedMapChecker<CheckableSeedPair>
+    class IntervalChecker: public IMarkedMapChecker<CheckableSeedPair>
     {
     public:
         typedef DGtal::Z2i::Curve::ConstIterator SCellIterator;
