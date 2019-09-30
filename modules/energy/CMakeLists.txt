@@ -13,6 +13,9 @@ if(${USE_REMOTE_REPOSITORIES})
     add_dependencies(exhaustive-gc-energy geoc)
 endif()
 
+set_target_properties(exhaustive-gc-energy PROPERTIES
+        VERSION ${VERSION_EXHAUSTIVE_GC_ENERGY})
+
 target_include_directories(exhaustive-gc-energy PRIVATE
         include
         ${GEOC_INCLUDE_DIRS}

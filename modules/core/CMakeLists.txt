@@ -17,7 +17,8 @@ else()
 endif()
 
 set_target_properties(exhaustive-gc-core PROPERTIES
-        COMPILE_FLAGS -fext-numeric-literals)
+        COMPILE_FLAGS -fext-numeric-literals
+        VERSION ${VERSION_EXHAUSTIVE_GC_CORE})
 
 target_compile_features(exhaustive-gc-core PRIVATE cxx_auto_type)
 target_include_directories(exhaustive-gc-core PRIVATE

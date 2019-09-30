@@ -14,6 +14,9 @@ if(${USE_REMOTE_REPOSITORIES})
     add_dependencies(exhaustive-gc-utils dipacus gcurve)
 endif()
 
+set_target_properties(exhaustive-gc-utils  PROPERTIES
+        VERSION ${VERSION_EXHAUSTIVE_GC_UTILS})
+
 target_include_directories(exhaustive-gc-utils PRIVATE
         include
         ${DIPACUS_INCLUDE_DIRS}

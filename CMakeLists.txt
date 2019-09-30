@@ -5,6 +5,8 @@ set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/install")
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
+set(EXTPROJECTS_SOURCE_DIR ${CMAKE_SOURCE_DIR}/ext-projects/source)
+
 if (${CMAKE_BUILD_TYPE} STREQUAL Release)
     set(EXTPROJECTS_BUILD_DIR ${CMAKE_SOURCE_DIR}/ext-projects/cmake-build-release)
 else()
@@ -39,6 +41,11 @@ project(exhaustive_gc)
 if(${USE_REMOTE_REPOSITORIES})
     include(ext-projects/ExtProjects.cmake)
 endif()
+
+set(VERSION_EXHAUSTIVE_GC_API master)
+set(VERSION_EXHAUSTIVE_GC_CORE core)
+set(VERSION_EXHAUSTIVE_GC_ENERGY energy)
+set(VERSION_EXHAUSTIVE_GC_UTILS utils)
 
 find_package(DGtal REQUIRED)
 find_package(OpenCV REQUIRED)
