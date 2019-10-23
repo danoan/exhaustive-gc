@@ -11,6 +11,7 @@ namespace ExhaustiveGC
 {
     namespace Energy
     {
+        extern double INF;
         typedef DGtal::Z2i::Curve Curve;
         typedef DGtal::Z2i::KSpace KSpace;
         typedef DGtal::Z2i::DigitalSet DigitalSet;

@@ -20,7 +20,9 @@ namespace InputReader
                 "[-t Estimator (mdca,ii)]\n"
                 "[-r II estimation ball radius]\n"
                 "[-n Threads number]\n"
-                "[-k Thread elements]\n";
+                "[-k Thread elements]\n"
+                "[-f Number of random fixed linels]\n"
+                "[-F Number n of fixed linels followed by n pairs x y kcoordinate]\n";
     }
 
     InputData readInput(int argc, char* argv[])
@@ -33,7 +35,7 @@ namespace InputReader
 
         InputData id;
         int opt;
-        while( (opt=getopt(argc,argv,"m:M:j:i:S:s:e:a:h:t:r:n:k:"))!=-1 )
+        while( (opt=getopt(argc,argv,"m:M:j:i:S:s:e:a:h:t:r:n:k:f:F:"))!=-1 )
         {
             switch(opt)
             {
@@ -118,6 +120,18 @@ namespace InputReader
                     id.threadSize = std::atoi(optarg);
                     break;
                 }
+                case 'f':
+                {
+                    id.numFixedLinels = std::atoi(optarg);
+                    id.randomFixedLinels = true;
+                    break;
+                }
+                case 'F':
+                {
+                    id.numFixedLinels = std::atoi(optarg);
+                    id.randomFixedLinels = false;
+                    break;
+                }
                 default:
                 {
                     usage(argv);
@@ -125,6 +139,35 @@ namespace InputReader
                 }
             }
         }
+
+        if(!id.randomFixedLinels)
+        {
+            id.fixedLinels.resize(id.numFixedLinels);
+            for(int i=0;i<id.numFixedLinels;++i)
+            {
+                int x,y;
+                bool sign;
+
+                std::string xStr = argv[optind++];
+                std::string yStr = argv[optind++];
+
+                if(xStr[0]=='+')x = std::atoi( xStr.data()+1 );
+                else x = -std::atoi( xStr.data() );
+
+                if(yStr[0]=='+')y = std::atoi( yStr.data()+1 );
+                else y = -std::atoi( yStr.data() );
+
+                sign = std::atoi( argv[optind++] )==1;
+
+
+                id.fixedLinels[i] = InputData::MyCoords( x,y,sign );
+            }
+
+
+            if(id.fixedLinels.size()!=id.numFixedLinels) throw std::runtime_error("Missing coordinates or wrong format. It must be pairs of integers and sign (0 negative 1 positive) )");
+        }
+
+
 
         id.outputFolder = argv[optind++];
         return id;

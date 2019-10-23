@@ -4,6 +4,7 @@ namespace ExhaustiveGC
 {
     namespace Energy
     {
+        double INF = 1e20;
         void curvatureEstimation(CurvatureEstimationsVector& ev,
                                  const EnergyInput& energyInput,
                                  const KSpace& KImage,
@@ -18,7 +19,8 @@ namespace ExhaustiveGC
                     symmetricClosed<EstimationAlgorithms::ALG_MDCA> (KImage,
                                                                      begin,
                                                                      end,
-                                                                     ev);
+                                                                     ev,
+                                                                     energyInput.gridStep);
                     break;
                 }
                 case EnergyInput::AlgorithmEstimator::II:
@@ -71,7 +73,7 @@ namespace ExhaustiveGC
             curvatureEstimation(evCurv,energyInput,KImage,begin,end);
 
             Length::EstimationsVector evLength;
-            Length::mdssClosed<Length::EstimationAlgorithms::ALG_PROJECTED>(KImage,begin,end,evLength);
+            Length::mdssClosed<Length::EstimationAlgorithms::ALG_PROJECTED>(KImage,begin,end,evLength,energyInput.gridStep);
 
 
             auto it = begin;
@@ -97,7 +99,7 @@ namespace ExhaustiveGC
             curvatureEstimation(evCurv,energyInput,KImage,begin,end);
 
             Length::EstimationsVector evLength;
-            Length::mdssClosed<Length::EstimationAlgorithms::ALG_PROJECTED >(KImage,begin,end,evLength);
+            Length::mdssClosed<Length::EstimationAlgorithms::ALG_PROJECTED >(KImage,begin,end,evLength,energyInput.gridStep);
 
 
             auto it = begin;
@@ -132,6 +134,15 @@ namespace ExhaustiveGC
                 case EnergyType::Elastica:
                 {
                     elastica(energyInput,KImage,begin, end, weightMap);
+                    break;
+                }
+            }
+
+            for(auto l:energyInput.fixedLinels)
+            {
+                if(weightMap.find(l)==weightMap.end())
+                {
+                    weightMap[weightMap.begin()->first] = INF;
                     break;
                 }
             }

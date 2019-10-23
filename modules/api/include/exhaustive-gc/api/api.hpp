@@ -74,6 +74,14 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
     DigitalSet workingSet(domain);
     workingSet.insert(dsInput.begin(),dsInput.end());
 
+    DGtal::Z2i::KSpace kspace;
+    kspace.init(domain.lowerBound(),domain.upperBound(),true);
+    std::set<DGtal::Z2i::Point> fixedPixels;
+    for(auto l:sp.energyInput.fixedLinels)
+    {
+        for(auto p:kspace.sUpperIncident(l)) fixedPixels.insert( kspace.sCoords(p) );
+    }
+
     double lastEnergyValue = Energy::energyValue(workingSet,sp.energyInput);
 
     for(int i=0;i<iterations;++i)
@@ -92,8 +100,10 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
             workingSet.clear();
             workingSet.insert(tempDS.begin(),tempDS.end());
 
+
             Image2D img(workingSet.domain());
             DIPaCUS::Representation::digitalSetToImage(img,workingSet);
+            for(auto p:fixedPixels) img.setValue(p,128);
             DGtal::GenericWriter<Image2D>::exportFile(outputFolder + "/" + nDigitsString(i,4) + ".pgm",img);
 
             lastEnergyValue = Energy::energyValue(workingSet,sp.energyInput);

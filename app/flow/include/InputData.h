@@ -12,6 +12,16 @@ struct InputData
     typedef ExhaustiveGC::Energy::EnergyType  EnergyType;
     typedef ExhaustiveGC::Energy::EnergyInput::AlgorithmEstimator  AlgorithmEstimator;
 
+    struct MyCoords
+    {
+        MyCoords():x(0),y(0),sign(false){}
+        MyCoords(int x, int y, bool sign) : x(x), y(y), sign(sign) {}
+
+        int x,y;
+        bool sign;
+    };
+    typedef std::vector<MyCoords> MyCoordsCollection;
+
     InputData()
     {
         minGCLength = 4;
@@ -31,6 +41,9 @@ struct InputData
 
         nThreads = 4;
         threadSize = 0;
+
+        numFixedLinels=0;
+        randomFixedLinels=false;
 
         outputFolder="";
     }
@@ -53,6 +66,10 @@ struct InputData
 
     int nThreads;
     int threadSize;
+
+    int numFixedLinels;
+    bool randomFixedLinels;
+    MyCoordsCollection fixedLinels;
 
 
     std::string outputFolder;
