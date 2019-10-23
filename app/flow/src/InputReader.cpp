@@ -67,6 +67,7 @@ namespace InputReader
                     else if(strcmp(optarg,"ellipse")==0) id.shape = Shape( ShapeType::Ellipse);
                     else if(strcmp(optarg,"flower")==0) id.shape = Shape( ShapeType::Flower);
                     else if(strcmp(optarg,"wave")==0) id.shape = Shape( ShapeType::Wave);
+                    else if(strcmp(optarg,"bean")==0) id.shape = Shape( ShapeType::Bean);
                     else id.shape = Shape(ShapeType::UserDefined,optarg);
                     break;
                 }

@@ -26,42 +26,40 @@ def combinations(configList):
 
 
 GRID_STEP=[1.0,0.5]
-SHAPES=["square","flower"]#"wave","square","flower"]#"ball","triangle","pentagon","ellipse"]#"heptagon"]
+SHAPES=["bean","square","flower"]#"wave","square","flower"]#"ball","triangle","pentagon","ellipse"]#"heptagon"]
 RADIUS=[3,5]
 ESTIMATOR=["mdca","ii"]#,"ii"]
 ENERGY=["elastica"]#,"sqc","isqc"]
-LENGTH_PENALIZATION=[0.001,0.05,0.01]
-ITERATIONS=[400]
+LENGTH_PENALIZATION=[0.0,0.0001,0.001]
+ITERATIONS=[100]
 MIN_CURVE_LENGTH=[2]
 MAX_CURVE_LENGTH=[30]
 NUM_JONCTIONS=[1]
 STRATEGY=["best"]
+NUM_THREADS=[24]
 
 
 CONFIG_LIST=[ (GRID_STEP,"grid_step"),
               (SHAPES,"shape"), (RADIUS,"radius"), (ITERATIONS,"iterations"),
               (ESTIMATOR,"estimator"),(ENERGY,"energy"),(LENGTH_PENALIZATION,"length_pen"),
               (MIN_CURVE_LENGTH,"mLength"),(MAX_CURVE_LENGTH,"MLength"),(NUM_JONCTIONS,"jonctions"),
-              (STRATEGY,"strategy")]
+              (STRATEGY,"strategy"),(NUM_THREADS,"num_threads")]
 
 
 def valid_combination(c):
-    gs,shape,radius,iterations,estimator,energy,length_pen,mLength,MLength,jonctions,strategy = c
+    gs,shape,radius,iterations,estimator,energy,length_pen,mLength,MLength,jonctions,strategy,num_threads = c
 
     flag=True
     if energy!="elastica":
         flag=flag and length_pen==0
 
-    if energy=="elastica":
-        flag=flag and length_pen!=0
-
     if estimator=="mdca":
-        flag= flag and radius==1
+        flag= flag and radius==3
 
     return flag
 
-def resolve_output_folder(gs,shape,radius,iterations,estimator,energy,length_pen,mLength,MLength,jonctions,strategy):
-    outputFolder = "%s/%s/radius_%d/%s/%s/len_pen_%.2f/m%dM%d/jonctions_%d/%s/gs_%.2f" % (BASE_OUTPUT_FOLDER,shape,radius,
+def resolve_output_folder(gs,shape,radius,iterations,estimator,energy,length_pen,mLength,MLength,jonctions,strategy,num_threads):
+    outputFolder = "%s/%s/radius_%d/%s/%s/len_pen_%.5f/m%dM%d/jonctions_%d/%s/gs_%.5f" % (BASE_OUTPUT_FOLDER,shape,radius,
                                                                                           estimator,energy,length_pen,
                                                                                           mLength,MLength,jonctions,strategy,
                                                                                           gs)
@@ -71,7 +69,7 @@ def resolve_output_folder(gs,shape,radius,iterations,estimator,energy,length_pen
 def flow(c):
 
     outputFolder = resolve_output_folder(*c)
-    gs,shape,radius,iterations,estimator,energy,length_pen,mLength,MLength,jonctions,strategy = c
+    gs,shape,radius,iterations,estimator,energy,length_pen,mLength,MLength,jonctions,strategy,num_threads = c
 
     s=" ".join( ["%s%s" % ("-S",shape),
                  "%s%d" % ("-r",radius),
@@ -83,7 +81,8 @@ def flow(c):
                  "%s%f" % ("-j",jonctions),
                  "%s%s" % ("-s",strategy),
                  "%s%s" % ("-t",estimator),
-                 "%s%f" % ("-h", gs)
+                 "%s%f" % ("-h", gs),
+                 "%s%d" % ("-n", num_threads)
                 ])
 
     print("\n*****Running: ", s,"\n")
@@ -101,6 +100,7 @@ def flow(c):
                       "%s%s" % ("-s",strategy),
                       "%s%s" % ("-t",estimator),
                       "%s%f" % ("-h", gs),
+                      "%s%d" % ("-n", num_threads),
                       outputFolder
                       ] )
 

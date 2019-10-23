@@ -1,7 +1,7 @@
 #ifndef EXHAUSTIVE_GC_SHAPE_H
 #define EXHAUSTIVE_GC_SHAPE_H
 
-enum ShapeType{Triangle,Square,Pentagon,Heptagon,Ball,Ellipse,Flower,Wave,UserDefined,NoType};
+enum ShapeType{Triangle,Square,Pentagon,Heptagon,Ball,Ellipse,Flower,Wave,Bean,UserDefined,NoType};
 
 struct Shape
 {
@@ -18,6 +18,7 @@ struct Shape
         else if(type==ShapeType::Ellipse) name = "ellipse";
         else if(type==ShapeType::Flower) name = "flower";
         else if(type==ShapeType::Wave) name = "wave";
+        else if(type==ShapeType::Bean) name = "bean";
         else name = "user-defined";
     }
 
