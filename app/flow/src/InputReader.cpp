@@ -35,7 +35,7 @@ namespace InputReader
 
         InputData id;
         int opt;
-        while( (opt=getopt(argc,argv,"m:M:j:i:S:s:e:a:h:t:r:n:k:f:F:"))!=-1 )
+        while( (opt=getopt(argc,argv,"m:M:j:i:S:s:e:a:h:t:r:n:k:fF:"))!=-1 )
         {
             switch(opt)
             {
