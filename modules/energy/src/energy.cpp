@@ -12,6 +12,7 @@ namespace ExhaustiveGC
                                  Curve::ConstIterator end)
         {
             using namespace GEOC::API::GridCurve::Curvature;
+            GEOC::Estimator::Standard::IICurvatureExtraData data(true,energyInput.radius);
             switch(energyInput.estimator)
             {
                 case EnergyInput::AlgorithmEstimator::MDCA:
@@ -20,7 +21,8 @@ namespace ExhaustiveGC
                                                                      begin,
                                                                      end,
                                                                      ev,
-                                                                     energyInput.gridStep);
+                                                                     energyInput.gridStep,
+                                                                     &data);
                     break;
                 }
                 case EnergyInput::AlgorithmEstimator::II:
@@ -30,14 +32,23 @@ namespace ExhaustiveGC
                                                                                  end,
                                                                                  ev,
                                                                                  energyInput.gridStep,
-                                                                                 true,
-                                                                                 energyInput.radius);
+                                                                                 &data);
 
                     break;
                 }
 
             }
 
+        }
+
+        void lengthEstimation(LengthEstimationsVector& evLength,
+                              const EnergyInput& energyInput,
+                              const KSpace& KImage,
+                              Curve::ConstIterator begin,
+                              Curve::ConstIterator end)
+        {
+            using namespace GEOC::API::GridCurve::Length;
+            mdssClosed<EstimationAlgorithms::ALG_PROJECTED>(KImage,begin,end,evLength,energyInput.gridStep,NULL);
         }
 
         void squaredCurvature(const EnergyInput& energyInput,
@@ -69,11 +80,11 @@ namespace ExhaustiveGC
         {
             using namespace GEOC::API::GridCurve;
 
-            Curvature::EstimationsVector evCurv;
+            CurvatureEstimationsVector evCurv;
             curvatureEstimation(evCurv,energyInput,KImage,begin,end);
 
-            Length::EstimationsVector evLength;
-            Length::mdssClosed<Length::EstimationAlgorithms::ALG_PROJECTED>(KImage,begin,end,evLength,energyInput.gridStep);
+            LengthEstimationsVector evLength;
+            lengthEstimation(evLength,energyInput,KImage,begin,end);
 
 
             auto it = begin;
@@ -98,8 +109,8 @@ namespace ExhaustiveGC
             Curvature::EstimationsVector evCurv;
             curvatureEstimation(evCurv,energyInput,KImage,begin,end);
 
-            Length::EstimationsVector evLength;
-            Length::mdssClosed<Length::EstimationAlgorithms::ALG_PROJECTED >(KImage,begin,end,evLength,energyInput.gridStep);
+            LengthEstimationsVector evLength;
+            lengthEstimation(evLength,energyInput,KImage,begin,end);
 
 
             auto it = begin;

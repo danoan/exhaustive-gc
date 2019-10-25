@@ -5,7 +5,7 @@ using namespace ExhaustiveGC::APP;
 
 DIPaCUS::Shapes::DigitalSet Utils::resolveShape(Shape shape,double gridStep)
 {
-    int radius=20;
+    int radius=10;
     if(shape.type==ShapeType::Triangle) return DIPaCUS::Shapes::triangle(gridStep,0,0,radius);
     else if(shape.type==ShapeType::Square) return DIPaCUS::Shapes::square(gridStep,0,0,radius);
     else if(shape.type==ShapeType::Pentagon) return DIPaCUS::Shapes::NGon(gridStep,0,0,radius,5);

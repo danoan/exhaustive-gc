@@ -27,6 +27,12 @@ namespace ExhaustiveGC
                                  Curve::ConstIterator begin,
                                  Curve::ConstIterator end);
 
+        void lengthEstimation(LengthEstimationsVector& evLength,
+                              const EnergyInput& energyInput,
+                              const KSpace& KImage,
+                              Curve::ConstIterator begin,
+                              Curve::ConstIterator end);
+
         void squaredCurvature(const EnergyInput& energyInput,
                               const KSpace& KImage,
                               Curve::ConstIterator begin,
