@@ -21,7 +21,7 @@ namespace InputReader
                 "[-r II estimation ball radius]\n"
                 "[-n Threads number]\n"
                 "[-k Thread elements]\n"
-                "[-f Number of random fixed linels]\n"
+                "[-f Interactively select fixed linels]\n"
                 "[-F Number n of fixed linels followed by n pairs x y kcoordinate]\n";
     }
 
@@ -122,14 +122,13 @@ namespace InputReader
                 }
                 case 'f':
                 {
-                    id.numFixedLinels = std::atoi(optarg);
-                    id.randomFixedLinels = true;
+                    id.selectFixedLinels = true;
                     break;
                 }
                 case 'F':
                 {
                     id.numFixedLinels = std::atoi(optarg);
-                    id.randomFixedLinels = false;
+                    id.selectFixedLinels = false;
                     break;
                 }
                 default:
@@ -140,7 +139,7 @@ namespace InputReader
             }
         }
 
-        if(!id.randomFixedLinels)
+        if(!id.selectFixedLinels)
         {
             id.fixedLinels.resize(id.numFixedLinels);
             for(int i=0;i<id.numFixedLinels;++i)

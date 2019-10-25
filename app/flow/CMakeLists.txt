@@ -6,7 +6,10 @@ add_executable(exhaustive-gc-app-flow
         src/InputReader.cpp
         flow.cpp)
 
-add_dependencies(exhaustive-gc-app-flow exhaustive-gc-api exhaustive-gc-energy exhaustive-gc-core exhaustive-gc-utils)
+add_dependencies(exhaustive-gc-app-flow exhaustive-gc-api exhaustive-gc-energy exhaustive-gc-core exhaustive-gc-utils select-fixed-points)
+
+target_link_directories(exhaustive-gc-app-flow PRIVATE
+        ${CMAKE_BINARY_DIR}/app/select-fixed-points)
 
 target_include_directories(exhaustive-gc-app-flow PRIVATE
         include
@@ -14,12 +17,14 @@ target_include_directories(exhaustive-gc-app-flow PRIVATE
         ${CMAKE_SOURCE_DIR}/modules/energy/include
         ${CMAKE_SOURCE_DIR}/modules/api/include
         ${CMAKE_SOURCE_DIR}/modules/utils/include
+        ${CMAKE_SOURCE_DIR}/app/select-fixed-points/include
         ${DIPACUS_INCLUDE_DIRS}
         ${DGTAL_INCLUDE_DIRS}
         ${BTOOLS_INCLUDE_DIRS}
 )
 
 target_link_libraries(exhaustive-gc-app-flow
+        -lselect-fixed-points
         -lexhaustive-gc-api
         -lexhaustive-gc-energy
         -lexhaustive-gc-core
@@ -32,6 +37,7 @@ target_link_libraries(exhaustive-gc-app-flow
         -lboost_system
         -lboost_filesystem
         ${DGTAL_LIBRARIES}
+        ${OpenCV_LIBS}
         )
 
 install(TARGETS exhaustive-gc-app-flow

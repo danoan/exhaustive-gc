@@ -4,6 +4,8 @@
 #include <string>
 #include "Shape.h"
 #include "exhaustive-gc/core/model/Types.h"
+#include "exhaustive-gc/energy/EnergyType.h"
+#include "exhaustive-gc/energy/EnergyInput.h"
 
 struct InputData
 {
@@ -43,7 +45,7 @@ struct InputData
         threadSize = 0;
 
         numFixedLinels=0;
-        randomFixedLinels=false;
+        selectFixedLinels=false;
 
         outputFolder="";
     }
@@ -68,7 +70,7 @@ struct InputData
     int threadSize;
 
     int numFixedLinels;
-    bool randomFixedLinels;
+    bool selectFixedLinels;
     MyCoordsCollection fixedLinels;
 
 

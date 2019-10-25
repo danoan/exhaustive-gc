@@ -1,18 +1,26 @@
 cmake_minimum_required(VERSION 3.2)
-project(app-select-fixed-points)
+project(select-fixed-points)
 
 find_package(OpenCV REQUIRED)
 
-add_executable(app-select-fixed-points select-fixed-points.cpp)
+add_library(select-fixed-points SHARED
+        src/gui.cpp
+        src/utils.cpp
+        src/events.cpp)
 
-set_target_properties(app-select-fixed-points PROPERTIES COMPILE_FLAGS -fPIC)
+if(${USE_REMOTE_REPOSITORIES})
+    add_dependencies(select-fixed-points dipacus)
+endif()
 
-target_include_directories(app-select-fixed-points PRIVATE
+
+set_target_properties(select-fixed-points PROPERTIES COMPILE_FLAGS -fPIC)
+
+target_include_directories(select-fixed-points PRIVATE
         include
         ${DIPACUS_INCLUDE_DIRS}
         ${DGTAL_INCLUDE_DIRS})
 
-target_link_libraries(app-select-fixed-points
+target_link_libraries(select-fixed-points
         -ldipacus-derivates
         -ldipacus-components
         -ldipacus-base

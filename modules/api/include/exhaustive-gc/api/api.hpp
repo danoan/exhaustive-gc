@@ -57,6 +57,16 @@ bool findOptimalOneExpansion(Curve& optimalCurve,
 
 }
 
+void exportImageFromDigitalSet(const std::string& imageOutputPath, const DigitalSet& ds, const std::set<DGtal::Z2i::Point>& fixedPixels)
+{
+    typedef DIPaCUS::Representation::Image2D Image2D;
+
+    Image2D img(ds.domain());
+    DIPaCUS::Representation::digitalSetToImage(img,ds);
+    for(auto p:fixedPixels) img.setValue(p,128);
+    DGtal::GenericWriter<Image2D>::exportFile(imageOutputPath,img);
+}
+
 template<typename TSearchParameters>
 void optimalOneExpansionSequence(const DigitalSet& dsInput,
                                  const TSearchParameters& sp,
@@ -64,7 +74,6 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
                                  std::string outputFolder,
                                  std::ostream& os)
 {
-    typedef DIPaCUS::Representation::Image2D Image2D;
     os << "#It\tEnergyValue\n";
 
     Point lb,ub;
@@ -84,7 +93,8 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
 
     double lastEnergyValue = Energy::energyValue(workingSet,sp.energyInput);
 
-    for(int i=0;i<iterations;++i)
+    exportImageFromDigitalSet(outputFolder + "/" + nDigitsString(0,4) + ".pgm",workingSet,fixedPixels);
+    for(int i=1;i<=iterations;++i)
     {
         writeEnergy(os,i,lastEnergyValue);
 
@@ -101,10 +111,7 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
             workingSet.insert(tempDS.begin(),tempDS.end());
 
 
-            Image2D img(workingSet.domain());
-            DIPaCUS::Representation::digitalSetToImage(img,workingSet);
-            for(auto p:fixedPixels) img.setValue(p,128);
-            DGtal::GenericWriter<Image2D>::exportFile(outputFolder + "/" + nDigitsString(i,4) + ".pgm",img);
+            exportImageFromDigitalSet(outputFolder + "/" + nDigitsString(i,4) + ".pgm",workingSet,fixedPixels);
 
             lastEnergyValue = Energy::energyValue(workingSet,sp.energyInput);
         }else
