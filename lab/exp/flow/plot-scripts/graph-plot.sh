@@ -67,4 +67,4 @@ create_multiplot()
 #$1: Output filename
 #$2: Graph title
 #$4-..: (Plot datafile,Plot subtitle)
-create_multiplot $@
+#create_multiplot $@
