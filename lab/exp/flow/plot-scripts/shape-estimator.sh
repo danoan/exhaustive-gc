@@ -30,6 +30,6 @@ do
 
     mkdir -p $OUTPUT_FILEFOLDER
 
-    create_multiplot "$OUTPUT_FILEFOLDER/$s.ps" "$s" "$( prefix_input $s 3 mdca $LENGTH_PEN $GS )/energy.txt" "mdca" \
+    create_multiplot "$OUTPUT_FILEFOLDER/$s.eps" "$s" "$( prefix_input $s 3 mdca $LENGTH_PEN $GS )/energy.txt" "mdca" \
     "$( prefix_input $s 3 ii $LENGTH_PEN $GS )/energy.txt" "ii-3" "$( prefix_input $s 5 ii $LENGTH_PEN $GS )/energy.txt" "ii-5"
 done

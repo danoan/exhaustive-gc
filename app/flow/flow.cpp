@@ -41,6 +41,8 @@ int main(int argc, char* argv[])
     ofs << "\n\n#";
     Utils::Timer::end(ofs);
 
+    ofs << "Initial digital shape size: " << square.size() << " pixels.";
+
     ofs.flush();
     ofs.close();
 

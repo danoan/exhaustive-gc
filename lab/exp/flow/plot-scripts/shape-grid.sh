@@ -20,6 +20,6 @@ do
 
     mkdir -p $OUTPUT_FILEFOLDER
 
-    create_multiplot "$OUTPUT_FILEFOLDER/$s.ps" "$s" "${PREFIX_INPUT}1.00000/energy.txt" "gs=1.0" \
+    create_multiplot "$OUTPUT_FILEFOLDER/$s.eps" "$s" "${PREFIX_INPUT}1.00000/energy.txt" "gs=1.0" \
     "${PREFIX_INPUT}0.50000/energy.txt" "gs=0.5" "${PREFIX_INPUT}0.25000/energy.txt" "gs=0.25"
 done
