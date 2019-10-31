@@ -73,7 +73,7 @@ namespace ExhaustiveGC
                 return ls;
             }
 
-            LinelSet convertToDGtalPoints(const DGtal::Z2i::Domain& domain, InputData::MyCoordsCollection& inputCoords)
+            LinelSet convertToDGtalPoints(const DGtal::Z2i::Domain& domain, const InputData::MyCoordsCollection& inputCoords)
             {
                 LinelSet ls;
                 DGtal::Z2i::KSpace kspace;
@@ -83,22 +83,15 @@ namespace ExhaustiveGC
                 return ls;
             }
 
-
-            LinelSet selectLinels(const DGtal::Z2i::DigitalSet& ds)
+            InputData::MyCoordsCollection toMyCoords(const DGtal::Z2i::DigitalSet& ds, std::ostringstream& oss)
             {
                 InputData::MyCoordsCollection coords;
 
                 DGtal::Z2i::Domain domain = ds.domain();
-                Point size = domain.upperBound() - domain.lowerBound() + Point(1,1);
-                cv::Mat img = cv::Mat::zeros(size[1],size[0],DIPaCUS::Representation::GRAYSCALE_IMG_TYPE);
-
                 Point translation = Point(0,0) - domain.lowerBound();
+                Point size = domain.upperBound() - domain.lowerBound() + Point(1,1);
                 int maxY = size[1];
-
-                std::ostringstream oss;
-                DIPaCUS::Representation::digitalSetToCVMat(img,ds);
-                SelectFixedPoints::gui(img,oss);
-
+                
                 std::string s = oss.str();
                 std::string buffer="";
                 int currDim=0;
@@ -124,10 +117,32 @@ namespace ExhaustiveGC
                         buffer+=c;
                     }
                 }
+                
+                return coords;
+            }
+
+            LinelSet selectLinels(const DGtal::Z2i::DigitalSet& ds)
+            {
+                DGtal::Z2i::Domain domain = ds.domain();
+                Point size = domain.upperBound() - domain.lowerBound() + Point(1,1);
+                cv::Mat img = cv::Mat::zeros(size[1],size[0],DIPaCUS::Representation::GRAYSCALE_IMG_TYPE);
+                
+                std::ostringstream oss;
+                DIPaCUS::Representation::digitalSetToCVMat(img,ds);
+                SelectFixedPoints::gui(img,oss);
+
+                
+                return convertToDGtalPoints(domain,toMyCoords(ds,oss));
+
+            }
+
+            LinelSet setEndpoints(DGtal::Z2i::DigitalSet& ds)
+            {
+                std::ostringstream oss;
+                SetEndpointsOrientation::gui(ds,oss);
 
 
-                return convertToDGtalPoints(domain,coords);
-
+                return convertToDGtalPoints(ds.domain(),toMyCoords(ds,oss));                
             }
         }
     }

@@ -1,0 +1,9 @@
+#ifndef EXHAUSTIVE_GC_SUMMARY_CURVE_TYPES_H
+#define EXHAUSTIVE_GC_SUMMARY_CURVE_TYPES_H
+
+namespace SummaryCurve
+{
+    enum ImageOutputType{SVG,EPS};
+}
+
+#endif //EXHAUSTIVE_GC_SUMMARY_CURVE_TYPES_H

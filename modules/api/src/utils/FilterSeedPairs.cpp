@@ -43,3 +43,27 @@ FilterSeedPairs::FilterSeedPairs(SeedPairsList &spl,
     }
 
 }
+
+FilterSeedPairs::FilterSeedPairs(SeedPairsList &spl,
+                                 const LinelSet& ls)
+{
+    typedef std::vector< CheckableSeedPair > CheckableSeedList;
+    CheckableSeedList filteredPairList;
+
+
+
+    SeedPairsList::const_iterator it = spl.begin();
+    while(it!=spl.end())
+    {
+        if(ls.find( *it->first.inCirculatorBegin) !=ls.end() ||
+           ls.find( *it->first.outCirculatorBegin) !=ls.end() )
+        {
+            it = spl.erase(it);
+        }else
+        {
+            ++it;
+        }
+
+    }
+
+}

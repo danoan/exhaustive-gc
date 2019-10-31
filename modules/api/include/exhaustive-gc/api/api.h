@@ -43,6 +43,9 @@ namespace ExhaustiveGC
                                          std::string outputFolder,
                                          std::ostream& os);
 
+        void exportPixelMask(const std::string& imageOutputPath, const DGtal::Z2i::Domain& domain, const std::set<DGtal::Z2i::Point>& fixedPixels);
+        void exportImageFromDigitalSet(const std::string& imageOutputPath, const DigitalSet& ds, const std::set<DGtal::Z2i::Point>& fixedPixels);
+
         void writeEnergy(std::ostream& os, int iteration, double energyValue)
         {
             os << iteration << "\t" << energyValue << "\n";

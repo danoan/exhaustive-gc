@@ -19,6 +19,7 @@ bool findOptimalOneExpansion(Curve& optimalCurve,
 
 
     FilterSeedPairs(spl,sp.minGCLength,sp.maxGCLength);
+    FilterSeedPairs(spl,sp.energyInput.fixedLinels);
     std::cout << spl.size() << " qualified seeds\n";
 
     int threadSize = sp.threadSize;
@@ -67,6 +68,15 @@ void exportImageFromDigitalSet(const std::string& imageOutputPath, const Digital
     DGtal::GenericWriter<Image2D>::exportFile(imageOutputPath,img);
 }
 
+void exportPixelMask(const std::string& imageOutputPath, const DGtal::Z2i::Domain& domain, const std::set<DGtal::Z2i::Point>& fixedPixels)
+{
+    typedef DIPaCUS::Representation::Image2D Image2D;
+
+    Image2D img(domain);
+    for(auto p:fixedPixels) img.setValue(p,128);
+    DGtal::GenericWriter<Image2D>::exportFile(imageOutputPath,img);
+}
+
 template<typename TSearchParameters>
 void optimalOneExpansionSequence(const DigitalSet& dsInput,
                                  const TSearchParameters& sp,
@@ -90,6 +100,8 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
     {
         for(auto p:kspace.sUpperIncident(l)) fixedPixels.insert( kspace.sCoords(p) );
     }
+
+    exportPixelMask(outputFolder + "/pixelMask.pgm", domain,fixedPixels);
 
     double lastEnergyValue = Energy::energyValue(workingSet,sp.energyInput);
 

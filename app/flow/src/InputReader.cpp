@@ -22,7 +22,8 @@ namespace InputReader
                 "[-n Threads number]\n"
                 "[-k Thread elements]\n"
                 "[-f Interactively select fixed linels]\n"
-                "[-F Number n of fixed linels followed by n pairs x y kcoordinate]\n";
+                "[-F Number n of fixed linels followed by n pairs x y kcoordinate]\n"
+                "[-x Set endpoints orientation]\n";
     }
 
     InputData readInput(int argc, char* argv[])
@@ -35,7 +36,7 @@ namespace InputReader
 
         InputData id;
         int opt;
-        while( (opt=getopt(argc,argv,"m:M:j:i:S:s:e:a:h:t:r:n:k:fF:"))!=-1 )
+        while( (opt=getopt(argc,argv,"m:M:j:i:S:s:e:a:h:t:r:n:k:fF:x"))!=-1 )
         {
             switch(opt)
             {
@@ -122,13 +123,18 @@ namespace InputReader
                 }
                 case 'f':
                 {
-                    id.selectFixedLinels = true;
+                    id.initMode = InputData::InteractiveFixedLinels;
                     break;
                 }
                 case 'F':
                 {
                     id.numFixedLinels = std::atoi(optarg);
-                    id.selectFixedLinels = false;
+                    id.initMode = InputData::FixedLinels;
+                    break;
+                }
+                case 'x':
+                {
+                    id.initMode = InputData::InteractiveEndpoints;
                     break;
                 }
                 default:
@@ -139,7 +145,7 @@ namespace InputReader
             }
         }
 
-        if(!id.selectFixedLinels)
+        if(id.initMode==InputData::FixedLinels)
         {
             id.fixedLinels.resize(id.numFixedLinels);
             for(int i=0;i<id.numFixedLinels;++i)

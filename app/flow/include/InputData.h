@@ -13,6 +13,8 @@ struct InputData
     typedef ExhaustiveGC::Core::Strategy  Strategy;
     typedef ExhaustiveGC::Energy::EnergyType  EnergyType;
     typedef ExhaustiveGC::Energy::EnergyInput::AlgorithmEstimator  AlgorithmEstimator;
+    
+    enum InitializationMode{None,FixedLinels,InteractiveFixedLinels,InteractiveEndpoints};
 
     struct MyCoords
     {
@@ -45,7 +47,7 @@ struct InputData
         threadSize = 0;
 
         numFixedLinels=0;
-        selectFixedLinels=false;
+        initMode = None;
 
         outputFolder="";
     }
@@ -70,8 +72,9 @@ struct InputData
     int threadSize;
 
     int numFixedLinels;
-    bool selectFixedLinels;
     MyCoordsCollection fixedLinels;
+    
+    InitializationMode initMode;
 
 
     std::string outputFolder;

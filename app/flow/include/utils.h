@@ -8,6 +8,7 @@
 #include <DIPaCUS/derivates/Misc.h>
 
 #include <select-fixed-points/gui.h>
+#include <set-endpoints-orientation/gui.h>
 
 #include "Shape.h"
 #include "InputData.h"
@@ -29,8 +30,9 @@ namespace ExhaustiveGC
             void writeInputData(const InputData& id, const LinelSet& fixedLinels, const std::string& outputFile);
 
             LinelSet randomLinels(const DGtal::Z2i::DigitalSet& ds,int nLinels);
-            LinelSet convertToDGtalPoints(const DGtal::Z2i::Domain& domain, InputData::MyCoordsCollection& inputCoords);
+            LinelSet convertToDGtalPoints(const DGtal::Z2i::Domain& domain, const InputData::MyCoordsCollection& inputCoords);
             LinelSet selectLinels(const DGtal::Z2i::DigitalSet& ds);
+            LinelSet setEndpoints(DGtal::Z2i::DigitalSet& ds);
         }
 
     }
