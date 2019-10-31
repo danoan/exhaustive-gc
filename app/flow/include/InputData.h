@@ -2,6 +2,7 @@
 #define EXHAUSTIVE_GC_INPUTDATA_H
 
 #include <string>
+
 #include "Shape.h"
 #include "exhaustive-gc/core/model/Types.h"
 #include "exhaustive-gc/energy/EnergyType.h"
@@ -14,17 +15,7 @@ struct InputData
     typedef ExhaustiveGC::Energy::EnergyType  EnergyType;
     typedef ExhaustiveGC::Energy::EnergyInput::AlgorithmEstimator  AlgorithmEstimator;
     
-    enum InitializationMode{None,FixedLinels,InteractiveFixedLinels,InteractiveEndpoints};
-
-    struct MyCoords
-    {
-        MyCoords():x(0),y(0),sign(false){}
-        MyCoords(int x, int y, bool sign) : x(x), y(y), sign(sign) {}
-
-        int x,y;
-        bool sign;
-    };
-    typedef std::vector<MyCoords> MyCoordsCollection;
+    enum InitializationMode{None,FixedPixels,InteractiveFixedPixels,InteractiveEndpoints};
 
     InputData()
     {
@@ -46,7 +37,7 @@ struct InputData
         nThreads = 4;
         threadSize = 0;
 
-        numFixedLinels=0;
+        fixedPixelsMask="";
         initMode = None;
 
         outputFolder="";
@@ -71,9 +62,7 @@ struct InputData
     int nThreads;
     int threadSize;
 
-    int numFixedLinels;
-    MyCoordsCollection fixedLinels;
-    
+    std::string fixedPixelsMask;
     InitializationMode initMode;
 
 

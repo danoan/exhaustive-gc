@@ -24,33 +24,23 @@ namespace ExhaustiveGC
                 {
                     typedef DIPaCUS::Representation::Image2D Image2D;
                     Image2D image = DGtal::GenericReader<Image2D>::import(shape.imagePath);
-                    DGtal::Z2i::DigitalSet dsOut(image.domain());
+                    DigitalSet dsOut(image.domain());
                     DIPaCUS::Representation::imageAsDigitalSet(dsOut,image,1);
                     return dsOut;
                 }
             }
 
-            void writeInputData(const InputData& id, const LinelSet& fixedLinels, const std::string& outputFile)
+            void writeInputData(const InputData& id, const std::string& outputFile)
             {
                 std::string inputDataFile = outputFile;
                 std::ofstream ofs(inputDataFile);
                 ofs << id;
 
-                ofs << "Fixed Linels: ";
-                for(auto l:fixedLinels)
-                {
-                    auto c = l.preCell().coordinates;
-                    ofs << (c[0]>0?"+":"") << (c[0]>0?c[0]:-c[0]) << " "
-                        << (c[1]>0?"+":"") << (c[1]>0?c[1]:-c[1]) << " "
-                        << l.preCell().positive << " ";
-                }
-                ofs << "\n";
-
                 ofs.flush();
                 ofs.close();
             }
 
-            LinelSet randomLinels(const DGtal::Z2i::DigitalSet& ds,int nLinels)
+            LinelSet randomLinels(const DigitalSet& ds,int nLinels)
             {
                 LinelSet ls;
                 Curve shapeBoundary;
@@ -73,25 +63,21 @@ namespace ExhaustiveGC
                 return ls;
             }
 
-            LinelSet convertToDGtalPoints(const DGtal::Z2i::Domain& domain, const InputData::MyCoordsCollection& inputCoords)
+            LinelSet getLinels(const DigitalSet& ds, const std::string& fixedPixelsMask)
             {
-                LinelSet ls;
-                DGtal::Z2i::KSpace kspace;
-                kspace.init(domain.lowerBound(),domain.upperBound(),true);
+                typedef DIPaCUS::Representation::Image2D Image2D;
+                Image2D image = DGtal::GenericReader<Image2D>::import(fixedPixelsMask);
+                DigitalSet dsOut(image.domain());
+                DIPaCUS::Representation::imageAsDigitalSet(dsOut,image,1);
 
-                for(auto c:inputCoords) ls.insert( kspace.sCell( DGtal::Z2i::Point(c.x,c.y),c.sign) );
-                return ls;
+                return getLinels(ds,dsOut.begin(),dsOut.end());
             }
-
-            InputData::MyCoordsCollection toMyCoords(const DGtal::Z2i::DigitalSet& ds, std::ostringstream& oss)
+            
+            PointVector toPointVector(const DigitalSet& ds, std::ostringstream& oss)
             {
-                InputData::MyCoordsCollection coords;
+                PointVector pixels;
+                Point translation = ds.domain().lowerBound();
 
-                DGtal::Z2i::Domain domain = ds.domain();
-                Point translation = Point(0,0) - domain.lowerBound();
-                Point size = domain.upperBound() - domain.lowerBound() + Point(1,1);
-                int maxY = size[1];
-                
                 std::string s = oss.str();
                 std::string buffer="";
                 int currDim=0;
@@ -100,17 +86,15 @@ namespace ExhaustiveGC
                 {
                     if(c==' ')
                     {
-                        if(currDim<=1)
+                        int v = buffer[0]=='+'?std::atoi(buffer.data()+1): -std::atoi(buffer.data());
+                        p[currDim++] = v;
+
+                        if(currDim==2)
                         {
-                            int v = buffer[0]=='+'?std::atoi(buffer.data()+1): -std::atoi(buffer.data());
-                            p[currDim++] = v;
-                        }else
-                        {
-                            bool sign = std::atoi(buffer.data())==1;
-                            p-=2*translation;
-                            coords.push_back( InputData::MyCoords(p[0],p[1],sign));
+                            pixels.push_back( Point(p[0],p[1])+translation );
                             currDim=0;
                         }
+
                         buffer="";
                     }else
                     {
@@ -118,10 +102,10 @@ namespace ExhaustiveGC
                     }
                 }
                 
-                return coords;
+                return pixels;
             }
 
-            LinelSet selectLinels(const DGtal::Z2i::DigitalSet& ds)
+            LinelSet selectLinels(const DigitalSet& ds)
             {
                 DGtal::Z2i::Domain domain = ds.domain();
                 Point size = domain.upperBound() - domain.lowerBound() + Point(1,1);
@@ -129,20 +113,22 @@ namespace ExhaustiveGC
                 
                 std::ostringstream oss;
                 DIPaCUS::Representation::digitalSetToCVMat(img,ds);
-                SelectFixedPoints::gui(img,oss);
+                SelectFixedPixels::gui(img,oss);
 
+                PointVector fixedPixels = toPointVector(ds,oss);
                 
-                return convertToDGtalPoints(domain,toMyCoords(ds,oss));
+                return getLinels(ds,fixedPixels.begin(),fixedPixels.end());
 
             }
 
-            LinelSet setEndpoints(DGtal::Z2i::DigitalSet& ds)
+            LinelSet setEndpoints(DigitalSet& ds)
             {
                 std::ostringstream oss;
                 SetEndpointsOrientation::gui(ds,oss);
 
+                PointVector fixedPixels = toPointVector(ds,oss);
 
-                return convertToDGtalPoints(ds.domain(),toMyCoords(ds,oss));                
+                return getLinels(ds,fixedPixels.begin(),fixedPixels.end());
             }
         }
     }

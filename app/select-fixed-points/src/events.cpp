@@ -1,6 +1,6 @@
 #include "select-fixed-points/events.h"
 
-namespace SelectFixedPoints
+namespace SelectFixedPixels
 {
     namespace Events
     {
@@ -13,13 +13,14 @@ namespace SelectFixedPoints
         {
             GUIControl* me = (GUIControl*) param;
             cv::Mat tempImg = me->displayedImg.clone();
+            int maxY = me->displayedImg.rows-1;
             switch(event)
             {
                 case cv::EVENT_LBUTTONDOWN:
                 {
                     cv::Point p1(x-1,y-1);
                     cv::Point p2(x+1,y+1);
-                    me->addPointsInRect(p1,p2);
+                    me->addPointsInRect(p1,p2,maxY);
                     cv::rectangle( me->displayedImg, p1,p2, 64,-1);
                     break;
                 }

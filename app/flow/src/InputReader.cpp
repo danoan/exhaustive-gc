@@ -21,8 +21,8 @@ namespace InputReader
                 "[-r II estimation ball radius]\n"
                 "[-n Threads number]\n"
                 "[-k Thread elements]\n"
-                "[-f Interactively select fixed linels]\n"
-                "[-F Number n of fixed linels followed by n pairs x y kcoordinate]\n"
+                "[-f Interactively select fixed pixels]\n"
+                "[-F Fixed pixels mask image path]\n"
                 "[-x Set endpoints orientation]\n";
     }
 
@@ -123,13 +123,13 @@ namespace InputReader
                 }
                 case 'f':
                 {
-                    id.initMode = InputData::InteractiveFixedLinels;
+                    id.initMode = InputData::InteractiveFixedPixels;
                     break;
                 }
                 case 'F':
                 {
-                    id.numFixedLinels = std::atoi(optarg);
-                    id.initMode = InputData::FixedLinels;
+                    id.fixedPixelsMask = optarg;
+                    id.initMode = InputData::FixedPixels;
                     break;
                 }
                 case 'x':
@@ -144,35 +144,6 @@ namespace InputReader
                 }
             }
         }
-
-        if(id.initMode==InputData::FixedLinels)
-        {
-            id.fixedLinels.resize(id.numFixedLinels);
-            for(int i=0;i<id.numFixedLinels;++i)
-            {
-                int x,y;
-                bool sign;
-
-                std::string xStr = argv[optind++];
-                std::string yStr = argv[optind++];
-
-                if(xStr[0]=='+')x = std::atoi( xStr.data()+1 );
-                else x = -std::atoi( xStr.data() );
-
-                if(yStr[0]=='+')y = std::atoi( yStr.data()+1 );
-                else y = -std::atoi( yStr.data() );
-
-                sign = std::atoi( argv[optind++] )==1;
-
-
-                id.fixedLinels[i] = InputData::MyCoords( x,y,sign );
-            }
-
-
-            if(id.fixedLinels.size()!=id.numFixedLinels) throw std::runtime_error("Missing coordinates or wrong format. It must be pairs of integers and sign (0 negative 1 positive) )");
-        }
-
-
 
         id.outputFolder = argv[optind++];
         return id;

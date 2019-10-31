@@ -8,7 +8,7 @@
 #include "events.h"
 #include "utils.h"
 
-namespace SelectFixedPoints
+namespace SelectFixedPixels
 {
     void gui(cv::Mat& img, std::ostream& os);
 }

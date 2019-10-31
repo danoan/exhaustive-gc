@@ -30,12 +30,12 @@ InitializationPair resolveInitialSet(const InputData& id)
         {
             return InitializationPair(shape,ls);
         }
-        case InputData::FixedLinels:
+        case InputData::FixedPixels:
         {
-            ls = APP::Utils::convertToDGtalPoints(shape.domain(),id.fixedLinels);
+            ls = APP::Utils::getLinels(shape,id.fixedPixelsMask);
             return InitializationPair(shape,ls);
         }
-        case InputData::InteractiveFixedLinels:
+        case InputData::InteractiveFixedPixels:
         {
             ls = APP::Utils::selectLinels(shape);
             return InitializationPair(shape,ls);
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
     boost::filesystem::create_directories(id.outputFolder);
 
 
-    APP::Utils::writeInputData(id,ls,id.outputFolder + "/inputData.txt");
+    APP::Utils::writeInputData(id,id.outputFolder + "/inputData.txt");
     std::ofstream ofs(id.outputFolder + "/energy.txt");
 
 

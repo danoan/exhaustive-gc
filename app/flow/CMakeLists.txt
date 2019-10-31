@@ -1,18 +1,18 @@
 cmake_minimum_required(VERSION 3.2)
-project(exhaustive-gc-app-flow)
+project(app-exhaustive-gc-flow)
 
-add_executable(exhaustive-gc-app-flow
+add_executable(app-exhaustive-gc-flow
         src/utils.cpp
         src/InputReader.cpp
         flow.cpp)
 
-add_dependencies(exhaustive-gc-app-flow exhaustive-gc-api exhaustive-gc-energy exhaustive-gc-core exhaustive-gc-utils select-fixed-points set-endpoints-orientation)
+add_dependencies(app-exhaustive-gc-flow exhaustive-gc-api exhaustive-gc-energy exhaustive-gc-core exhaustive-gc-utils select-fixed-points set-endpoints-orientation)
 
-target_link_directories(exhaustive-gc-app-flow PRIVATE
+target_link_directories(app-exhaustive-gc-flow PRIVATE
         ${CMAKE_BINARY_DIR}/app/select-fixed-points
         ${CMAKE_BINARY_DIR}/app/set-endpoints-orientation)
 
-target_include_directories(exhaustive-gc-app-flow PRIVATE
+target_include_directories(app-exhaustive-gc-flow PRIVATE
         include
         ${CMAKE_SOURCE_DIR}/modules/core/include
         ${CMAKE_SOURCE_DIR}/modules/energy/include
@@ -25,7 +25,7 @@ target_include_directories(exhaustive-gc-app-flow PRIVATE
         ${BTOOLS_INCLUDE_DIRS}
 )
 
-target_link_libraries(exhaustive-gc-app-flow
+target_link_libraries(app-exhaustive-gc-flow
         -lset-endpoints-orientation
         -lselect-fixed-points
         -lexhaustive-gc-api
@@ -43,7 +43,7 @@ target_link_libraries(exhaustive-gc-app-flow
         ${OpenCV_LIBS}
         )
 
-install(TARGETS exhaustive-gc-app-flow
+install(TARGETS app-exhaustive-gc-flow
         DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 
 install(DIRECTORY include

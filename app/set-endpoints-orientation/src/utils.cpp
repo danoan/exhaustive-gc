@@ -52,7 +52,7 @@ namespace SetEndpointsOrientation
                 {
                     if( img.at<cv::Vec3b>(r,c)==cv::Vec3b(255,255,255) )
                     {
-                        cvPoints.push_back(cv::Point(c,r));
+                        cvPoints.push_back(cv::Point(c,img.rows-1-r));
                     }
                 }
             }

@@ -5,7 +5,7 @@
 #include <opencv2/opencv.hpp>
 #include "GUIControl.h"
 
-namespace SelectFixedPoints
+namespace SelectFixedPixels
 {
     namespace Events
     {

@@ -2,9 +2,9 @@
 
 namespace SetEndpointsOrientation
 {
-    cv::Point SCREEN_SIZE(800,800);
+    cv::Point SCREEN_SIZE(600,600);
     cv::Vec3b POLY_COLOR(255,255,255);
-    int SHAPE_THICKNESS = 120;
+    int SHAPE_THICKNESS = 60;
 
     void gui(const std::string& outputFilePath, std::ostream& os)
     {
@@ -23,7 +23,7 @@ namespace SetEndpointsOrientation
     {
         typedef DGtal::Z2i::SCell SCell;
 
-        std::string wn = "set-endpoints*orientation";
+        std::string wn = "set-endpoints-orientation";
         cv::namedWindow(wn,cv::WINDOW_NORMAL);
 
         cv::Mat img = cv::Mat::zeros( SCREEN_SIZE, CV_8UC3);
@@ -43,14 +43,13 @@ namespace SetEndpointsOrientation
                 {
                     onExecution=false;
 
-                    std::vector<cv::Point> fixedPoints;
-                    Utils::fixPoints(fixedPoints,*me.displayImg);
+                    std::vector<cv::Point> fixedPixels;
+                    Utils::fixPoints(fixedPixels,*me.displayImg);
 
                     cv::Mat gray = cv::Mat::zeros(me.displayImg->rows,me.displayImg->cols,CV_8U);
                     Utils::drawPolygon(gray,POLY_COLOR,SHAPE_THICKNESS,me.p1,me.p1+me.d1,me.p2,me.p2+me.d2,true);
 
-                    std::vector<SCell> linels = SelectFixedPoints::Utils::filterBoundaryLinels(gray,fixedPoints);
-                    SelectFixedPoints::Utils::writeFixedLinels(os,linels);
+                    SelectFixedPixels::Utils::writeFixedPixels(os,fixedPixels);
                     os.flush();
 
                     DIPaCUS::Representation::CVMatToDigitalSet(ds,gray);

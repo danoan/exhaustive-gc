@@ -1,6 +1,6 @@
 #include "select-fixed-points/gui.h"
 
-namespace SelectFixedPoints
+namespace SelectFixedPixels
 {
     void gui(cv::Mat& img, std::ostream& os)
     {
@@ -26,15 +26,14 @@ namespace SelectFixedPoints
                 {
                     displayedImg = img.clone();
                     cv::imshow(wn,displayedImg);
-                    me.fixedPoints.clear();
+                    me.fixedPixels.clear();
                     break;
                 }
                 case 's':
                 {
-                    auto fixedLinels = Utils::filterBoundaryLinels(img,me.fixedPoints);
-                    Utils::writeFixedLinels(os, fixedLinels );
+                    Utils::writeFixedPixels(os, me.fixedPixels );
                     cv::imshow(wn,img);
-                    me.fixedPoints.clear();
+                    me.fixedPixels.clear();
                     onExecution=false;
                     break;
                 }

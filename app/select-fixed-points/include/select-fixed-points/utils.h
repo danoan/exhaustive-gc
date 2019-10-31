@@ -8,15 +8,14 @@
 #include <DIPaCUS/base/Representation.h>
 #include <DIPaCUS/derivates/Misc.h>
 
-namespace SelectFixedPoints
+namespace SelectFixedPixels
 {
     namespace Utils
     {
         typedef DGtal::Z2i::SCell SCell;
         typedef DGtal::Z2i::Point Point;
 
-        std::vector<SCell> filterBoundaryLinels(cv::Mat& img, std::vector<cv::Point>& fixedPoints);
-        void writeFixedLinels(std::ostream& os, std::vector<SCell>& fixedLinels);
+        void writeFixedPixels(std::ostream& os, const std::vector<cv::Point>& fixedPixels);
     }
 }
 

@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
     cv::imwrite("test.pgm",cvImg);
     DIPaCUS::Representation::digitalSetToCVMat(cvImg,square);
 
-    SelectFixedPoints::gui(cvImg,std::cout);
+    SelectFixedPixels::gui(cvImg,std::cout);
 
 
     return 0;

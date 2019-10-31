@@ -1,13 +1,13 @@
 #ifndef EXHAUSTIVE_GC_SELECTFIXEDPOINTS_GUICONTROL_H
 #define EXHAUSTIVE_GC_SELECTFIXEDPOINTS_GUICONTROL_H
 
-namespace SelectFixedPoints
+namespace SelectFixedPixels
 {
     struct GUIControl
     {
         GUIControl(const cv::Mat& loadedImg, cv::Mat& displayedImg):loadedImg(loadedImg),displayedImg(displayedImg){}
 
-        void addPointsInRect(const cv::Point& lb, const cv::Point& ub)
+        void addPointsInRect(const cv::Point& lb, const cv::Point& ub,int maxY)
         {
             cv::Point diff = ub - lb;
 
@@ -15,7 +15,9 @@ namespace SelectFixedPoints
             {
                 for(auto y=0;y<=diff.y;++y)
                 {
-                    fixedPoints.push_back(cv::Point(lb+cv::Point(x,y)));
+                    cv::Point p = (lb+cv::Point(x,y));
+                    p.y=maxY-p.y;
+                    fixedPixels.push_back(p);
                 }
             }
 
@@ -24,7 +26,7 @@ namespace SelectFixedPoints
         const cv::Mat& loadedImg;
         cv::Mat& displayedImg;
 
-        std::vector<cv::Point> fixedPoints;
+        std::vector<cv::Point> fixedPixels;
     };
 }
 
