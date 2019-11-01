@@ -8,7 +8,7 @@ add_executable(app-select-fixed-points select-fixed-points.cpp)
 if(${USE_REMOTE_REPOSITORIES})
     add_dependencies(app-select-fixed-points dipacus select-fixed-points)
 else()
-    add_dependencies(app-select-fixed-points dipacus select-fixed-points)
+    add_dependencies(app-select-fixed-points select-fixed-points)
 endif()
 
 
