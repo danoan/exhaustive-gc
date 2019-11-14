@@ -26,3 +26,10 @@ target_link_libraries(select-fixed-points
         -ldipacus-base
         ${DGTAL_LIBRARIES}
         ${OpenCV_LIBS})
+
+install(DIRECTORY include
+        DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+install(TARGETS select-fixed-points
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)

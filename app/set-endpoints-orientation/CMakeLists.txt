@@ -36,4 +36,11 @@ target_link_libraries(set-endpoints-orientation
         ${DGTAL_LIBRARIES}
         ${OpenCV_LIBS})
 
+install(DIRECTORY include
+        DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+install(TARGETS set-endpoints-orientation
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+
 add_subdirectory(app)
