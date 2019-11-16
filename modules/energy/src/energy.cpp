@@ -64,12 +64,12 @@ namespace ExhaustiveGC
 
             LengthEstimationsVector evLength;
             lengthEstimation(evLength,energyInput,KImage,begin,end);
-
+            
             auto it = begin;
             int i=0;
             do
             {
-                weightMap[*it]= pow(ev[i],2)  + energyInput.lengthPenalization*evLength[i];
+                weightMap[*it]= energyInput.gridStep*pow(ev[i],2)  + energyInput.lengthPenalization*evLength[i];
                 ++it;
                 ++i;
             }while(i<ev.size());
