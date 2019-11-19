@@ -69,7 +69,7 @@ namespace ExhaustiveGC
             int i=0;
             do
             {
-                weightMap[*it]= energyInput.gridStep*pow(ev[i],2)  + energyInput.lengthPenalization*evLength[i];
+                weightMap[*it]= energyInput.gridStep*pow(ev[i],2)  + energyInput.lengthPenalization*energyInput.gridStep;
                 ++it;
                 ++i;
             }while(i<ev.size());
