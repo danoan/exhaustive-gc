@@ -87,7 +87,7 @@ def flow(c):
 
     print("\n*****Running: ", s,"\n")
 
-    binary = "%s/%s" % (BIN_FOLDER,"flow/exhaustive-gc-app-flow")
+    binary = "%s/%s" % (BIN_FOLDER,"flow/app-exhaustive-gc-flow")
     subprocess.call( [binary,
                       "%s%s" % ("-S",shape),
                       "%s%d" % ("-r",radius),
