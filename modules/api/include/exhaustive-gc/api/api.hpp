@@ -53,7 +53,6 @@ bool findOptimalOneExpansion(Curve& optimalCurve,
 
     CCGData ccgData(sp.jointPairs,
                     sp.strategy,
-                    false,
                     ds,
                     cspv,
                     sp.energyInput,

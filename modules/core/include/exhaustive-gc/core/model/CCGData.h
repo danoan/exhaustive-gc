@@ -28,7 +28,6 @@ namespace ExhaustiveGC
         public:
             CCGData(unsigned int maxPairs,
                     Strategy strategy,
-                    bool preserveConnectedeness,
                     const DigitalSet& ds,
                     const CheckableSeedVector &csVector,
                     const Energy::EnergyInput& energyInput,
@@ -37,8 +36,7 @@ namespace ExhaustiveGC
                                           ds(ds),
                                           csVector(csVector),
                                           energyInput(energyInput),
-                                          KImage(KImage),
-                                          preserveConnectedeness(preserveConnectedeness){}
+                                          KImage(KImage){}
 
             ~CCGData(){}//Checkers are destroyed in LazyCombinator
 
@@ -53,7 +51,6 @@ namespace ExhaustiveGC
             const CheckableSeedVector& csVector;
 
             unsigned int maxPairs;
-            bool preserveConnectedeness;
 
             Strategy strategy;
             std::vector< Checker* > checkers;

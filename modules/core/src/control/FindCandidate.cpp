@@ -73,12 +73,7 @@ namespace ExhaustiveGC
                         Curve curve;
                         CurveFromJoints(curve, seedCombination.data(), params.maxPairs);
 
-
-                        double currentEnergyValue;
-                        if(params.preserveConnectedeness)
-                            currentEnergyValue = computeEnergyValue(params.ds,curve,params.KImage,params.energyInput);
-                        else
-                            currentEnergyValue = Energy::energyValue(curve,params.KImage,params.energyInput);
+                        double currentEnergyValue = Energy::energyValue(curve,params.KImage,params.energyInput);
 
                         if (currentEnergyValue < ti.vars.energyValue)
                         {
