@@ -4,7 +4,8 @@ template<typename TSearchParameters>
 bool findOptimalOneExpansion(Curve& optimalCurve,
                              const double currentEnergyValue,
                              const TSearchParameters& sp,
-                             const DigitalSet& ds)
+                             const DigitalSet& ds,
+                             const int maxGCLength)
 {
     typedef GenerateSeedPairs::SeedPair SeedPair;
     typedef std::vector< CheckableSeedPair > CheckableSeedPairVector;
@@ -13,12 +14,29 @@ bool findOptimalOneExpansion(Curve& optimalCurve,
     KSpace kspace;
     kspace.init(domain.lowerBound(),domain.upperBound(),true);
 
-    GCurve::Range gcRange(ds,5);
     GenerateSeedPairs::SeedPairsList spl;
-    GenerateSeedPairs(spl,gcRange);
+
+    std::vector<GCurve::Range*> ranges;
+    if(sp.automaticGCLength)
+    {
+        int step=maxGCLength/3;
+        for(int i=0;i<3;++i)
+        {
+            ranges.push_back( new GCurve::Range(ds,step*(i+1)) );
+            GenerateSeedPairs(spl,*(ranges[i]) );
+        }
+    } else
+    {
+        int k=0;
+        for(int i=sp.minGCLength;i<=sp.maxGCLength;++i,++k)
+        {
+            ranges.push_back( new GCurve::Range(ds,i) );
+            GenerateSeedPairs(spl,*(ranges[k]) );
+        }
+
+    }
 
 
-    FilterSeedPairs(spl,sp.minGCLength,sp.maxGCLength);
     FilterSeedPairs(spl,sp.energyInput.fixedLinels);
     std::cout << spl.size() << " qualified seeds\n";
 
@@ -47,14 +65,15 @@ bool findOptimalOneExpansion(Curve& optimalCurve,
     }
 
 
-    return ExhaustiveGC::Core::FindCandidate::findCandidate(optimalCurve,
-                                                            currentEnergyValue,
-                                                            ccgData,
-                                                            sp.nThreads,
-                                                            threadSize);
+    bool flag = ExhaustiveGC::Core::FindCandidate::findCandidate(optimalCurve,
+                                                                 currentEnergyValue,
+                                                                 ccgData,
+                                                                 sp.nThreads,
+                                                                 threadSize);
 
+    for(auto p:ranges) delete(p);
 
-
+    return flag;
 
 }
 
@@ -93,6 +112,9 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
     DigitalSet workingSet(domain);
     workingSet.insert(dsInput.begin(),dsInput.end());
 
+    int N = dsInput.size()/2;
+
+
     DGtal::Z2i::KSpace kspace;
     kspace.init(domain.lowerBound(),domain.upperBound(),true);
     std::set<DGtal::Z2i::Point> fixedPixels;
@@ -114,7 +136,8 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
         bool foundBetter = findOptimalOneExpansion(minCurve,
                                                    lastEnergyValue,
                                                    sp,
-                                                   workingSet);
+                                                   workingSet,
+                                                   N);
 
         if(foundBetter)
         {
@@ -128,7 +151,9 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
             lastEnergyValue = Energy::energyValue(workingSet,sp.energyInput);
         }else
         {
-            break;
+            N/=2;
+            if(N<=10) break;
+            --i;
         }
 
 

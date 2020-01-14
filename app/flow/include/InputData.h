@@ -21,6 +21,8 @@ struct InputData
     {
         minGCLength = 4;
         maxGCLength = 10;
+        automaticGCLength = true;
+
         joints = 2;
         iterations = 10;
 
@@ -47,6 +49,8 @@ struct InputData
     uint maxGCLength;
     uint joints;
     uint iterations;
+
+    bool automaticGCLength;
 
     Shape shape;
     Strategy  strategy;

@@ -26,7 +26,12 @@ public:
         {
             for(IteratorT2 it2=b2;it2!=e2;++it2)
             {
-                oit = PairType(*it1,*it2);
+                auto next = it1->inCirculatorEnd;
+                ++next;
+                if( next == it2->outCirculatorBegin )
+                {
+                    oit = PairType(*it1,*it2);
+                }
             }
         }
     }

@@ -43,11 +43,13 @@ namespace InputReader
                 case 'm':
                 {
                     id.minGCLength = std::atoi(optarg);
+                    id.automaticGCLength = false;
                     break;
                 }
                 case 'M':
                 {
                     id.maxGCLength = std::atoi(optarg);
+                    id.automaticGCLength = false;
                     break;
                 }
                 case 'j':

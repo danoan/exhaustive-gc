@@ -20,7 +20,7 @@ int main()
                                     0.01);
 
     API::Curve optimalCurve;
-    API::SearchParameters sp(Core::Strategy::Best,4,10,11,energyInput,4,1000);
+    API::SearchParameters sp(Core::Strategy::Best,4,10,11,false,energyInput,4,1000);
 
     Utils::Timer::start();
     double energyValue = Energy::energyValue(square,energyInput);

@@ -33,7 +33,8 @@ namespace ExhaustiveGC
         bool findOptimalOneExpansion(Curve& optimalCurve,
                                      const double currentEnergyValue,
                                      const TSearchParameters& sp,
-                                     const DigitalSet& ds);
+                                     const DigitalSet& ds,
+                                     const int maxGCLength);
 
 
         template<typename TSearchParameters>

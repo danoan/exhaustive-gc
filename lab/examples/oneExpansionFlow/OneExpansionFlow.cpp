@@ -19,7 +19,7 @@ int main()
                                     0.01);
 
     API::Curve optimalCurve;
-    API::SearchParameters sp(Core::Strategy::Best,1,4,13,energyInput,4,1000);
+    API::SearchParameters sp(Core::Strategy::Best,1,4,13,false,energyInput,4,1000);
 
     std::string outputFolder= projectDir + "/output";
     boost::filesystem::create_directories(outputFolder);
