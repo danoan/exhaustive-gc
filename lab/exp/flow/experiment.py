@@ -27,10 +27,10 @@ def combinations(configList):
 
 GRID_STEP=[1.0,0.5,0.25]
 SHAPES=["bean","square","flower","triangle","ellipse"]#"wave","square","flower"]#"ball","triangle","pentagon","ellipse"]#"heptagon"]
-RADIUS=[3,5]
+RADIUS=[3,5,10]
 ESTIMATOR=["mdca","ii"]#,"ii"]
 ENERGY=["elastica"]#,"sqc","isqc"]
-LENGTH_PENALIZATION=[0.0001,0.001,0.005,0.01]
+LENGTH_PENALIZATION=[0.001,0.005,0.01]
 ITERATIONS=[200]
 MIN_CURVE_LENGTH=[2]
 MAX_CURVE_LENGTH=[50]
@@ -59,9 +59,9 @@ def valid_combination(c):
     return flag
 
 def resolve_output_folder(gs,shape,radius,iterations,estimator,energy,length_pen,mLength,MLength,jonctions,strategy,num_threads):
-    outputFolder = "%s/%s/radius_%d/%s/%s/len_pen_%.5f/m%dM%d/jonctions_%d/%s/gs_%.5f" % (BASE_OUTPUT_FOLDER,shape,radius,
+    outputFolder = "%s/%s/radius_%d/%s/%s/len_pen_%.5f/jonctions_%d/%s/gs_%.5f" % (BASE_OUTPUT_FOLDER,shape,radius,
                                                                                           estimator,energy,length_pen,
-                                                                                          mLength,MLength,jonctions,strategy,
+                                                                                          jonctions,strategy,
                                                                                           gs)
 
     return outputFolder
@@ -76,8 +76,6 @@ def flow(c):
                  "%s%d" % ("-i",iterations),
                  "%s%s" % ("-e",energy),
                  "%s%f" % ("-a",length_pen),
-                 "%s%f" % ("-m",mLength),
-                 "%s%f" % ("-M",MLength),
                  "%s%f" % ("-j",jonctions),
                  "%s%s" % ("-s",strategy),
                  "%s%s" % ("-t",estimator),
@@ -94,8 +92,6 @@ def flow(c):
                       "%s%d" % ("-i",iterations),
                       "%s%s" % ("-e",energy),
                       "%s%f" % ("-a",length_pen),
-                      "%s%f" % ("-m",mLength),
-                      "%s%f" % ("-M",MLength),
                       "%s%f" % ("-j",jonctions),
                       "%s%s" % ("-s",strategy),
                       "%s%s" % ("-t",estimator),

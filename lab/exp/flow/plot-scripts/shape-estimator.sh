@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-source "graph-plot.sh"
-
 SCRIPT_PATH=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 DATA_FOLDER=$( realpath $1 )
 OUTPUT_FOLDER=$2
 GS=$3
 LENGTH_PEN=$4
+
+source "${SCRIPT_PATH}/graph-plot.sh"
 
 mkdir -p $OUTPUT_FOLDER
 
