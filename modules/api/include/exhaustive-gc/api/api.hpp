@@ -4,8 +4,7 @@ template<typename TSearchParameters>
 bool findOptimalOneExpansion(Curve& optimalCurve,
                              const double currentEnergyValue,
                              const TSearchParameters& sp,
-                             const DigitalSet& ds,
-                             const int maxGCLength)
+                             const DigitalSet& ds)
 {
     typedef GenerateSeedPairs::SeedPair SeedPair;
     typedef std::vector< CheckableSeedPair > CheckableSeedPairVector;
@@ -19,7 +18,7 @@ bool findOptimalOneExpansion(Curve& optimalCurve,
     std::vector<GCurve::Range*> ranges;
     if(sp.automaticGCLength)
     {
-        int step=maxGCLength/3;
+        int step=sp.maxGCLength/3;
         for(int i=0;i<3;++i)
         {
             ranges.push_back( new GCurve::Range(ds,step*(i+1)) );
@@ -96,6 +95,52 @@ void exportPixelMask(const std::string& imageOutputPath, const DGtal::Z2i::Domai
 }
 
 template<typename TSearchParameters>
+struct IterationState
+{
+    typedef TSearchParameters SearchParameters;
+
+    enum sUpdate{UPDATED,KEPT};
+
+
+    IterationState(const DigitalSet& dsInput,SearchParameters sp, int maxIt):sp(sp),maxIt(maxIt),currIt(0)
+    {
+        Curve curve;
+        DIPaCUS::Misc::computeBoundaryCurve(curve,dsInput);
+        this->sp.maxGCLength = curve.size()/2;
+        sMaxGCLength = UPDATED;
+    }
+
+    bool valid()
+    {
+        return currIt < maxIt;
+    }
+
+    void update(const Curve& curveIt, bool found)
+    {
+        if(found)
+        {
+            currIt+=1;
+            sMaxGCLength=KEPT;
+        } else{
+            if(sMaxGCLength==UPDATED) sp.maxGCLength/=2;
+            else sp.maxGCLength = curveIt.size()/2;
+
+            std::cout << "***Updated N to: "<<  sp.maxGCLength << std::endl;
+
+            if(sp.maxGCLength<10) currIt=maxIt;
+            sMaxGCLength=UPDATED;
+        }
+    }
+
+    SearchParameters sp;
+
+    int maxIt;
+    int currIt;
+
+    sUpdate sMaxGCLength;
+};
+
+template<typename TSearchParameters>
 void optimalOneExpansionSequence(const DigitalSet& dsInput,
                                  const TSearchParameters& sp,
                                  int iterations,
@@ -111,9 +156,6 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
     DigitalSet workingSet(domain);
     workingSet.insert(dsInput.begin(),dsInput.end());
 
-    int N = dsInput.size()/2;
-
-
     DGtal::Z2i::KSpace kspace;
     kspace.init(domain.lowerBound(),domain.upperBound(),true);
     std::set<DGtal::Z2i::Point> fixedPixels;
@@ -124,19 +166,21 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
 
     exportPixelMask(outputFolder + "/pixelMask.pgm", domain,fixedPixels);
 
-    double lastEnergyValue = Energy::energyValue(workingSet,sp.energyInput);
+    IterationState<TSearchParameters> itState(workingSet,sp,iterations);
+    double lastEnergyValue = Energy::energyValue(workingSet,itState.sp.energyInput);
 
     exportImageFromDigitalSet(outputFolder + "/" + nDigitsString(0,4) + ".pgm",workingSet,fixedPixels);
-    for(int i=1;i<=iterations;++i)
+    while(itState.valid())
     {
-        writeEnergy(os,i,lastEnergyValue);
+        writeEnergy(os,itState.currIt,lastEnergyValue);
 
         Curve minCurve;
+        DIPaCUS::Misc::computeBoundaryCurve(minCurve,workingSet);
+
         bool foundBetter = findOptimalOneExpansion(minCurve,
                                                    lastEnergyValue,
-                                                   sp,
-                                                   workingSet,
-                                                   N);
+                                                   itState.sp,
+                                                   workingSet);
 
         if(foundBetter)
         {
@@ -145,16 +189,13 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
             workingSet.insert(tempDS.begin(),tempDS.end());
 
 
-            exportImageFromDigitalSet(outputFolder + "/" + nDigitsString(i,4) + ".pgm",workingSet,fixedPixels);
+            exportImageFromDigitalSet(outputFolder + "/" + nDigitsString(itState.currIt,4) + ".pgm",workingSet,fixedPixels);
+            lastEnergyValue = Energy::energyValue(workingSet,itState.sp.energyInput);
 
-            lastEnergyValue = Energy::energyValue(workingSet,sp.energyInput);
-        }else
-        {
-            N/=2;
-            if(N<=10) break;
-            --i;
         }
 
+
+        itState.update(minCurve,foundBetter);
 
     }
 }
