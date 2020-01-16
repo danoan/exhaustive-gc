@@ -152,7 +152,8 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
     Point lb,ub;
     dsInput.computeBoundingBox(lb,ub);
 
-    DGtal::Z2i::Domain domain( lb - Point(40,40),ub + Point(40,40));
+    double h = sp.energyInput.gridStep;
+    DGtal::Z2i::Domain domain( lb - Point(40,40)/h,ub + Point(40,40)/h);
     DigitalSet workingSet(domain);
     workingSet.insert(dsInput.begin(),dsInput.end());
 
