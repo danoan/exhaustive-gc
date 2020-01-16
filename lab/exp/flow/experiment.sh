@@ -14,3 +14,6 @@ ${SCRIPT_PATH}/summary-flow.sh $SUMMARY_APP $DATA_OUTPUT_FOLDER
 
 ${SCRIPT_PATH}/plot-scripts/shape-grid.sh $DATA_OUTPUT_FOLDER $PLOT_OUTPUT_FOLDER ii 5 0.01000
 ${SCRIPT_PATH}/plot-scripts/shape-estimator.sh $DATA_OUTPUT_FOLDER $PLOT_OUTPUT_FOLDER 0.25 0.01000
+${SCRIPT_PATH}/plot-scripts/shape-estimator-bars.sh $DATA_OUTPUT_FOLDER $PLOT_OUTPUT_FOLDER 0.01000 elastica
+${SCRIPT_PATH}/plot-scripts/shape-estimator-bars.sh $DATA_OUTPUT_FOLDER $PLOT_OUTPUT_FOLDER 0.01000 sqc
+
