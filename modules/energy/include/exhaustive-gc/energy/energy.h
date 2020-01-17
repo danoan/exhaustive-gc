@@ -34,14 +34,14 @@ namespace ExhaustiveGC
                               Curve::ConstIterator begin,
                               Curve::ConstIterator end);
 
-        void squaredCurvature(const EnergyInput& energyInput,
+        void simplifiedElastica(const EnergyInput& energyInput,
                               const KSpace& KImage,
                               Curve::ConstIterator begin,
                               Curve::ConstIterator end,
                               WeightMap& weightMap);
 
 
-        void simplifiedElastica(const BaseMap& baseMap,
+        void correctedSimplifiedElastica(const BaseMap& baseMap,
                                        const EnergyInput& energyInput,
                                        const KSpace& KImage,
                                        Curve::ConstIterator begin,

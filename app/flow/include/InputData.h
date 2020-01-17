@@ -29,7 +29,7 @@ struct InputData
         shape = Shape( ShapeType::Square );
         strategy = Strategy::First;
 
-        energyType = EnergyType::SquaredCurvature;
+        energyType = EnergyType::Elastica;
         lengthPenalization = 0.005;
 
         gridStep = 1.0;

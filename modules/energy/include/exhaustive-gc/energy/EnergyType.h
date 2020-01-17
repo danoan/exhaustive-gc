@@ -5,7 +5,7 @@ namespace ExhaustiveGC
 {
     namespace Energy
     {
-        enum EnergyType{ SquaredCurvature,IntSquaredCurvature,Elastica,SimplifiedElastica};
+        enum EnergyType{ IntSquaredCurvature,Elastica,SimplifiedElastica,CorrectedSimplifiedElastica};
     }
 }
 

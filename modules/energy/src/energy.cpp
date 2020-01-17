@@ -51,7 +51,7 @@ namespace ExhaustiveGC
             mdssClosed<EstimationAlgorithms::ALG_PROJECTED>(KImage,begin,end,evLength,energyInput.gridStep,NULL);
         }
 
-        void squaredCurvature(const EnergyInput& energyInput,
+        void simplifiedElastica(const EnergyInput& energyInput,
                               const KSpace& KImage,
                               Curve::ConstIterator begin,
                               Curve::ConstIterator end,
@@ -75,7 +75,7 @@ namespace ExhaustiveGC
             }while(i<ev.size());
         }
 
-        void simplifiedElastica(const BaseMap& baseMap,
+        void correctedSimplifiedElastica(const BaseMap& baseMap,
                                        const EnergyInput& energyInput,
                                        const KSpace& KImage,
                                        Curve::ConstIterator begin,
@@ -165,9 +165,9 @@ namespace ExhaustiveGC
         {
             switch(energyInput.type)
             {
-                case EnergyType::SquaredCurvature:
+                case EnergyType::SimplifiedElastica:
                 {
-                    squaredCurvature(energyInput,KImage,begin,end,weightMap);
+                    simplifiedElastica(energyInput,KImage,begin,end,weightMap);
                     break;
                 }
                 case EnergyType::IntSquaredCurvature:
@@ -180,9 +180,9 @@ namespace ExhaustiveGC
                     elastica(energyInput,KImage,begin, end, weightMap);
                     break;
                 }
-                case EnergyType::SimplifiedElastica:
+                case EnergyType::CorrectedSimplifiedElastica:
                 {
-                    simplifiedElastica(baseMap,energyInput,KImage,begin, end, weightMap);
+                    correctedSimplifiedElastica(baseMap,energyInput,KImage,begin, end, weightMap);
                 }
             }
 

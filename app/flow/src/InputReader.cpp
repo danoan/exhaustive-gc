@@ -12,7 +12,7 @@ namespace InputReader
                 "[-M Maximum glued curve length]\n"
                 "[-j Number of joints to optimize per iteration]\n"
                 "[-i Number of iterations]\n"
-                "[-e Energy (sqc isqc elastica csqc)]\n"
+                "[-e Energy (isqc elastica selastica cselastica)]\n"
                 "[-a Length penalization ]\n"
                 "[-S Shape (triangle square elipse pentagon heptagon ball flower)]\n"
                 "[-s Strategy (first best)]\n"
@@ -85,10 +85,10 @@ namespace InputReader
                 }
                 case 'e':
                 {
-                    if(strcmp(optarg,"sqc")==0) id.energyType = InputData::EnergyType::SquaredCurvature;
-                    else if(strcmp(optarg,"isqc")==0) id.energyType = InputData::EnergyType::IntSquaredCurvature;
+                    if(strcmp(optarg,"isqc")==0) id.energyType = InputData::EnergyType::IntSquaredCurvature;
                     else if(strcmp(optarg,"elastica")==0) id.energyType = InputData::EnergyType::Elastica;
                     else if(strcmp(optarg,"selastica")==0) id.energyType = InputData::EnergyType::SimplifiedElastica;
+                    else if(strcmp(optarg,"cselastica")==0) id.energyType = InputData::EnergyType::CorrectedSimplifiedElastica;
                     else throw std::runtime_error("Unknown energy");
                     break;
                 }
