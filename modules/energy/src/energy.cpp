@@ -72,7 +72,7 @@ namespace ExhaustiveGC
                 weightMap[*it]= energyInput.gridStep*pow(ev[i],2)  + energyInput.lengthPenalization*energyInput.gridStep;
                 ++it;
                 ++i;
-            }while(i<ev.size());
+            }while(it!=end);
         }
 
         void correctedSimplifiedElastica(const BaseMap& baseMap,
@@ -101,7 +101,7 @@ namespace ExhaustiveGC
 
                 ++it;
                 ++i;
-            }while(i<ev.size());
+            }while(it!=end);
         }
 
         void intSquaredCurvature(const EnergyInput& energyInput,
@@ -126,7 +126,7 @@ namespace ExhaustiveGC
                 weightMap[*it]= pow(evCurv[i],2)*evLength[i];
                 ++it;
                 ++i;
-            }while(i<evCurv.size());
+            }while(it!=end);
         }
 
 
@@ -152,7 +152,7 @@ namespace ExhaustiveGC
                 weightMap[*it]= pow(evCurv[i],2)*evLength[i] + energyInput.lengthPenalization*evLength[i];
                 ++it;
                 ++i;
-            }while(i<evCurv.size());
+            }while(it!=end);
         }
 
 
