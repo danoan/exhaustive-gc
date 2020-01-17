@@ -62,11 +62,6 @@ namespace ExhaustiveGC
                                int nThread,
                                int threadSize);
 
-            double computeEnergyValue(const DigitalSet& ds,
-                                      const Curve& curve,
-                                      const KSpace& KImage,
-                                      const Energy::EnergyInput& energyInput);
-
 
 
         }

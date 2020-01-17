@@ -73,7 +73,7 @@ namespace ExhaustiveGC
                         Curve curve;
                         CurveFromJoints(curve, seedCombination.data(), params.maxPairs);
 
-                        double currentEnergyValue = Energy::energyValue(curve,params.KImage,params.energyInput);
+                        double currentEnergyValue = Energy::energyValue(params.baseMap,curve,params.KImage,params.energyInput);
 
                         if (currentEnergyValue < ti.vars.energyValue)
                         {
@@ -108,44 +108,6 @@ namespace ExhaustiveGC
                 return candidateFound;
             }
 
-            double computeEnergyValue(const DigitalSet& ds,
-                                      const Curve& curve,
-                                      const KSpace& KImage,
-                                      const Energy::EnergyInput& energyInput)
-            {
-                std::vector< std::set<Point> > components;
-
-                DigitalSet startingPS = ds;
-
-                auto outerPixelsRange = curve.getOuterPointsRange();
-                for(auto it=outerPixelsRange.begin();it!=outerPixelsRange.end();++it)
-                {
-                    startingPS.erase( *it );
-                }
-
-                double value=0;
-                std::vector< DIPaCUS::Misc::ConnectedComponent > vcc;
-                DIPaCUS::Misc::getConnectedComponents(vcc,startingPS);
-
-                DigitalSet compDS(ds.domain());
-                value = Energy::energyValue(curve, KImage, energyInput);
-                if(vcc.size()!=1)
-                {
-                    int s=0;
-                    for(auto it=vcc.begin();it!=vcc.end();++it)
-                    {
-                        if(it->size()>10) ++s;
-                        if(s==2)
-                        {
-                            value=1e20;
-                            break;
-                        }
-                    }
-                }
-
-                return value;
-
-            }
 
         }
 

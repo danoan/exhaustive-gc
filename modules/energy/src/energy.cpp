@@ -75,6 +75,35 @@ namespace ExhaustiveGC
             }while(i<ev.size());
         }
 
+        void simplifiedElastica(const BaseMap& baseMap,
+                                       const EnergyInput& energyInput,
+                                       const KSpace& KImage,
+                                       Curve::ConstIterator begin,
+                                       Curve::ConstIterator end,
+                                       WeightMap& weightMap)
+        {
+            using namespace GEOC::API::GridCurve::Curvature;
+
+            EstimationsVector ev;
+            curvatureEstimation(ev,energyInput,KImage,begin,end);
+
+            LengthEstimationsVector evLength;
+            lengthEstimation(evLength,energyInput,KImage,begin,end);
+
+            auto it = begin;
+            int i=0;
+            do
+            {
+                double k2=pow(ev[i],2);
+                double st=baseMap.getLength(*it);
+
+                weightMap[*it] = st*energyInput.lengthPenalization + k2*st;
+
+                ++it;
+                ++i;
+            }while(i<ev.size());
+        }
+
         void intSquaredCurvature(const EnergyInput& energyInput,
                                  const KSpace& KImage,
                                  Curve::ConstIterator begin,
@@ -127,7 +156,8 @@ namespace ExhaustiveGC
         }
 
 
-        void computeWeightMap(const KSpace& KImage,
+        void computeWeightMap(const BaseMap& baseMap,
+                              const KSpace& KImage,
                               Curve::ConstIterator begin,
                               Curve::ConstIterator end,
                               const EnergyInput energyInput,
@@ -149,6 +179,10 @@ namespace ExhaustiveGC
                 {
                     elastica(energyInput,KImage,begin, end, weightMap);
                     break;
+                }
+                case EnergyType::SimplifiedElastica:
+                {
+                    simplifiedElastica(baseMap,energyInput,KImage,begin, end, weightMap);
                 }
             }
 
@@ -178,8 +212,18 @@ namespace ExhaustiveGC
 
         double energyValue(const Curve& curve, const KSpace& KImage, const EnergyInput energyInput)
         {
+            BaseMap baseMap(curve,energyInput);
+
             WeightMap weightMap;
-            computeWeightMap(KImage,curve.begin(),curve.end(),energyInput,weightMap);
+            computeWeightMap(baseMap,KImage,curve.begin(),curve.end(),energyInput,weightMap);
+
+            return energyValue(curve,weightMap);
+        }
+
+        double energyValue(const BaseMap& baseMap,const Curve& curve, const KSpace& KImage, const EnergyInput energyInput)
+        {
+            WeightMap weightMap;
+            computeWeightMap(baseMap,KImage,curve.begin(),curve.end(),energyInput,weightMap);
 
             return energyValue(curve,weightMap);
         }

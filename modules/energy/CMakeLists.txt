@@ -7,7 +7,8 @@ if(${CREATE_SHARED_LIBRARIES})
 endif()
 
 add_library(exhaustive-gc-energy ${LIBRARY_ACTION}
-        src/energy.cpp)
+        src/energy.cpp
+        src/BaseMap.cpp)
 
 if(${USE_REMOTE_REPOSITORIES})
     add_dependencies(exhaustive-gc-energy geoc)

@@ -6,6 +6,7 @@
 #include "exhaustive-gc/core/check-elem/CheckableSeedPair.h"
 #include "exhaustive-gc/core/model/Types.h"
 #include "exhaustive-gc/energy/EnergyInput.h"
+#include "exhaustive-gc/energy/BaseMap.h"
 #include "exhaustive-gc/energy/energy.h"
 #include "exhaustive-gc/core/model/Types.h"
 
@@ -31,11 +32,13 @@ namespace ExhaustiveGC
                     const DigitalSet& ds,
                     const CheckableSeedVector &csVector,
                     const Energy::EnergyInput& energyInput,
+                    const Energy::BaseMap& baseMap,
                     const KSpace &KImage):maxPairs(maxPairs),
                                           strategy(strategy),
                                           ds(ds),
                                           csVector(csVector),
                                           energyInput(energyInput),
+                                          baseMap(baseMap),
                                           KImage(KImage){}
 
             ~CCGData(){}//Checkers are destroyed in LazyCombinator
@@ -47,6 +50,7 @@ namespace ExhaustiveGC
         public:
             DigitalSet ds;
             const Energy::EnergyInput& energyInput;
+            const Energy::BaseMap& baseMap;
             const KSpace& KImage;
             const CheckableSeedVector& csVector;
 

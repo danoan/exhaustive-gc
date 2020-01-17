@@ -5,6 +5,7 @@
 #include <DGtal/helpers/StdDefs.h>
 #include <geoc/api/api.h>
 
+#include "exhaustive-gc/energy/BaseMap.h"
 #include "exhaustive-gc/energy/EnergyInput.h"
 
 namespace ExhaustiveGC
@@ -39,6 +40,14 @@ namespace ExhaustiveGC
                               Curve::ConstIterator end,
                               WeightMap& weightMap);
 
+
+        void simplifiedElastica(const BaseMap& baseMap,
+                                       const EnergyInput& energyInput,
+                                       const KSpace& KImage,
+                                       Curve::ConstIterator begin,
+                                       Curve::ConstIterator end,
+                                       WeightMap& weightMap);
+
         void intSquaredCurvature(const EnergyInput& energyInput,
                                  const KSpace& KImage,
                                  Curve::ConstIterator begin,
@@ -51,14 +60,15 @@ namespace ExhaustiveGC
                       Curve::ConstIterator end,
                       WeightMap& weightMap);
 
-        void computeWeightMap(const KSpace& KImage,
+        void computeWeightMap(const Curve& baseCurve,
+                const KSpace& KImage,
                               Curve::ConstIterator begin,
                               Curve::ConstIterator end,
                               const EnergyInput energyInput,
                               WeightMap& weightMap);
 
         double energyValue(const Curve& curve, const WeightMap& weightMap);
-        double energyValue(const Curve& curve, const KSpace& KImage, const EnergyInput energyInput);
+        double energyValue(const BaseMap& baseMap, const Curve& gluedCurve, const KSpace& KImage, const EnergyInput energyInput);
         double energyValue(const DigitalSet& ds, const EnergyInput energyInput);
     }
 }

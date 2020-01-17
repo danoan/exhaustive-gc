@@ -50,11 +50,14 @@ bool findOptimalOneExpansion(Curve& optimalCurve,
 
     typedef ExhaustiveGC::Core::CCGData CCGData;
 
+    Energy::BaseMap baseMap(ds,sp.energyInput);
+
     CCGData ccgData(sp.jointPairs,
                     sp.strategy,
                     ds,
                     cspv,
                     sp.energyInput,
+                    baseMap,
                     kspace);
 
     if(sp.jointPairs>1)
