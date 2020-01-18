@@ -102,7 +102,7 @@ struct IterationState
 {
     typedef TSearchParameters SearchParameters;
 
-    enum sUpdate{UPDATED,KEPT};
+    enum sFound{NotFound,Found,Reset};
 
 
     IterationState(const DigitalSet& dsInput,SearchParameters sp, int maxIt):sp(sp),maxIt(maxIt),currIt(0)
@@ -110,7 +110,7 @@ struct IterationState
         Curve curve;
         DIPaCUS::Misc::computeBoundaryCurve(curve,dsInput);
         this->sp.maxGCLength = curve.size()/2;
-        sMaxGCLength = UPDATED;
+        sMaxGCLength = NotFound;
     }
 
     bool valid()
@@ -123,16 +123,24 @@ struct IterationState
         if(found)
         {
             currIt+=1;
-            sMaxGCLength=KEPT;
+            sMaxGCLength=Found;
         } else{
-            if(sMaxGCLength==UPDATED) sp.maxGCLength/=2;
-            else sp.maxGCLength = curveIt.size()/2;
-
+            sp.maxGCLength/=2;
             std::cout << "***Updated N to: "<<  sp.maxGCLength << std::endl;
 
-            if(sp.maxGCLength<10) currIt=maxIt;
-            sMaxGCLength=UPDATED;
+            if(sp.maxGCLength<10)
+            {
+                if(sMaxGCLength==Found) sMaxGCLength=Reset;
+                else currIt=maxIt;
+            }
         }
+
+        if(sMaxGCLength==Reset)
+        {
+            sp.maxGCLength = curveIt.size()/2;
+            sMaxGCLength = NotFound;
+        }
+
     }
 
     SearchParameters sp;
@@ -140,7 +148,7 @@ struct IterationState
     int maxIt;
     int currIt;
 
-    sUpdate sMaxGCLength;
+    sFound sMaxGCLength;
 };
 
 template<typename TSearchParameters>
