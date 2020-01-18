@@ -6,10 +6,10 @@ class Param:
         self.items=[ {'path':resolver(prefix,v),'value':v} for v in items]
 
 GRID_STEP=[1.0,0.5,0.25]
-SHAPES=["bean","square","flower","triangle","ellipse"]#"wave","square","flower"]#"ball","triangle","pentagon","ellipse"]#"heptagon"]
+SHAPES=["bean","square","flower","triangle","ellipse"]
 RADIUS=[3,5,10]
 ESTIMATOR=["ii","mdca"]
-ENERGY=["elastica","sqc"]#,"sqc","isqc"]
+ENERGY=["elastica","selastica"]
 LENGTH_PENALIZATION=[0.001,0.005,0.01]
 ITERATIONS=400
 MIN_CURVE_LENGTH=2
