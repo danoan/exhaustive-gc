@@ -19,6 +19,10 @@ struct InputData
 
     InputData()
     {
+        nCurveSegs=3;
+        nDilatedSets=0;
+        nErodedSets=0;
+        
         minGCLength = 4;
         maxGCLength = 10;
         automaticGCLength = true;
@@ -49,6 +53,10 @@ struct InputData
     uint maxGCLength;
     uint joints;
     uint iterations;
+    
+    uint nCurveSegs;
+    uint nDilatedSets;
+    uint nErodedSets;
 
     bool automaticGCLength;
 

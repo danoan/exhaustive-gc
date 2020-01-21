@@ -69,7 +69,17 @@ int main(int argc, char* argv[])
     Energy::EnergyInput energyInput( id.energyType, id.estimator, id.gridStep, id.radius, id.lengthPenalization,ls );
 
     API::Curve optimalCurve;
-    API::SearchParameters sp(id.strategy,id.joints,id.minGCLength,id.maxGCLength,id.automaticGCLength,energyInput,id.nThreads,id.threadSize);
+    API::SearchParameters sp(id.strategy,
+            id.joints,
+            id.minGCLength,
+            id.maxGCLength,
+            id.automaticGCLength,
+            id.nCurveSegs,
+            id.nDilatedSets,
+            id.nErodedSets,
+            energyInput,
+            id.nThreads,
+            id.threadSize);
 
     boost::filesystem::create_directories(id.outputFolder);
 

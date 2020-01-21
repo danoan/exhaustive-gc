@@ -15,25 +15,51 @@ bool findOptimalOneExpansion(Curve& optimalCurve,
 
     GenerateSeedPairs::SeedPairsList spl;
 
+    std::vector<const DigitalSet*> dsVector={&ds};
+
+    for(int i=0;i<sp.nDilatedSets;++i)
+    {
+        DigitalSet* dsTemp = new DigitalSet(ds.domain());
+        DIPaCUS::Morphology::dilate(*dsTemp,ds,DIPaCUS::Morphology::StructuringElement(DIPaCUS::Morphology::StructuringElement::RECT,1),i+1);
+        dsVector.push_back(dsTemp);
+    }
+
+    for(int i=0;i<sp.nErodedSets;++i)
+    {
+        DigitalSet* dsTemp = new DigitalSet(ds.domain());
+        DIPaCUS::Morphology::erode(*dsTemp,ds,DIPaCUS::Morphology::StructuringElement(DIPaCUS::Morphology::StructuringElement::RECT,1),i+1);
+
+        if(dsTemp->size()<10)
+            delete dsTemp;
+        else
+            dsVector.push_back(dsTemp);
+    }
+
+
     std::vector<GCurve::Range*> ranges;
     if(sp.automaticGCLength)
     {
-        int step=sp.maxGCLength/3;
-        for(int i=0;i<3;++i)
+        for(auto dsExt:dsVector)
         {
-            ranges.push_back( new GCurve::Range(ds,step*(i+1)) );
-            GenerateSeedPairs(spl,*(ranges[i]) );
+            Curve c;
+            DIPaCUS::Misc::computeBoundaryCurve(c,*dsExt);
+
+            int step=sp.maxGCLength/sp.nCurveSegs;
+            for(int i=0;i<sp.nCurveSegs;++i)
+            {
+                int curSize = step*(i+1);
+                if(c.size()>=(curSize/2.0))
+                    ranges.push_back( new GCurve::Range(*dsExt,curSize) );
+            }
+
         }
     } else
     {
         int k=0;
         for(int i=sp.minGCLength;i<=sp.maxGCLength;++i,++k)
-        {
             ranges.push_back( new GCurve::Range(ds,i) );
-            GenerateSeedPairs(spl,*(ranges[k]) );
-        }
-
     }
+    for(auto r: ranges) GenerateSeedPairs(spl,*(r) );
 
 
     FilterSeedPairs(spl,sp.energyInput.fixedLinels);
@@ -41,7 +67,6 @@ bool findOptimalOneExpansion(Curve& optimalCurve,
 
     int threadSize = sp.threadSize;
     if(sp.threadSize==0) threadSize = (int) (spl.size()/sp.nThreads);
-
 
 
     CheckableSeedPairVector cspv;
@@ -73,6 +98,7 @@ bool findOptimalOneExpansion(Curve& optimalCurve,
                                                                  threadSize);
 
     for(auto p:ranges) delete(p);
+    for(int i=dsVector.size();i>1;--i) delete dsVector.at(i-1);
 
     return flag;
 
@@ -109,7 +135,10 @@ struct IterationState
     {
         Curve curve;
         DIPaCUS::Misc::computeBoundaryCurve(curve,dsInput);
-        this->sp.maxGCLength = curve.size()/2;
+
+        if(sp.automaticGCLength)
+            this->sp.maxGCLength = curve.size()/2;
+
         sMaxGCLength = NotFound;
     }
 
@@ -120,25 +149,32 @@ struct IterationState
 
     void update(const Curve& curveIt, bool found)
     {
-        if(found)
+        if(sp.automaticGCLength)
+        {
+            if(found)
+            {
+                currIt+=1;
+                sMaxGCLength=Found;
+                sp.maxGCLength= (int) (curveIt.size()*0.5);
+            } else{
+                sp.maxGCLength/=2;
+                std::cout << "***Updated N to: "<<  sp.maxGCLength << std::endl;
+
+                if(sp.maxGCLength<20)
+                {
+                    if(sMaxGCLength==Found) sMaxGCLength=Reset;
+                    else currIt=maxIt;
+                }
+            }
+
+            if(sMaxGCLength==Reset)
+            {
+                sp.maxGCLength = (int) (curveIt.size()/2);
+                sMaxGCLength = NotFound;
+            }
+        }else
         {
             currIt+=1;
-            sMaxGCLength=Found;
-        } else{
-            sp.maxGCLength/=2;
-            std::cout << "***Updated N to: "<<  sp.maxGCLength << std::endl;
-
-            if(sp.maxGCLength<10)
-            {
-                if(sMaxGCLength==Found) sMaxGCLength=Reset;
-                else currIt=maxIt;
-            }
-        }
-
-        if(sMaxGCLength==Reset)
-        {
-            sp.maxGCLength = curveIt.size()/2;
-            sMaxGCLength = NotFound;
         }
 
     }

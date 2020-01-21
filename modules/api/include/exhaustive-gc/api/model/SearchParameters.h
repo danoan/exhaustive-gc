@@ -18,12 +18,18 @@ namespace ExhaustiveGC
                              int minGCLength,
                              int maxGCLength,
                              bool automaticGCLength,
+                             uint nCurveSegs,
+                             uint nDilatedSets,
+                             uint nErodedSets,
                              const EnergyInput& energyInput,
                              int nThreads,
                              int threadSize):strategy(strategy),
                                              jointPairs(maxPairs),
                                              minGCLength(minGCLength),
                                              maxGCLength(maxGCLength),
+                                             nCurveSegs(nCurveSegs),
+                                             nDilatedSets(nDilatedSets),
+                                             nErodedSets(nErodedSets),
                                              automaticGCLength(automaticGCLength),
                                              energyInput(energyInput),
                                              nThreads(nThreads),
@@ -35,6 +41,10 @@ namespace ExhaustiveGC
             int minGCLength;
             int maxGCLength;
             bool automaticGCLength;
+
+            int nCurveSegs;
+            int nDilatedSets;
+            int nErodedSets;
 
             int nThreads;
             int threadSize;

@@ -12,6 +12,9 @@ namespace InputReader
                 "[-M Maximum glued curve length]\n"
                 "[-j Number of joints to optimize per iteration]\n"
                 "[-i Number of iterations]\n"
+                "[-D Number of dilated sets]\n"
+                "[-E Number of eroded sets]\n"
+                "[-V Number of curve divisions]\n"
                 "[-e Energy (isqc elastica selastica cselastica)]\n"
                 "[-a Length penalization ]\n"
                 "[-S Shape (triangle square elipse pentagon heptagon ball flower)]\n"
@@ -36,7 +39,7 @@ namespace InputReader
 
         InputData id;
         int opt;
-        while( (opt=getopt(argc,argv,"m:M:j:i:S:s:e:a:h:t:r:n:k:fF:x"))!=-1 )
+        while( (opt=getopt(argc,argv,"m:M:j:i:S:s:e:a:h:t:r:n:k:fF:xD:E:V:"))!=-1 )
         {
             switch(opt)
             {
@@ -140,6 +143,21 @@ namespace InputReader
                     id.initMode = InputData::InteractiveEndpoints;
                     break;
                 }
+                case 'D':
+                {
+                    id.nDilatedSets= std::atoi(optarg);
+                    break;
+                }
+                case 'E':
+                {
+                    id.nErodedSets= std::atoi(optarg);
+                    break;
+                }
+                case 'V':
+                {
+                    id.nCurveSegs= std::atoi(optarg);
+                    break;
+                }
                 default:
                 {
                     usage(argv);
@@ -203,6 +221,71 @@ std::ostream& operator<<(std::ostream& os,const InputData::Strategy& strategy)
 
 }
 
+std::ostream& operator<<(std::ostream& os,const InputData::InitializationMode & initMode)
+{
+    switch(initMode)
+    {
+        case InputData::InitializationMode::InteractiveEndpoints:
+        {
+            os << "InteractiveEndpoints";
+            break;
+        }
+        case InputData::InitializationMode::FixedPixels:
+        {
+            os << "FixedPixels";
+            break;
+        }
+        case InputData::InitializationMode::InteractiveFixedPixels:
+        {
+            os << "InteractiveFixedPixels";
+            break;
+        }
+        default:
+        {
+            os << "Not Recognized";
+            break;
+        }
+    }
+
+    return os;
+
+}
+
+std::ostream& operator<<(std::ostream& os,const InputData::EnergyType & energyType)
+{
+    switch(energyType)
+    {
+        case InputData::EnergyType::Elastica:
+        {
+            os << "Elastica";
+            break;
+        }
+        case InputData::EnergyType::CorrectedSimplifiedElastica:
+        {
+            os << "Corrected Simplified Elastica";
+            break;
+        }
+        case InputData::EnergyType::SimplifiedElastica:
+        {
+            os << "Simplified Elastica";
+            break;
+        }
+        case InputData::EnergyType::IntSquaredCurvature:
+        {
+            os << "Integrated Squared Curvature";
+            break;
+        }
+        default:
+        {
+            os << "Not Recognized";
+            break;
+        }
+    }
+
+    return os;
+
+}
+
 std::ostream& operator<<(std::ostream& os,const InputData& id)
 {
     os << "Shape: " << id.shape.name << "\n";
@@ -215,6 +298,14 @@ std::ostream& operator<<(std::ostream& os,const InputData& id)
     os << "Max GC Length: " << id.maxGCLength << "\n";
     os << "Jonctions: " << id.joints<< "\n";
     os << "Length Penalization: " << id.lengthPenalization<< "\n";
+    os << "Number of eroded sets: " << id.nErodedSets<< "\n";
+    os << "Number of dilated sets: " << id.nDilatedSets<< "\n";
+    os << "Number of curve segments: " << id.nCurveSegs<< "\n";
+    os << "Automatic glued curve length: " << id.automaticGCLength<< "\n";
+    os << "Initializationo mode: " << id.initMode<< "\n";
+    os << "Energy type: " << id.energyType<< "\n";
+    os << "Fixed pixel mask: " << id.fixedPixelsMask<< "\n";
+
 
     return os;
 }
