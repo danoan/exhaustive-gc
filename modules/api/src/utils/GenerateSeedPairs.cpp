@@ -49,6 +49,18 @@ GenerateSeedPairs::GenerateSeedPairs(SeedPairsList& seedPairList,
                           seedDrawer["innerMain"].end(),
                           std::back_inserter(seedPairList));
 
+    MyContainerCombinator(seedDrawer["innerMain"].begin(),
+                          seedDrawer["innerMain"].end(),
+                          seedDrawer["mainInner"].begin(),
+                          seedDrawer["mainInner"].end(),
+                          std::back_inserter(seedPairList));
+
+    MyContainerCombinator(seedDrawer["outerMain"].begin(),
+                          seedDrawer["outerMain"].end(),
+                          seedDrawer["mainOuter"].begin(),
+                          seedDrawer["mainOuter"].end(),
+                          std::back_inserter(seedPairList));
+
     MyContainerCombinator(seedDrawer["mainOuter"].begin(),
                           seedDrawer["mainOuter"].end(),
                           seedDrawer["outerMain"].begin(),
