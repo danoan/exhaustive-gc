@@ -19,7 +19,7 @@ else()
 endif()
 
 set_target_properties(exhaustive-gc-api  PROPERTIES
-        VERSION ${VERSION_EXHAUSTIVE_GC_UTILS})
+        VERSION ${VERSION_EXHAUSTIVE_GC_API})
 
 target_include_directories(exhaustive-gc-api PRIVATE
         include
