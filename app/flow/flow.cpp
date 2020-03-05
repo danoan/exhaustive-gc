@@ -2,6 +2,7 @@
 
 #include <exhaustive-gc/api/api.h>
 #include <exhaustive-gc/utils/timer.h>
+#include <exhaustive-gc/utils/string.h>
 #include <exhaustive-gc/energy/EnergyInput.h>
 
 #include <set-endpoints-orientation/gui.h>
@@ -9,6 +10,7 @@
 #include "InputReader.h"
 #include "InputData.h"
 #include "utils.h"
+#include "EnergyValue.h"
 
 using namespace ExhaustiveGC;
 
@@ -87,10 +89,23 @@ int main(int argc, char* argv[])
     APP::Utils::writeInputData(id,id.outputFolder + "/inputData.txt");
     std::ofstream ofs(id.outputFolder + "/energy.txt");
 
+    int colLength=20;
+    ofs << Utils::String::fixedStrLength(colLength, "Iteration")
+    << Utils::String::fixedStrLength(colLength, "EnergyValue II")
+    << Utils::String::fixedStrLength(colLength, "EnergyValue MDCA") << "\n";
+    API::CallbackFunction cbf = [&ofs,&energyInput,&colLength](const DigitalSet& ds, int iteration)
+    {
+        EnergyValue ev(ds,energyInput);
+
+        ofs << Utils::String::fixedStrLength(colLength, iteration)
+        << Utils::String::fixedStrLength(colLength, ev.iiValue)
+        << Utils::String::fixedStrLength(colLength, ev.mdcaValue) << "\n";
+    };
+
 
 
     Utils::Timer::start();
-    API::optimalOneExpansionSequence(shape,sp,id.iterations,id.outputFolder,ofs);
+    API::optimalOneExpansionSequence(shape,sp,id.iterations,id.outputFolder,cbf);
     ofs << "\n\n#";
     Utils::Timer::end(ofs);
 

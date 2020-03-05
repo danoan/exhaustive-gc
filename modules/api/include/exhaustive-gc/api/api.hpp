@@ -192,10 +192,8 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
                                  const TSearchParameters& sp,
                                  int iterations,
                                  std::string outputFolder,
-                                 std::ostream& os)
+                                 CallbackFunction& callbackFn)
 {
-    os << "#It\tEnergyValue\n";
-
     Point lb,ub;
     dsInput.computeBoundingBox(lb,ub);
 
@@ -217,10 +215,10 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
     IterationState<TSearchParameters> itState(workingSet,sp,iterations);
     double lastEnergyValue = Energy::energyValue(workingSet,itState.sp.energyInput);
 
-    exportImageFromDigitalSet(outputFolder + "/" + nDigitsString(0,4) + ".pgm",workingSet,fixedPixels);
+    exportImageFromDigitalSet(outputFolder + "/" + Utils::String::nDigitsString(0,4) + ".pgm",workingSet,fixedPixels);
     while(itState.valid())
     {
-        writeEnergy(os,itState.currIt,lastEnergyValue);
+        callbackFn(workingSet,itState.currIt);
 
         Curve minCurve;
         DIPaCUS::Misc::computeBoundaryCurve(minCurve,workingSet);
@@ -237,7 +235,7 @@ void optimalOneExpansionSequence(const DigitalSet& dsInput,
             workingSet.insert(tempDS.begin(),tempDS.end());
 
 
-            exportImageFromDigitalSet(outputFolder + "/" + nDigitsString(itState.currIt,4) + ".pgm",workingSet,fixedPixels);
+            exportImageFromDigitalSet(outputFolder + "/" + Utils::String::nDigitsString(itState.currIt,4) + ".pgm",workingSet,fixedPixels);
             lastEnergyValue = Energy::energyValue(workingSet,itState.sp.energyInput);
 
         }

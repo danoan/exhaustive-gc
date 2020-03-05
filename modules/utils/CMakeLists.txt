@@ -8,7 +8,8 @@ endif()
 
 add_library(exhaustive-gc-utils ${LIBRARY_ACTION}
         src/timer.cpp
-        src/digital.cpp)
+        src/digital.cpp
+        src/string.cpp)
 
 if(${USE_REMOTE_REPOSITORIES})
     add_dependencies(exhaustive-gc-utils dipacus gcurve)

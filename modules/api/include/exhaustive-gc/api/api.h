@@ -13,12 +13,12 @@
 #include "exhaustive-gc/core/checker/MinimumDistanceChecker.h"
 
 #include "exhaustive-gc/utils/digital.h"
+#include "exhaustive-gc/utils/string.h"
 
 #include "exhaustive-gc/api/utils/FilterSeedPairs.h"
 #include "exhaustive-gc/api/utils/InitImage.h"
 #include "exhaustive-gc/api/model/SearchParameters.h"
 #include "exhaustive-gc/api/utils/GenerateSeedPairs.h"
-
 
 namespace ExhaustiveGC
 {
@@ -28,6 +28,7 @@ namespace ExhaustiveGC
         typedef DGtal::Z2i::KSpace KSpace;
         typedef DGtal::Z2i::Curve Curve;
         typedef ExhaustiveGC::Energy::EnergyType EnergyType;
+        typedef std::function<void(const DigitalSet&, int iteration)> CallbackFunction;
 
         template<typename TSearchParameters>
         bool findOptimalOneExpansion(Curve& optimalCurve,
@@ -42,29 +43,10 @@ namespace ExhaustiveGC
                                          const TSearchParameters& sp,
                                          int iterations,
                                          std::string outputFolder,
-                                         std::ostream& os);
+                                         CallbackFunction& callbackFn);
 
         void exportPixelMask(const std::string& imageOutputPath, const DGtal::Z2i::Domain& domain, const std::set<DGtal::Z2i::Point>& fixedPixels);
         void exportImageFromDigitalSet(const std::string& imageOutputPath, const DigitalSet& ds, const std::set<DGtal::Z2i::Point>& fixedPixels);
-
-        void writeEnergy(std::ostream& os, int iteration, double energyValue)
-        {
-            os << iteration << "\t" << energyValue << "\n";
-        }
-
-        std::string nDigitsString(int num, int digits)
-        {
-            std::string s = "";
-            int numSize = num==0?1:log10( abs(num) ) + 1;
-            int lZero = digits - numSize;
-            while(lZero>0)
-            {
-                s+=std::to_string(0);
-                --lZero;
-            }
-            s+=std::to_string(num);
-            return s;
-        }
 
         #include "api.hpp"
 
